@@ -1,10 +1,10 @@
 <div [ngClass]="{'container': true}">
   <div [ngClass]="{'title': true}">
     <a [ngClass]="{'current': isRegister}" routerLink="/authorization/register"
-      (click)="isRegister = !isRegister">Регистрция</a>
+      (click)="isRegister = true; isEnter = false">Регистрция</a>
     /
-    <a [ngClass]="{'current': !isRegister}" routerLink="/authorization/enter"
-      (click)="isRegister = !isRegister">Вход</a>
+    <a [ngClass]="{'current': isEnter}" routerLink="/authorization/enter"
+      (click)="isRegister = false; isEnter = true">Вход</a>
   </div>
   <router-outlet></router-outlet>
 </div>

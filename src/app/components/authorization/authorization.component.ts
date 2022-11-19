@@ -8,12 +8,15 @@ import { Router } from '@angular/router';
 })
 export class AuthorizationComponent implements OnInit {
   public isRegister: boolean = true;
+  public isEnter: boolean = false;
+
 
   constructor() {
 
   }
 
   ngOnInit(): void {
+
   }
 
 }

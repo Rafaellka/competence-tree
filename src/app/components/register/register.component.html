@@ -1,1 +1,7 @@
-<p>register works!</p>
+<form [ngClass]="{'form': true}">
+  <input [ngClass]="{'input': true}" type="text" placeholder="Введите имя">
+  <input [ngClass]="{'input': true}" type="text" placeholder="Введите почту">
+  <input [ngClass]="{'input': true}" type="text" placeholder="Введите пароль">
+  <input [ngClass]="{'input': true}" type="text" placeholder="Повторите пароль">
+  <button [ngClass]="{'btn': true}">Зарегистрироваться</button>
+</form>
