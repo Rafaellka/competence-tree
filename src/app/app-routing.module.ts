@@ -1,12 +1,17 @@
-import { RegisterComponent } from './components/register/register.component';
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthorizationComponent } from './components/authorization/authorization.component';
-import { EnterComponent } from './components/enter/enter.component';
+import {RegisterComponent} from './components/register/register.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {AuthorizationComponent} from './components/authorization/authorization.component';
+import {EnterComponent} from './components/enter/enter.component';
+import {GraphComponent} from "./components/graph/graph.component";
 
 const routes: Routes = [
   {
-    path: 'authorization', 
+    path: '',
+    component: GraphComponent
+  },
+  {
+    path: 'authorization',
     component: AuthorizationComponent,
     children: [{
       path: 'enter',
@@ -22,4 +27,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
