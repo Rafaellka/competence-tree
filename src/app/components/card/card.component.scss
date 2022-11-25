@@ -1,0 +1,20 @@
+.project{
+  width: 300px;
+  height: 500px;
+  background: #2E62D9;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 30px 35px 0;
+  gap: 60px;
+
+  .title{
+    align-self: center;
+  }
+
+  p{
+    margin: 0;
+    color: #F2F4F8;
+    font-size: 20px;
+  }
+}

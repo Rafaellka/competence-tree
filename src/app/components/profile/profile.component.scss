@@ -1,0 +1,62 @@
+.containerUp{
+  padding: 25px 40px 25px 70px;
+  display: flex;
+  border-bottom: 1px solid #000000;
+  max-width: 4800px;
+  margin: 0 auto;
+  background: #F6F8F9;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  
+  .profile{
+    display: flex;
+  }
+  
+  .wrapperImg{
+    width: 140px;
+    height: 140px;
+  }
+
+  .avatar{
+    width: auto;
+    height: 200%;
+  }
+
+  .name{
+    margin-left: 40px;
+    font-size: 20px;
+    text-decoration: underline;
+    text-decoration-color: #2CA2FD;
+  }
+
+  .btn {
+    margin-left: auto;
+    padding: 10px 39px;
+    border: none;
+    background-color: #2E62D9;
+    color: #EDF5E1;   
+    border-radius: 5px;
+    font-size: 18px;
+    align-self: center;
+    transition: 0.1s linear;
+
+    &:hover {
+      cursor: pointer;
+      font-size: 20px;
+      transition: 0.1s linear;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+.containerDown{
+  max-width: 4800px;
+  margin: 0 auto;
+
+  .projects{
+    padding: 70px 80px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+}

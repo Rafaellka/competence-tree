@@ -1,0 +1,19 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  align-items: center;
+  gap: 20px;
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+    background-color: #868A95;
+  }
+}
+
+.profile:hover{
+  cursor: pointer;
+}
