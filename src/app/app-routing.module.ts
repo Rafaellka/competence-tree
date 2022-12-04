@@ -1,10 +1,8 @@
-import {RegisterComponent} from './components/register/register.component';
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {AuthorizationComponent} from './components/authorization/authorization.component';
-import {EnterComponent} from './components/enter/enter.component';
-import {GraphComponent} from "./components/graph/graph.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { GraphComponent } from "./components/graph/graph.component";
 import { ProfileComponent } from './components/profile/profile.component';
+import { SigninComponent } from './components/signin/signin.component';
 
 const routes: Routes = [
   {
@@ -12,20 +10,14 @@ const routes: Routes = [
     component: GraphComponent
   },
   {
-    path: 'authorization',
-    component: AuthorizationComponent,
-    children: [{
-      path: 'enter',
-      component: EnterComponent
-    }, {
-      path: 'register',
-      component: RegisterComponent
-    }]
+    path: 'signin-oidc',
+    component: SigninComponent
   },
   {
     path: 'profile',
     component: ProfileComponent
   }
+
 ];
 
 @NgModule({

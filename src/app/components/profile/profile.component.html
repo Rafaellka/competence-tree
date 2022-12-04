@@ -5,6 +5,9 @@
   </div>
   <p [ngClass]="{name: true}">Альберт Эйнштейн</p>
   <button [ngClass]="{btn: true}" routerLink="">Назад</button>
+  <button [ngClass]="{btn: true}" (click)="login()">Войти</button>
+  <button [ngClass]="{btn: true}" (click)="query()">Создать</button>
+  <button [ngClass]="{btn: true}" (click)="refreshToken()">Обновить токен</button>
 </div>
 <div [ngClass]="{containerDown: true}">
   <div [ngClass]="{projects: true}">
