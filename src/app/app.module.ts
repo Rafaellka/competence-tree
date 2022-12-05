@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthorizationComponent } from './components/authorization/authorization.component';
-import { EnterComponent } from './components/enter/enter.component';
 import { GraphComponent } from './components/graph/graph.component';
 import { NgxEchartsModule } from "ngx-echarts";
 import { ProfileComponent } from './components/profile/profile.component';
@@ -11,17 +10,18 @@ import { CardComponent } from './components/card/card.component';
 import { AuthConfigModule } from './auth/auth-config.module';
 import { SigninComponent } from './components/signin/signin.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthorizationComponent,
-    EnterComponent,
     GraphComponent,
     ProfileComponent,
     CardComponent,
-    SigninComponent
+    SigninComponent,
+    NavigationComponent
   ],
   imports: [
     BrowserModule,

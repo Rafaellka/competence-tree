@@ -1,75 +1,43 @@
-import {
-  AfterViewInit,
-  Component,
-  DoCheck,
-  ElementRef,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-  ViewChildren
-} from '@angular/core';
-import { Edge, Node } from '@swimlane/ngx-graph';
-import { Subject } from 'rxjs';
+import { Component } from '@angular/core';
+import { EChartsOption } from "echarts";
+import { LinksService } from 'src/app/services/links.service';
+import { NodesService } from "../../services/nodes.service";
 
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
   styleUrls: ['./graph.component.scss']
 })
-export class GraphComponent implements AfterViewInit{
-  @ViewChild('#nodeTemplate')
-  circle: TemplateRef<any>;
-  links: Edge[] = [
-    {
-      id: 'a',
-      source: 'first',
-      target: 'second',
-      label: 'is parent of'
-    }, {
-      id: 'b',
-      source: 'first',
-      target: 'c1',
-      label: 'custom label'
-    }, {
-      id: 'd',
-      source: 'first',
-      target: 'c2',
-      label: 'custom label'
-    }, {
-      id: 'e',
-      source: 'c1',
-      target: 'd',
-      label: 'first link'
-    }, {
-      id: 'f',
-      source: 'c1',
-      target: 'd',
-      label: 'second link'
-    }
-  ];
-  nodes: Node[] = [
-    {
-      id: 'first',
-      label: 'A',
-      data: {
-        color: '#FFFFFF'
-      }
-    }, {
-      id: 'second',
-      label: 'B'
-    }, {
-      id: 'c1',
-      label: 'C1'
-    }, {
-      id: 'c2',
-      label: 'C2'
-    }, {
-      id: 'd',
-      label: 'D'
-    }
-  ];
-
-  ngAfterViewInit() {
-    console.log(this.circle)
+export class GraphComponent {
+  constructor(private nodesService: NodesService, private linkService: LinksService) {
   }
+
+  flag: boolean = false;
+
+  showNav() {
+    this.flag = !this.flag;
+  };
+
+  options: EChartsOption = {
+    tooltip: {},
+    animation: false,
+    series: [
+      {
+        type: 'graph',
+        roam: true,
+        layout: 'force',
+        zoom: 10,
+        scaleLimit: {
+          min: 5,
+          max: 15
+        },
+        label: {
+          show: true,
+          fontSize: 14
+        },
+        data: this.nodesService.getGraphNodes(),
+        links: this.linkService.getLinks()
+      }
+    ]
+  };
 }

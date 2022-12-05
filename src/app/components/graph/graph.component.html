@@ -1,9 +1,5 @@
-<div [ngClass]="{main: true}" xmlns:svg="">
-  <ngx-graph [autoCenter]="true"
-    [links]="links" [nodes]="nodes" layout="dagreCluster">
-  </ngx-graph>
-</div>
-<div routerLink="/profile" [ngClass]="{profile: true}">
-  <div [ngClass]="{avatar: true}"></div>
-  <div>Профиль</div>
+<div echarts [options]="options" [ngClass]="{main: true}"></div>
+<div [ngClass]="{profile: true}">
+  <button [ngClass]="{button: true}" (click)="showNav()">Click</button>
+  <app-navigation [flag]="flag"></app-navigation>
 </div>
