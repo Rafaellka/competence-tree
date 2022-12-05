@@ -1,6 +1,7 @@
 .main {
   position: fixed;
-  width: 20%;
+  width: 16vw;
+  padding: 20px;
   height: 100vh;
   right: 0;
   display: flex;
@@ -8,19 +9,16 @@
   align-items: center;
   transform: translateX(100%);
   background-color: white;
-  border-left: 1px solid #000;
+  border-left: 2px solid #000;
 
-  .avatar {
-    width: 70px;
-    height: 70px;
-    background-color: #868A95;
-  }
-
-  .header {
-    margin: 10px 0px;
+  .close {
+    align-self: flex-end;
+    margin-bottom: 30px;
+    transform: scale(1.2);
   }
 }
 
 .active {
+  transition: 0.4s all;
   transform: translateX(0);
 }

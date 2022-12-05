@@ -1,4 +1,6 @@
 <div [ngClass]="{main: true, active: this.flag}">
-  <div [ngClass]="{avatar: true}"></div>
-  <div>Профиль</div>
+  <button [ngClass]="{close: true}">
+    <mat-icon>close</mat-icon>
+  </button>
+  <ng-content></ng-content>
 </div>

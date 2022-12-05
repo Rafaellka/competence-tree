@@ -9,10 +9,17 @@
   top: 0;
   right: 0;
   align-items: center;
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+    background-color: #868A95;
+  }
 }
 
 .button {
   position: absolute;
   top: 20px;
-  right: 30px;
+  right: 20px;
+  transform: scale(1.2);
 }

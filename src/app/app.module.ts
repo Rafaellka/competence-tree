@@ -9,9 +9,9 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { CardComponent } from './components/card/card.component';
 import { AuthConfigModule } from './auth/auth-config.module';
 import { SigninComponent } from './components/signin/signin.component';
-import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NavigationComponent } from './components/navigation/navigation.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -30,8 +30,8 @@ import { NavigationComponent } from './components/navigation/navigation.componen
       echarts: () => import('echarts')
     }),
     AuthConfigModule,
-    NgxGraphModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,10 @@
 <div echarts [options]="options" [ngClass]="{main: true}"></div>
 <div [ngClass]="{profile: true}">
-  <button [ngClass]="{button: true}" (click)="showNav()">Click</button>
-  <app-navigation [flag]="flag"></app-navigation>
+  <button [ngClass]="{button: true}" (click)="showNav()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <app-navigation [flag]="flag">
+    <div [ngClass]="{avatar: true}"></div>
+    <div>Профиль</div>
+  </app-navigation>
 </div>
