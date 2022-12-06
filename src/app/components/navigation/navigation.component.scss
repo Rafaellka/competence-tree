@@ -9,7 +9,8 @@
   align-items: center;
   transform: translateX(100%);
   background-color: white;
-  border-left: 2px solid #000;
+  border-left: 1px solid #000;
+  transition: 0.4s all;
 
   .close {
     align-self: flex-end;

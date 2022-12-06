@@ -1,5 +1,5 @@
-<div [ngClass]="{main: true, active: this.flag}">
-  <button [ngClass]="{close: true}">
+<div [ngClass]="{main: true, active: this.visible}">
+  <button [ngClass]="{close: true}" (click)="hideSidebar()">
     <mat-icon>close</mat-icon>
   </button>
   <ng-content></ng-content>

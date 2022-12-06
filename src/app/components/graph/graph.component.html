@@ -3,7 +3,7 @@
   <button [ngClass]="{button: true}" (click)="showNav()">
     <mat-icon>menu</mat-icon>
   </button>
-  <app-navigation [flag]="flag">
+  <app-navigation [(visible)]="visible">
     <div [ngClass]="{avatar: true}"></div>
     <div>Профиль</div>
   </app-navigation>

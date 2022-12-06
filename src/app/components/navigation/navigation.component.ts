@@ -1,18 +1,14 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent implements AfterViewInit {
-  @Input() flag: boolean;
-  constructor() { }
+export class NavigationComponent {
+  @Input() visible: boolean;
+  @Output() visibleChange = new EventEmitter<boolean>();
 
-  handleClick() {
-
-  }
-
-  ngAfterViewInit() {
-    console.log(this.flag);
+  hideSidebar() {
+    this.visibleChange.emit(false);
   }
 }

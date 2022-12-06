@@ -12,10 +12,10 @@ export class GraphComponent {
   constructor(private nodesService: NodesService, private linkService: LinksService) {
   }
 
-  flag: boolean = false;
+  visible: boolean = false;
 
   showNav() {
-    this.flag = !this.flag;
+    this.visible = true;
   };
 
   options: EChartsOption = {
