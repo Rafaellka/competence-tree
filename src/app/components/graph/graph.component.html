@@ -6,6 +6,32 @@
   <button (click)="add()">add</button>
   <app-navigation [(visible)]="visible">
     <div [ngClass]="{avatar: true}"></div>
-    <div>Профиль</div>
+    <div [ngClass]="{prof: true}">Профиль</div>
+    <div>
+      <div [ngClass]="{checkbox: true}">
+        <input type="checkbox" in="skills">
+        <label for="skills">Скиллы</label>
+      </div>
+      <div [ngClass]="{checkbox: true}">
+        <input type="checkbox" in="mySkills">
+        <label for="mySkills">Мои скиллы</label>
+      </div>
+      <div [ngClass]="{checkbox: true}">
+        <input type="checkbox" in="Positions">
+        <label for="Positions">Должности</label>
+      </div>
+      <div [ngClass]="{checkbox: true}">
+        <input type="checkbox" in="myPositions">
+        <label for="myPositions">Мои должности</label>
+      </div>
+      <div [ngClass]="{checkbox: true}">
+        <input type="checkbox" in="myGrade">
+        <label for="myGrade">Мои грейды</label>
+      </div>
+      <div [ngClass]="{checkbox: true}">
+        <input type="checkbox" in="myRoles">
+        <label for="myRoles">Мои роли</label>
+      </div>
+    </div>
   </app-navigation>
 </div>
