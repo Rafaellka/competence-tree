@@ -13,6 +13,8 @@ export interface IRenderNode extends INode {
   itemStyle: {
     color: string;
   }
+  x?: number;
+  y?: number;
 }
 
 export interface ITypedNode extends INode {

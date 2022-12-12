@@ -1,11 +1,34 @@
 import { Injectable } from '@angular/core';
 import { IRenderNode, ITypedNode } from "../../interfaces";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NodesService {
   typedNodes: ITypedNode[] = [];
+  data1: IRenderNode[] = [{
+    name: 'Artsofte',
+    id: 'Node 1',
+    symbolSize: 26,
+    itemStyle: {
+      color: '#2E62D9'
+    },
+  }, {
+    name: 'Frontend',
+    id: 'Node 2',
+    symbolSize: 20,
+    itemStyle: {
+      color: '#2E62D9'
+    },
+  }, {
+    name: 'Junior',
+    id: 'Node 3',
+    symbolSize: 15,
+    itemStyle: {
+      color: '#F7F48B'
+    },
+  }, ];
 
   data: IRenderNode[] = [{
     name: 'Artsofte',
@@ -13,14 +36,14 @@ export class NodesService {
     symbolSize: 26,
     itemStyle: {
       color: '#2E62D9'
-    }
+    },
   }, {
     name: 'Frontend',
     id: 'Node 2',
     symbolSize: 20,
     itemStyle: {
       color: '#2E62D9'
-    }
+    },
   }, {
     name: 'Junior',
     id: 'Node 3',
@@ -891,7 +914,19 @@ export class NodesService {
     }
   },];
 
+  addNode() {
+    this.data.push({
+      name: 'Middle',
+      id: 'Node 4',
+      symbolSize: 15,
+      itemStyle: {
+        color: '#A1DE93'
+      }
+    });
+  }
   getGraphNodes() {
-    return this.data;
+    return new Observable<IRenderNode[]>((sub) => {
+      sub.next(this.data);
+    });
   }
 }

@@ -1,8 +1,9 @@
-<div echarts [options]="options" [ngClass]="{main: true}"></div>
+<div echarts [options]="options" [ngClass]="{main: true}" (chartClick)="onChartEvent($event, 'chartClick')"></div>
 <div [ngClass]="{profile: true}">
   <button [ngClass]="{button: true}" (click)="showNav()">
     <mat-icon>menu</mat-icon>
   </button>
+  <button (click)="add()">add</button>
   <app-navigation [(visible)]="visible">
     <div [ngClass]="{avatar: true}"></div>
     <div>Профиль</div>
