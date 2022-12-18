@@ -12,6 +12,8 @@ import {forkJoin} from "rxjs";
 })
 export class GraphComponent implements OnInit {
   visible: boolean;
+  title: string;
+  modal: boolean;
   options: EChartsOption;
   filters: IFilters;
   nodes$ = forkJoin([
@@ -26,6 +28,8 @@ export class GraphComponent implements OnInit {
 
   ngOnInit() {
     this.visible = false;
+    this.modal = false;
+    this.title = '';
     this.filters = {
       skill: true,
       mySkill: true,
@@ -120,5 +124,9 @@ export class GraphComponent implements OnInit {
 
   onChartEvent(event: any, type: string) {
     console.log('chart event:', type, event);
+    if (event['data']['NodeTypes'] === 'skill' || event['data']['NodeTypes'] === 'position'){
+      this.modal = true;
+    }
+    this.title = event['data']['name'];
   };
 }

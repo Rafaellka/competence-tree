@@ -12,8 +12,8 @@ import { SigninComponent } from './components/signin/signin.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NavigationComponent } from './components/navigation/navigation.component';
 import {MatIconModule} from '@angular/material/icon';
-import { FiltersComponent } from './components/filters/filters.component';
 import {FormsModule} from "@angular/forms";
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import {FormsModule} from "@angular/forms";
     CardComponent,
     SigninComponent,
     NavigationComponent,
-    FiltersComponent
+    ModalComponent
   ],
     imports: [
         BrowserModule,
