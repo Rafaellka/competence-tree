@@ -3,35 +3,35 @@
   <button [ngClass]="{button: true}" (click)="showNav()">
     <mat-icon>menu</mat-icon>
   </button>
-  <button (click)="add()">add</button>
   <app-navigation [(visible)]="visible">
     <div [ngClass]="{avatar: true}"></div>
     <div [ngClass]="{prof: true}">Профиль</div>
-    <div>
+    <form>
       <div [ngClass]="{checkbox: true}">
-        <input type="checkbox" in="skills">
+        <input type="checkbox" id="skills" [(ngModel)]="filters.skill" name="skill">
         <label for="skills">Скиллы</label>
       </div>
       <div [ngClass]="{checkbox: true}">
-        <input type="checkbox" in="mySkills">
+        <input type="checkbox" id="mySkills" [(ngModel)]="filters.mySkill" name="mySkill">
         <label for="mySkills">Мои скиллы</label>
       </div>
       <div [ngClass]="{checkbox: true}">
-        <input type="checkbox" in="Positions">
-        <label for="Positions">Должности</label>
+        <input type="checkbox" id="positions" [(ngModel)]="filters.position" name="position">
+        <label for="positions">Должности</label>
       </div>
       <div [ngClass]="{checkbox: true}">
-        <input type="checkbox" in="myPositions">
+        <input type="checkbox" id="myPositions" [(ngModel)]="filters.myPosition" name="myPosition">
         <label for="myPositions">Мои должности</label>
       </div>
       <div [ngClass]="{checkbox: true}">
-        <input type="checkbox" in="myGrade">
-        <label for="myGrade">Мои грейды</label>
+        <input type="checkbox" id="myGrades" [(ngModel)]="filters.myGrade" name="myGrade">
+        <label for="myGrades">Мои грейды</label>
       </div>
       <div [ngClass]="{checkbox: true}">
-        <input type="checkbox" in="myRoles">
+        <input type="checkbox" id="myRoles" [(ngModel)]="filters.myRole" name="myRole">
         <label for="myRoles">Мои роли</label>
       </div>
-    </div>
+      <button [ngClass]="{btn: true}" (click)="filterNodes()">Применить</button>
+    </form>
   </app-navigation>
 </div>

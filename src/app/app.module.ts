@@ -12,6 +12,8 @@ import { SigninComponent } from './components/signin/signin.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NavigationComponent } from './components/navigation/navigation.component';
 import {MatIconModule} from '@angular/material/icon';
+import { FiltersComponent } from './components/filters/filters.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -21,18 +23,20 @@ import {MatIconModule} from '@angular/material/icon';
     ProfileComponent,
     CardComponent,
     SigninComponent,
-    NavigationComponent
+    NavigationComponent,
+    FiltersComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
-    }),
-    AuthConfigModule,
-    BrowserAnimationsModule,
-    MatIconModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts')
+        }),
+        AuthConfigModule,
+        BrowserAnimationsModule,
+        MatIconModule,
+        FormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
