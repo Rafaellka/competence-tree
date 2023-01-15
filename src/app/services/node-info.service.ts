@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
-import {IDuty, IRequest, ISkill} from "../../interfaces";
+import {IDuty, ISkill, IStandardItem} from "../../interfaces";
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +24,7 @@ export class NodeInfoService {
     }
 
     getDetailedSkill(skillId: string): Observable<ISkill[]> {
-        return this.http.get<{ id: number, title: string }[]>(`https://localhost:8000/api/skills/${skillId}/sub-skills`)
+        return this.http.get<IStandardItem[]>(`https://localhost:8000/api/skills/${skillId}/sub-skills`)
             .pipe(
                 map(skills => skills
                     .map(skill => ({

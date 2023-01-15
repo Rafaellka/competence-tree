@@ -7,8 +7,9 @@ import {AuthGuard} from "./guards/auth.guard";
 import {AdminGraphComponent} from "./components/admin-graph/admin-graph.component";
 import {AdminGuard} from "./guards/admin.guard";
 import {UserGuard} from "./guards/user.guard";
+import {SearchComponent} from "./components/search/search.component";
 
-const routes: Routes = [
+const appRoutes: Routes = [
     {
         path: '',
         component: GraphComponent,
@@ -19,7 +20,7 @@ const routes: Routes = [
         component: SigninComponent
     },
     {
-        path: 'profile',
+        path: 'profile/:id',
         component: ProfileComponent,
         canActivate: [AuthGuard]
     },
@@ -27,11 +28,21 @@ const routes: Routes = [
         path: 'admin',
         component: AdminGraphComponent,
         canActivate: [AdminGuard]
+    },
+    {
+        path: 'user-search',
+        component: SearchComponent,
+        canActivate: [AdminGuard]
+    },
+    {
+        path: '**',
+        redirectTo: '/',
+        pathMatch: 'full'
     }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(appRoutes)],
     exports: [RouterModule]
 })
 export class AppRoutingModule {

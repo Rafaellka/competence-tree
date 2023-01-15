@@ -15,7 +15,7 @@ import {UserService} from "../../services/user.service";
 export class GraphComponent implements OnInit, OnDestroy {
     nodeInfo: INodeInfo;
     echartsInstance: ECharts;
-    visible = false;
+    sidebar = false;
     modal = false;
     options: EChartsOption;
     selectedNode: INode = {
@@ -96,8 +96,8 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
 
     showSidebar() {
-        this.visible = true;
-    };
+        this.sidebar = true;
+    }
 
     filterNodes(ev: IFilters) {
         const filters = Object.entries(ev)
@@ -177,7 +177,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                     break;
             }
         }
-    };
+    }
 
     setNewOptions() {
         this.echartsInstance.setOption({
@@ -187,6 +187,7 @@ export class GraphComponent implements OnInit, OnDestroy {
             }]
         });
     }
+
     ngOnDestroy() {
         this.nodesService.resetNodes();
     }

@@ -1,7 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {IFilters, NodeTypes} from "../../../interfaces";
-import {NodesService} from "../../services/nodes.service";
-import {LinksService} from "../../services/links.service";
+import {IFilters} from "../../../interfaces";
+import {UserService} from "../../services/user.service";
+import {Router} from "@angular/router";
+import {OidcSecurityService} from "angular-auth-oidc-client";
 
 @Component({
     selector: 'app-user-sidebar',
@@ -9,6 +10,7 @@ import {LinksService} from "../../services/links.service";
     styleUrls: ['./user-sidebar.component.scss']
 })
 export class UserSidebarComponent {
+    @Output() getFilters = new EventEmitter<IFilters>();
     filters: IFilters = {
         skill: true,
         mySkill: true,
@@ -18,7 +20,17 @@ export class UserSidebarComponent {
         myPosition: true
     };
 
-    @Output() getFilters = new EventEmitter<IFilters>();
+    constructor(private userService: UserService, private router: Router, private oidc: OidcSecurityService) {
+    }
+
+    goToMyProfile() {
+        const user = this.userService.getUser();
+        if (user) {
+            this.router.navigate(['profile', user.id]);
+        } else {
+            this.oidc.authorize();
+        }
+    }
 
     filterNodes() {
         this.getFilters.emit(this.filters);

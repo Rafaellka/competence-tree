@@ -39,8 +39,8 @@ export const userNodeStyles = {
         color: '#A1DE93'
     }
 }
-export interface IRequest {
-    items: { id: number, title: string }[],
+export interface IResponse<T> {
+    items: T[],
     pagination: {
         offset: number,
         count: number,
@@ -48,7 +48,7 @@ export interface IRequest {
     }
 }
 
-export interface IStandardResponse {
+export interface IStandardItem {
     id: number;
     title: string;
 }
@@ -84,12 +84,15 @@ export interface IRenderNode extends INode {
     y?: number;
 }
 
-export interface IUserData {
-    givenName: string;
-    middleName: string;
-    familyName: string;
+export interface IUser {
+    firstName: string;
+    lastName: string;
+    patronymic: string;
+    id: string;
+}
+
+export interface IUserInfo extends IUser {
     name: string;
-    userId: string;
     isAdmin: boolean;
 }
 

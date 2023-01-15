@@ -16,6 +16,7 @@ import {ModalComponent} from './components/modal/modal.component';
 import {UserSidebarComponent} from './components/user-sidebar/user-sidebar.component';
 import {AdminSidebarComponent} from './components/admin-sidebar/admin-sidebar.component';
 import {AdminGraphComponent} from './components/admin-graph/admin-graph.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import {AdminGraphComponent} from './components/admin-graph/admin-graph.componen
         ModalComponent,
         UserSidebarComponent,
         AdminSidebarComponent,
-        AdminGraphComponent
+        AdminGraphComponent,
+        SearchComponent
     ],
     imports: [
         BrowserModule,

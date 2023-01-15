@@ -6,9 +6,9 @@
 ></div>
 <div [ngClass]="{sidebar: true}">
     <button [ngClass]="{button: true}" (click)="showSidebar()">
-        <mat-icon [ngClass]="{whiteIcon: true}">menu</mat-icon>
+        <mat-icon [ngClass]="{icon: true}">menu</mat-icon>
     </button>
-    <app-sidebar [(visible)]="visible">
+    <app-sidebar [(visible)]="sidebar">
         <app-user-sidebar (getFilters)="filterNodes($event)"></app-user-sidebar>
     </app-sidebar>
     <app-modal [(modal)]="modal">

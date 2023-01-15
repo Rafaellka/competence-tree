@@ -1,6 +1,12 @@
+@import "src/variables";
+
 .main {
   height: 100vh;
-  background-color: #222835;
+  @if $isDarkMode {
+    background-color: $dark-background-color;
+  } @else {
+    background-color: $primary-background-color;
+  }
 }
 
 .sidebar {
@@ -10,6 +16,10 @@
   top: 0;
   right: 0;
   align-items: center;
+
+  @if $isDarkMode {
+    color: $white;
+  }
 
   .button {
     position: absolute;

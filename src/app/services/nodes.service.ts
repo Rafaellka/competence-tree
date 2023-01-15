@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {
     INode,
     IRenderNode,
-    IRequest,
-    IStandardResponse,
+    IResponse,
+    IStandardItem,
     nodeStyles,
     NodeTypes, userNodeStyles
 } from "../../interfaces";
@@ -33,7 +33,7 @@ export class NodesService {
     }
 
     private getNodesOfType(url: string, type: NodeTypes): Observable<IRenderNode[]> {
-        return this.http.get<IRequest>(url)
+        return this.http.get<IResponse<IStandardItem>>(url)
             .pipe(
                 map((res) => res.items
                     .map(item => ({
@@ -50,7 +50,7 @@ export class NodesService {
     }
 
     private getEntityByGrade(gradeId: number, type: NodeTypes): Observable<IRenderNode[]> {
-        return this.http.get<IStandardResponse[]>(this.URL + `grades/${gradeId}/${type}s`)
+        return this.http.get<IStandardItem[]>(this.URL + `grades/${gradeId}/${type}s`)
             .pipe(
                 map(res => (res.map(entity => ({
                             id: type + ':' + entity.id,
@@ -87,7 +87,7 @@ export class NodesService {
     }
 
     getGradesByRole(roleId: string): Observable<IRenderNode[]> {
-        return this.http.get<IStandardResponse[]>(this.URL + `roles/${roleId}/grades`)
+        return this.http.get<IStandardItem[]>(this.URL + `roles/${roleId}/grades`)
             .pipe(
                 map(res => (res.map(grade => ({
                             id: 'grade:' + grade.id,

@@ -1,1 +1,9 @@
+@import "src/variables";
 
+.main {
+  @if $isDarkMode {
+    background-color: $dark-background-color;
+  } @else {
+    background-color: $primary-background-color;
+  }
+}

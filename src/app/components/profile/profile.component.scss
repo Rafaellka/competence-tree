@@ -1,14 +1,19 @@
+@import "src/variables";
+
 .containerUp {
   padding: 25px 40px 25px 70px;
   display: flex;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid gray;
+  height: 20vh;
+  box-sizing: border-box;
   max-width: 4800px;
   margin: 0 auto;
-  background: #F6F8F9;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-
-  .profile {
-    display: flex;
+  box-shadow: 0 0 15px gray;
+  @if $isDarkMode {
+    background-color: $dark-background-color;
+    color: $white;
+  } @else {
+    background-color: $primary-background-color;
   }
 
   .wrapperImg {
@@ -25,7 +30,6 @@
     margin-left: 40px;
     font-size: 20px;
     text-decoration: underline;
-    text-decoration-color: #2CA2FD;
   }
 
   .btn {
@@ -36,6 +40,7 @@
 .containerDown {
   max-width: 4800px;
   margin: 0 auto;
+  height: 80vh;
 
   .projects {
     padding: 70px 80px;
@@ -52,6 +57,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: 0.1s linear;
 
       .plus {
         border: 2px solid #878787;
@@ -61,9 +67,17 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: 0.1s linear;
+      }
 
-        &:hover {
-          cursor: pointer;
+      &:hover {
+        transition: 0.1s linear;
+        box-shadow: 0 0 15px gray;
+        cursor: pointer;
+
+        .plus {
+          transition: 0.1s linear;
+          box-shadow: 0 0 7px gray;
         }
       }
     }
@@ -102,8 +116,7 @@
 
   &:hover {
     cursor: pointer;
-    font-size: 20px;
     transition: 0.1s linear;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px gray;
   }
 }

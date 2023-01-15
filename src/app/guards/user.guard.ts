@@ -12,7 +12,8 @@ export class UserGuard implements CanActivate {
 
     canActivate(
         route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        state: RouterStateSnapshot
+    ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         const user = this.userService.getUser();
         const isUser = user ? !user.isAdmin : true;
         if (!isUser) {

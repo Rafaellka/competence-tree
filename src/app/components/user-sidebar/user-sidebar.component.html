@@ -1,6 +1,6 @@
 <div [ngClass]="{container: true}">
     <div [ngClass]="{avatar: true}"></div>
-    <a [ngClass]="{profile: true}" routerLink="/profile">Профиль</a>
+    <div [ngClass]="{profile: true}" (click)="goToMyProfile()">Профиль</div>
     <div>
         <div [ngClass]="{checkbox: true}">
             <input type="checkbox" id="skills" [(ngModel)]="filters.skill" name="skill">

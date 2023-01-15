@@ -3,14 +3,15 @@
         <img [ngClass]="{avatar: true}" src="https://polymus.ru/media/cache/dc/70/dc70224031a4ad5d8f0a5ced566cd87a.jpg"
              alt="">
     </div>
-    <p [ngClass]="{name: true}">{{userData ? userData.name : 'Войдите в аккаунт'}}</p>
+    <p [ngClass]="{name: true}" *ngIf="user">{{user.firstName}} {{user.lastName}}</p>
     <button [ngClass]="{btn: true}" routerLink="">Назад</button>
+    <button [ngClass]="{btn: true}" (click)="logout()">Выйти</button>
 </div>
 <div [ngClass]="{containerDown: true}">
     <div [ngClass]="{projects: true}">
         <app-card *ngFor="let project of projects" [info]="project"></app-card>
-        <div [ngClass]="{project: true}">
-            <div [ngClass]="{plus: true}" (click)="showModal()">
+        <div [ngClass]="{project: true}" (click)="showModal()">
+            <div [ngClass]="{plus: true}">
                 <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <line x1="36" y1="4.37114e-08" x2="36" y2="70" stroke="#878787" stroke-width="2"/>
                     <line x1="70" y1="36" y2="36" stroke="#878787" stroke-width="2"/>

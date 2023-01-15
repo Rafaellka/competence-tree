@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {INode, ISkill, IUserData} from "../../interfaces";
+import {INode, ISkill, IUserInfo} from "../../interfaces";
 import {HttpClient} from "@angular/common/http";
 import {OidcSecurityService} from "angular-auth-oidc-client";
 import {concatMap, of} from "rxjs";
@@ -8,7 +8,7 @@ import {concatMap, of} from "rxjs";
     providedIn: 'root'
 })
 export class UserService {
-    private user: IUserData;
+    private userInfo: IUserInfo;
     private userSkills: ISkill[];
     private URL = `https://localhost:8000/api/`;
 
@@ -18,7 +18,7 @@ export class UserService {
     addSkill(skill: INode) {
         return this.oidc.getAccessToken().pipe(
             concatMap(token =>
-                this.http.put(this.URL + `employees/${this.user.userId}/skills/add/${skill.id.split(':')[1]}`, {}, {
+                this.http.put(this.URL + `employees/${this.userInfo.id}/skills/add/${skill.id.split(':')[1]}`, {}, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
@@ -28,7 +28,7 @@ export class UserService {
     }
 
     loadUserSkills() {
-        const userId = this.user.userId;
+        const userId = this.userInfo.id;
         this.oidc.getAccessToken().pipe(
             concatMap(token => this.http.get<{
                     skill: {
@@ -67,18 +67,22 @@ export class UserService {
                 console.log(data);
                 return;
             }
-            this.user = {
-                familyName: data.family_name,
-                givenName: data.given_name,
-                middleName: data.middle_name,
+            this.userInfo = {
+                lastName: data.family_name,
+                firstName: data.given_name,
+                patronymic: data.middle_name,
                 name: data.name,
-                userId: data.sub,
+                id: data.sub,
                 isAdmin: !!data.role
             }
         })
     }
 
+    getUserId() {
+        return this.userInfo.id;
+    }
+
     getUser() {
-        return this.user;
+        return this.userInfo;
     }
 }

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {OidcSecurityService} from 'angular-auth-oidc-client';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {IProject, IUserData} from "../../../interfaces";
-import {UserService} from "../../services/user.service";
+import {IProject, IUser} from "../../../interfaces";
+import {ActivatedRoute, Router} from "@angular/router";
+import {SearchUserService} from "../../services/search-user.service";
+import {OidcSecurityService} from "angular-auth-oidc-client";
 
 @Component({
     selector: 'app-profile',
@@ -10,8 +10,9 @@ import {UserService} from "../../services/user.service";
     styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+    id: string;
     modal: boolean;
-    userData: IUserData;
+    user: IUser;
     projects: IProject[] = [];
     projectForm: IProject = {
         name: '',
@@ -20,7 +21,11 @@ export class ProfileComponent implements OnInit {
         grade: ''
     };
 
-    constructor(private userService: UserService) {
+    constructor(private activateRoute: ActivatedRoute,
+                private searchUser: SearchUserService,
+                private oidc: OidcSecurityService,
+                private router: Router) {
+        this.id = activateRoute.snapshot.params['id'];
     }
 
     showModal() {
@@ -39,6 +44,12 @@ export class ProfileComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.userData = this.userService.getUser();
+        this.searchUser.getUserById(this.id).subscribe(user => {
+            this.user = {...user};
+        })
+    }
+
+    logout() {
+
     }
 }
