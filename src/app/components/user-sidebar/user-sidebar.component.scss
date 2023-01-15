@@ -4,6 +4,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 20px;
+  .avatar {
+    width: 90px;
+    height: 90px;
+    background-color: #868A95;
+    margin-bottom: 15px;
+  }
 
   .profile {
     margin-bottom: 50px;
@@ -17,13 +24,6 @@
     &:hover {
       cursor: pointer;
     }
-  }
-
-  .avatar {
-    width: 90px;
-    height: 90px;
-    background-color: #868A95;
-    margin-bottom: 15px;
   }
 
   .checkbox {
@@ -46,19 +46,17 @@
   }
 
   .btn {
-    padding: 10px 40px;
+    padding: 10px 0;
     background-color: $primary-button-color;
     color: $white;
     border-radius: 5px;
     font-size: 18px;
-    align-self: center;
     transition: 0.1s linear;
-
+    align-self: stretch;
     &:hover {
       cursor: pointer;
-      font-size: 19px;
       transition: 0.1s linear;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 10px grey;
     }
   }
 }

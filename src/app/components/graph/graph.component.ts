@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ECharts, EChartsOption} from "echarts";
 import {LinksService} from 'src/app/services/links.service';
 import {NodesService} from "../../services/nodes.service";
-import {IFilters, NodeTypes, INodeInfo, INode} from "../../../interfaces";
+import {IFilters, NodeTypes, INodeInfo, INode, IUser} from "../../../interfaces";
 import {forkJoin} from "rxjs";
 import {NodeInfoService} from "../../services/node-info.service";
 import {UserService} from "../../services/user.service";
@@ -13,6 +13,7 @@ import {UserService} from "../../services/user.service";
     styleUrls: ['./graph.component.scss']
 })
 export class GraphComponent implements OnInit, OnDestroy {
+    user: IUser;
     nodeInfo: INodeInfo;
     echartsInstance: ECharts;
     sidebar = false;
@@ -29,13 +30,12 @@ export class GraphComponent implements OnInit, OnDestroy {
         private nodesService: NodesService,
         private linksService: LinksService,
         private nodeInfoService: NodeInfoService,
-        private userService: UserService
+        public userService: UserService
     ) {
     }
 
     ngOnInit() {
         if (this.userService.getUser()) {
-            console.log(this.userService.getUser())
             this.userService.loadUserSkills();
         }
         forkJoin([

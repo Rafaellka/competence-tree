@@ -22,7 +22,9 @@
                     <li *ngFor="let detail of nodeInfo.details">{{detail.name}}</li>
                 </ol>
             </div>
-            <button [ngClass]="{saveButton: true}" (click)="markSkill()">Отметить изученным</button>
+            <button [ngClass]="{saveButton: true}"
+                    *ngIf="userService.getUser()"
+                    (click)="markSkill()">Отметить изученным</button>
         </div>
         <div *ngIf="nodeInfo && nodeInfo.type === 'position'" [ngClass]="{modal: true}">
             <div [ngClass]="{title: true}">
