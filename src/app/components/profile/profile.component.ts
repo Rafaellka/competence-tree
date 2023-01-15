@@ -1,37 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {OidcSecurityService} from 'angular-auth-oidc-client';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {IProject, IUserData} from "../../../interfaces";
+import {UserService} from "../../services/user.service";
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+    modal: boolean;
+    userData: IUserData;
+    projects: IProject[] = [];
+    projectForm: IProject = {
+        name: '',
+        role: '',
+        position: '',
+        grade: ''
+    };
 
-  constructor(protected readonly oidcSecurityService: OidcSecurityService, protected readonly httpClient: HttpClient) { }
-
-  login() {
-    this.oidcSecurityService.authorize();
-  }
-
-  async query() {
-    const token = await this.oidcSecurityService.getAccessToken().toPromise();
-    const httpOptions = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + token,
-      })
+    constructor(private userService: UserService) {
     }
 
-    const res = await this.httpClient.post('https://localhost:8000/api/roles', {
-      title: "АНАЛИТИК"
-    }, httpOptions).toPromise().then(console.log).catch(console.warn);
-  }
+    showModal() {
+        this.modal = true;
+    }
 
-  refreshToken() {
-    this.oidcSecurityService.forceRefreshSession().subscribe(console.log);
-  }
+    saveProject() {
+        this.projects.push(this.projectForm);
+        this.projectForm = {
+            name: '',
+            role: '',
+            position: '',
+            grade: ''
+        };
+        this.modal = false;
+    }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+        this.userData = this.userService.getUser();
+    }
 }

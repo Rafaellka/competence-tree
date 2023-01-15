@@ -1,66 +1,87 @@
 import {Injectable} from '@angular/core';
-import {ILink, IRenderNode, ISkill} from 'src/interfaces';
+import {ILink, INode, IRenderNode, NodeTypes} from 'src/interfaces';
 import {HttpClient} from "@angular/common/http";
 import {NodesService} from "./nodes.service";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class LinksService {
-  links: ILink[] = [];
+    private links: ILink[] = [];
 
-  constructor(private http: HttpClient, private nodeService: NodesService) {
-  }
+    constructor(private http: HttpClient, private nodeService: NodesService) {
+    }
 
-  bindRolesWithMainNode() {
-    const roles = this.nodeService.getNodesBySomeType('role');
-    const newLinks: ILink[] = roles.map(role => ({
-      source: 'MainNode',
-      target: role.id
-    }));
+    bindRolesWithMainNode() {
+        const roles = this.nodeService.getNodesBySomeType('role');
+        const newLinks: ILink[] = roles.map(role => ({
+            source: 'MainNode',
+            target: role.id
+        }));
 
-    this.addLinks(newLinks);
-  }
+        this.addLinks(newLinks);
+    }
 
-  bindGradesByRole(roleId: string) {
-    let prev: IRenderNode;
-    const grades = this.nodeService.getNodesBySomeType('grade');
-    const links: ILink[] = grades.map((current) => {
-      const link = {
-        source: '',
-        target: current.id
-      };
+    bindGradesByRole(roleId: string) {
+        let prev: INode;
+        const id = 'role:' + roleId;
+        const grades = this.nodeService.getNodesBySomeType('grade')
+            .map(grade => grade as INode)
+            .filter(grade => grade.parentId === id);
+        const links: ILink[] = grades.map((current) => {
+            const link = {
+                source: '',
+                target: current.id
+            };
 
-      if (prev) {
-        link.source = prev.id;
-      } else {
-        link.source = roleId;
-      }
+            if (prev) {
+                link.source = prev.id;
+            } else {
+                link.source = id;
+            }
 
-      prev = current;
-      return link;
-    });
-    this.addLinks(links);
-  }
+            prev = current;
+            return link;
+        });
+        this.addLinks(links);
+    }
 
-  bindSkillsWithGrade(gradeId: string) {
-    let prev: IRenderNode;
-    const skills = this.nodeService.getGraphNodes()
-      .filter(node => node.type === 'skill')
-      .map(skill => skill as ISkill)
-      .filter(skill => skill.gradeId === gradeId);
-    const links: ILink[] = skills.map((skill, index) => ({
-      source: gradeId,
-      target: skill.id
-    }));
-    this.addLinks(links);
-  }
+    bindSkillsWithGrade(gradeId: number) {
+        this.bindEntityWithGrade(gradeId, 'skill');
+    }
 
-  addLinks(newLinks: ILink[]) {
-    this.links = [...this.links, ...newLinks]
-  }
+    bindPositionsWithGrade(gradeId: number) {
+        this.bindEntityWithGrade(gradeId, 'position');
+    }
 
-  getLinks() {
-    return this.links;
-  }
+    bindEntityWithGrade(gradeId: number, type: NodeTypes) {
+        const id = 'grade:' + gradeId;
+        const entities = this.nodeService.getGraphNodes()
+            .filter(node => node.type === type)
+            .map(entity => entity as INode)
+            .filter(entity => entity.parentId === id);
+        const links: ILink[] = entities.map((entity, index) => ({
+            source: 'grade:' + gradeId,
+            target: entity.id
+        }));
+        this.addLinks(links);
+    }
+
+    bindNewNodeWithParent(parentId: string | null, newNode: IRenderNode) {
+        if (!parentId) {
+            parentId = 'MainNode'
+        }
+        this.addLinks([{
+            source: parentId,
+            target: newNode.id
+        }])
+    }
+
+    addLinks(newLinks: ILink[]) {
+        this.links = [...this.links, ...newLinks]
+    }
+
+    getLinks() {
+        return this.links;
+    }
 }

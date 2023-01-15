@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .profile {
+    margin-bottom: 50px;
+    font-size: 22px;
+    color: white;
+  }
+
+  .avatar {
+    width: 90px;
+    height: 90px;
+    background-color: #868A95;
+    margin-bottom: 15px;
+  }
+
+  .checkbox {
+    margin-bottom: 25px;
+
+    label {
+      margin-left: 10px;
+      font-size: 18px;
+    }
+
+    input {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  .btn {
+    padding: 10px 40px;
+    background-color: #2E62D9;
+    color: #EDF5E1;
+    border-radius: 5px;
+    font-size: 18px;
+    align-self: center;
+    transition: 0.1s linear;
+
+    &:hover {
+      cursor: pointer;
+      font-size: 19px;
+      transition: 0.1s linear;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+  }
+}

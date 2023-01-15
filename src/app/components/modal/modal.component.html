@@ -1,5 +1,5 @@
 <div [ngClass]="{modal: true, active: this.modal}" (mousedown)="hideModal()">
   <div [ngClass]="{content: true}" (mousedown)="innerClick($event)">
-    <p>{{this.title}}</p>
+    <ng-content></ng-content>
   </div>
 </div>

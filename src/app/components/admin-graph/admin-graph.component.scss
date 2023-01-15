@@ -1,0 +1,20 @@
+.main {
+  height: 100vh;
+  background-color: #222835;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 0;
+  align-items: center;
+
+  .button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    transform: scale(1.2);
+  }
+}

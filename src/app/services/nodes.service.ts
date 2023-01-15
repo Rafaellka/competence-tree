@@ -1,102 +1,234 @@
 import {Injectable} from '@angular/core';
-import {ILink, INode, IRenderNode, IRequest, ISkill, IStandartResponse, nodeStyles, NodeTypes} from "../../interfaces";
-import {map, Observable} from "rxjs";
+import {
+    INode,
+    IRenderNode,
+    IRequest,
+    IStandardResponse,
+    nodeStyles,
+    NodeTypes, userNodeStyles
+} from "../../interfaces";
+import {concatMap, forkJoin, from, map, Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {UserService} from "./user.service";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class NodesService {
-  graphNodes: IRenderNode[] = [{
-    name: 'Artsofte',
-    id: 'MainNode',
-    type: 'main',
-    symbolSize: 26,
-    itemStyle: {
-      color: '#2E62D9'
-    },
-  }];
+    private URL = `https://localhost:8000/api/`;
+    private graphNodes: IRenderNode[] = [{
+        name: 'Artsofte',
+        id: 'MainNode',
+        type: 'main',
+        symbolSize: 26,
+        itemStyle: {
+            color: '#2E62D9'
+        },
+        parentId: null,
+        x: 0,
+        y: 0
+    }];
 
-  constructor(private http: HttpClient) {
-  }
+    constructor(private http: HttpClient, private userService: UserService) {
+    }
 
-  private getNodesOfType(url: string, type: NodeTypes): Observable<IRenderNode[]> {
-    return this.http.get<IRequest>(url)
-      .pipe(
-        map((res) => res.items
-          .map(item => ({
-            name: item.title,
-            type: type,
-            id: type + ':' + item.id
-          }) as INode)
-          .map((node) => ({
-            ...node,
-            ...nodeStyles[node.type]
-          }))
+    private getNodesOfType(url: string, type: NodeTypes): Observable<IRenderNode[]> {
+        return this.http.get<IRequest>(url)
+            .pipe(
+                map((res) => res.items
+                    .map(item => ({
+                        name: item.title,
+                        type: type,
+                        id: type + ':' + item.id
+                    }) as INode)
+                    .map((node) => ({
+                        ...node,
+                        ...nodeStyles[node.type]
+                    }) as IRenderNode)
+                )
+            )
+    }
+
+    private getEntityByGrade(gradeId: number, type: NodeTypes): Observable<IRenderNode[]> {
+        return this.http.get<IStandardResponse[]>(this.URL + `grades/${gradeId}/${type}s`)
+            .pipe(
+                map(res => (res.map(entity => ({
+                            id: type + ':' + entity.id,
+                            type: type,
+                            name: entity.title,
+                            parentId: 'grade:' + gradeId
+                        }) as INode)
+                            .map(entity => {
+                                const userNodes = this.userService.getUserSkills();
+                                if (userNodes && userNodes.find(userNode => userNode.id === entity.id)) {
+                                    return {...entity, ...userNodeStyles}
+                                }
+                                return {...entity, ...nodeStyles[entity.type]}
+                            })
+                    )
+                )
+            );
+    }
+
+    getAllRoles(): Observable<IRenderNode[]> {
+        return this.getNodesOfType(this.URL + 'roles', 'role');
+    }
+
+    getSkillsByGrade(gradeId: number): Observable<IRenderNode[]> {
+        return this.getEntityByGrade(gradeId, 'skill');
+    }
+
+    getPositionsByGrade(gradeId: number): Observable<IRenderNode[]> {
+        return this.getEntityByGrade(gradeId, 'position');
+    }
+
+    getGraphNodes(): IRenderNode[] {
+        return this.graphNodes;
+    }
+
+    getGradesByRole(roleId: string): Observable<IRenderNode[]> {
+        return this.http.get<IStandardResponse[]>(this.URL + `roles/${roleId}/grades`)
+            .pipe(
+                map(res => (res.map(grade => ({
+                            id: 'grade:' + grade.id,
+                            type: 'grade',
+                            name: grade.title,
+                            parentId: 'role:' + roleId
+                        }) as INode)
+                            .map((grade) => ({
+                                ...grade, ...nodeStyles[grade.type]
+                            }) as IRenderNode)
+                    )
+                )
+            )
+    }
+
+    addNewNodes(newNodes: IRenderNode[]): void {
+        this.graphNodes = [...this.graphNodes, ...newNodes];
+    }
+
+    getFilteredNodes(filters: NodeTypes[]): IRenderNode[] {
+        filters = [...filters, 'main', 'role', 'grade'];
+        return this.graphNodes.filter(node => filters.includes(node.type));
+    }
+
+    getNodesBySomeType(type: NodeTypes): IRenderNode[] {
+        return this.graphNodes.filter(node => node.type === type);
+    }
+
+    getRolesWithGrades() {
+        return this.getAllRoles().pipe(
+            concatMap((roles) => forkJoin([
+                    ...roles.map(role => this.getGradesByRole(role.id.split(':')[1]))
+                ]).pipe(
+                    concatMap((grades) => {
+                        return of([roles], grades);
+                    })
+                )
+            )
         )
-      )
-  }
+    }
 
-  getRoles(): Observable<IRenderNode[]> {
-    return this.getNodesOfType('https://localhost:8000/api/roles', 'role');
-  }
+    saveNewRole(name: string): Observable<number> {
+        return this.http.post<number>(this.URL + 'roles', {
+            title: name
+        })
+    }
 
-  getGrades(): Observable<IRenderNode[]> {
-    return this.getNodesOfType('https://localhost:8000/api/grades', 'grade');
-  }
+    saveNewGrade(name: string, roleId: string, prevGradeId?: string) {
+        const body: any = {
+            title: name
+        }
+        if (prevGradeId) {
+            body['prevGradeId'] = Number(prevGradeId.split(':')[1]);
+        }
+        return this.http.post(this.URL + `roles/${roleId.split(':')[1]}/grades`, body);
+    }
 
-  getSkillsByGrade(gradeId: number): Observable<ISkill[]> {
-    return this.http.get<IStandartResponse[]>(`https://localhost:8000/api/grades/${gradeId}/skills`)
-      .pipe(
-        map(res => (res.map(skill => ({
-              id: 'skill:' + skill.id,
-              type: 'skill',
-              name: skill.title,
-            }) as INode)
-              .map(skill => ({...skill, ...nodeStyles[skill.type], gradeId: 'grade:' + gradeId}) as ISkill)
-          )
-        )
-      );
-  }
+    saveNewPosition(name: string, parent: INode) {
+        return this.http.post(this.URL + 'positions', {
+            title: name
+        }).pipe(
+            concatMap(id => this.createGradePosition(Number(id), parent)
+                .pipe(
+                    concatMap(() => of(id))
+                )
+            )
+        );
+    }
 
-  getSkills() {
-    return this.getNodesOfType('https://localhost:8000/api/skills', 'skill');
-  }
+    createGradePosition(positionId: number, parent: INode) {
+        const parentId = parent.id.split(':')[1];
+        return this.http.put(this.URL + `grades/${parentId}/positions/add/${positionId}`, {
+            gradeId: parentId,
+            positionId
+        })
+    }
 
-  getGraphNodes() {
-    return this.graphNodes;
-  }
+    saveNewSkill(name: string, parent: INode) {
+        return this.http.post(this.URL + 'skills', {
+            title: name,
+            type: 'Theoretical'
+        }).pipe(
+            concatMap(id => this.createGradeSkill(Number(id), parent)
+                .pipe(
+                    concatMap(() => of(id))
+                )
+            )
+        );
+    }
 
-  getGradeByRole(roleId: number): Observable<IRenderNode[]> {
-    return this.http.get<IStandartResponse[]>(`https://localhost:8000/api/roles/${roleId}/grades`)
-      .pipe(
-        map(res => (res.map(grade => ({
-              id: 'grade:' + grade.id,
-              type: 'grade',
-              name: grade.title
-            }) as INode)
-              .map((grade) => ({...grade, ...nodeStyles[grade.type]}) as IRenderNode)
-          )
-        )
-      )
-  }
+    changeSkill(skillId: string) {
+        const index = this.graphNodes.findIndex(node => node.id === skillId);
+        this.graphNodes[index] = {...this.graphNodes[index], ...userNodeStyles};
+    }
 
-  addNewNodes(newNodes: IRenderNode[]) {
-    this.graphNodes = [...this.graphNodes, ...newNodes];
-  }
+    createGradeSkill(skillId: number, parent: INode) {
+        const parentId = parent.id.split(':')[1];
+        return this.http.put(this.URL + `grades/${parentId}/skills/add/${skillId}`, {
+            gradeId: parentId,
+            skillId
+        })
+    }
 
-  getFilteredNodes(filters: NodeTypes[]) {
-    filters.push('main');
-    filters.push('role');
-    filters.push('grade');
-    return this.graphNodes.filter(node => filters.includes(node.type));
-  };
+    deleteNode(deletedNode: INode) {
+        let parentNode = this.graphNodes.find(node => node.id === deletedNode.parentId) || this.graphNodes[0];
+        if (deletedNode.type === 'role' || deletedNode.type === 'position') {
+            const id = deletedNode.id.split(':')[1];
+            return this.http.delete(this.URL + `${deletedNode.type}s/${id}`);
+        } else {
+            const parentId = parentNode.id.split(':')[1];
+            const childId = deletedNode.id.split(':')[1];
+            return this.http.delete(this.URL + `${parentNode.type}s/${parentId}/${deletedNode.type}s/${childId}`);
+        }
+    }
 
-  getNodesBySomeType(type: NodeTypes) {
-    return this.graphNodes.filter(node => node.type === type);
-  }
+    removeNode(id: string) {
+        this.graphNodes = this.graphNodes.filter((node) => node.id !== id);
+    }
 
-  convertToRenderNode(type: NodeTypes) {
+    setIsParentNode(id: string) {
+        const node = this.graphNodes.find(value => value.id === id);
+        if (node) {
+            node.isParentNode = true;
+        }
+    }
 
-  }
+    checkIsParent(id: string) {
+        const node = this.graphNodes.find(value => value.id === id);
+        return !!node?.isParentNode;
+    }
+
+    resetNodes() {
+        this.graphNodes = [{
+            name: 'Artsofte',
+            id: 'MainNode',
+            type: 'main',
+            symbolSize: 26,
+            itemStyle: {
+                color: '#2E62D9'
+            },
+            parentId: null
+        }];
+    }
 }

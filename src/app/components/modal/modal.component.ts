@@ -7,7 +7,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ModalComponent {
   @Input() modal: boolean;
-  @Input() title: string;
   @Output() modalChange = new EventEmitter<boolean>();
 
   hideModal() {

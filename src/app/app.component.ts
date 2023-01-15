@@ -1,11 +1,19 @@
-import { Component } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
+import {Component, OnInit} from '@angular/core';
+import {OidcSecurityService} from "angular-auth-oidc-client";
+import {UserService} from "./services/user.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'competence-tree';
+export class AppComponent implements OnInit{
+    title = 'competence-tree';
+
+    constructor(private userService: UserService) {
+    }
+
+    ngOnInit() {
+        this.userService.setUserData();
+    }
 }

@@ -1,0 +1,28 @@
+<div [ngClass]="{container: true}">
+    <div [ngClass]="{name: true}">
+        {{selectedNode ? selectedNode.name : ''}}
+    </div>
+    <div *ngIf="!isCreateNewNode" [ngClass]="{content: true}">
+        <button [ngClass]="{button: true}" *ngIf="selectedNode && selectedNode.type === 'grade'"
+            (click)="getSkillsAndPositions()">
+            Показать скиллы и должности
+        </button>
+        <button [ngClass]="{button: true}" (click)="isCreateNewNode = true">Создать новую ноду</button>
+        <button [ngClass]="{button: true, delete: true}" *ngIf="selectedNode && selectedNode.type !== 'main'"
+            (click)="delete()">Удалить</button>
+    </div>
+    <div *ngIf="isCreateNewNode" [ngClass]="{content: true}">
+        <div [ngClass]="{title: true}">Выберите тип</div>
+        <select [(ngModel)]="newNodeModel.type" [ngClass]="{form: true}">
+            <option [value]="'role'" *ngIf="selectedNode.type === 'main'">Роль</option>
+            <option [value]="'grade'" *ngIf="selectedNode.type === 'role' || selectedNode.type === 'grade'">Грейд
+            </option>
+            <option [value]="'skill'" *ngIf="selectedNode.type === 'grade'">Скилл</option>
+            <option [value]="'position'" *ngIf="selectedNode.type === 'grade'">Должность</option>
+        </select>
+        <div [ngClass]="{title: true}">Введите название</div>
+        <input [(ngModel)]="newNodeModel.name" [ngClass]="{form:true}" />
+        <button [ngClass]="{button: true}" (click)="saveNode()">Добавить</button>
+        <button [ngClass]="{button: true}" (click)="isCreateNewNode = false">Отмена</button>
+    </div>
+</div>

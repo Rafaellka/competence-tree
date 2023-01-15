@@ -1,6 +1,6 @@
 <div [ngClass]="{project: true}">
-  <p [ngClass]="{title: true}">Название проекта</p>
-  <p [ngClass]="{info: true}">Роль: название роли</p>
-  <p [ngClass]="{info: true}">Должность: название должности</p>
-  <p [ngClass]="{info: true}">Грейд: название грейда</p>
+  <p [ngClass]="{title: true}">{{info.name}}</p>
+  <p>Роль: {{info.role}}</p>
+  <p>Должность: {{info.position}}</p>
+  <p>Грейд: {{info.grade}}</p>
 </div>
