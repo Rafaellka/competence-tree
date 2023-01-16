@@ -23,9 +23,14 @@ export class ProfileComponent implements OnInit {
 
     constructor(private activateRoute: ActivatedRoute,
                 private searchUser: SearchUserService,
-                private oidc: OidcSecurityService,
-                private router: Router) {
+                private oidc: OidcSecurityService) {
         this.id = activateRoute.snapshot.params['id'];
+    }
+
+    ngOnInit(): void {
+        this.searchUser.getUserById(this.id).subscribe(user => {
+            this.user = {...user};
+        })
     }
 
     showModal() {
@@ -43,13 +48,7 @@ export class ProfileComponent implements OnInit {
         this.modal = false;
     }
 
-    ngOnInit(): void {
-        this.searchUser.getUserById(this.id).subscribe(user => {
-            this.user = {...user};
-        })
-    }
-
     logout() {
-
+        this.oidc.logoff().subscribe(console.log);
     }
 }

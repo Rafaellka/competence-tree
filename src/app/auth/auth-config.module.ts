@@ -6,6 +6,7 @@ import { AuthModule, LogLevel } from 'angular-auth-oidc-client';
         config: {
             authority: 'https://localhost:5001',
             redirectUrl: window.location.origin + '/signin-oidc',
+            postLogoutRedirectUri: window.location.origin + '',
             clientId: 'skill-system-web',
             scope: 'openid profile roles SkillSystem.WebApi',
             responseType: 'code',

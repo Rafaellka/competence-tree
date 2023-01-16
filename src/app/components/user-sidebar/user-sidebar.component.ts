@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {IFilters} from "../../../interfaces";
+import {IFilters, IUser} from "../../../interfaces";
 import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
 import {OidcSecurityService} from "angular-auth-oidc-client";
@@ -9,8 +9,9 @@ import {OidcSecurityService} from "angular-auth-oidc-client";
     templateUrl: './user-sidebar.component.html',
     styleUrls: ['./user-sidebar.component.scss']
 })
-export class UserSidebarComponent {
+export class UserSidebarComponent implements OnInit {
     @Output() getFilters = new EventEmitter<IFilters>();
+    user: IUser;
     filters: IFilters = {
         skill: true,
         mySkill: true,
@@ -23,10 +24,13 @@ export class UserSidebarComponent {
     constructor(private userService: UserService, private router: Router, private oidc: OidcSecurityService) {
     }
 
+    ngOnInit() {
+        this.user = this.userService.getUser();
+    }
+
     goToMyProfile() {
-        const user = this.userService.getUser();
-        if (user) {
-            this.router.navigate(['profile', user.id]);
+        if (this.user) {
+            this.router.navigate(['profile', this.user.id]);
         } else {
             this.oidc.authorize();
         }

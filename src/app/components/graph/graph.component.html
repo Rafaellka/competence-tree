@@ -1,4 +1,5 @@
 <div echarts
+     [autoResize]="true"
      [options]="options"
      [ngClass]="{main: true}"
      (chartClick)="onChartEvent($event)"
@@ -23,8 +24,11 @@
                 </ol>
             </div>
             <button [ngClass]="{saveButton: true}"
-                    *ngIf="userService.getUser()"
-                    (click)="markSkill()">Отметить изученным</button>
+                    *ngIf="user"
+                    (click)="markSkill()"
+            >
+                Отметить изученным
+            </button>
         </div>
         <div *ngIf="nodeInfo && nodeInfo.type === 'position'" [ngClass]="{modal: true}">
             <div [ngClass]="{title: true}">

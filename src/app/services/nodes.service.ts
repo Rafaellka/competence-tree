@@ -132,6 +132,10 @@ export class NodesService {
     saveNewRole(name: string): Observable<number> {
         return this.http.post<number>(this.URL + 'roles', {
             title: name
+        }, {
+            headers: {
+                'Authorization': this.userService.getUser().token
+            }
         })
     }
 
@@ -142,12 +146,20 @@ export class NodesService {
         if (prevGradeId) {
             body['prevGradeId'] = Number(prevGradeId.split(':')[1]);
         }
-        return this.http.post(this.URL + `roles/${roleId.split(':')[1]}/grades`, body);
+        return this.http.post(this.URL + `roles/${roleId.split(':')[1]}/grades`, body, {
+            headers: {
+                'Authorization': this.userService.getUser().token
+            }
+        });
     }
 
     saveNewPosition(name: string, parent: INode) {
         return this.http.post(this.URL + 'positions', {
             title: name
+        }, {
+            headers: {
+                'Authorization': this.userService.getUser().token
+            }
         }).pipe(
             concatMap(id => this.createGradePosition(Number(id), parent)
                 .pipe(
@@ -169,6 +181,10 @@ export class NodesService {
         return this.http.post(this.URL + 'skills', {
             title: name,
             type: 'Theoretical'
+        }, {
+            headers: {
+                'Authorization': this.userService.getUser().token
+            }
         }).pipe(
             concatMap(id => this.createGradeSkill(Number(id), parent)
                 .pipe(

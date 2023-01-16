@@ -89,11 +89,12 @@ export interface IUser {
     lastName: string;
     patronymic: string;
     id: string;
+    isAdmin: boolean;
+    token: string;
 }
 
 export interface IUserInfo extends IUser {
     name: string;
-    isAdmin: boolean;
 }
 
 export interface IProject {

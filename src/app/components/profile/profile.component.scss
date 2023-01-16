@@ -1,83 +1,108 @@
 @import "src/variables";
 
-.containerUp {
-  padding: 25px 40px 25px 70px;
-  display: flex;
-  border-bottom: 1px solid gray;
-  height: 20vh;
-  box-sizing: border-box;
-  max-width: 4800px;
-  margin: 0 auto;
-  box-shadow: 0 0 15px gray;
-  @if $isDarkMode {
-    background-color: $dark-background-color;
-    color: $white;
-  } @else {
-    background-color: $primary-background-color;
-  }
+.main {
+  background-color: $dark-background-color;
 
-  .wrapperImg {
-    width: 140px;
-    height: 140px;
-  }
-
-  .avatar {
-    width: auto;
-    height: 200%;
-  }
-
-  .name {
-    margin-left: 40px;
-    font-size: 20px;
-    text-decoration: underline;
-  }
-
-  .btn {
-    margin-left: auto;
-  }
-}
-
-.containerDown {
-  max-width: 4800px;
-  margin: 0 auto;
-  height: 80vh;
-
-  .projects {
-    padding: 70px 80px;
+  .containerUp {
     display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 20vh;
+    padding: 20px;
+    border-bottom: 2px solid gray;
+    box-shadow: 0 0 15px gray;
 
-    .project {
-      box-sizing: border-box;
-      width: 360px;
-      height: 530px;
-      border: 2px solid #878787;
+    @if $isDarkMode {
+      background-color: $dark-background-color;
+      color: $white;
+    } @else {
+      background-color: $primary-background-color;
+    }
+
+    .avatarContainer {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.1s linear;
+      gap: 20px;
 
-      .plus {
+      .wrapperImg {
+        width: 140px;
+        height: 140px;
+
+        .avatar {
+          width: auto;
+          height: 100%;
+        }
+      }
+
+      .name {
+        font-size: 24px;
+        text-decoration: underline;
+      }
+    }
+
+    .buttonsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .btn {
+        padding: 10px 40px;
+        background-color: $primary-button-color;
+        color: $white;
+        border-radius: 5px;
+        font-size: 18px;
+        align-self: center;
+        transition: 0.1s linear;
+
+        &:hover {
+          cursor: pointer;
+          transition: 0.1s linear;
+          box-shadow: 0 0 10px gray;
+        }
+      }
+    }
+  }
+
+  .containerDown {
+    margin: 0 auto;
+    height: 80vh;
+
+    .projects {
+      padding: 70px 80px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+
+      .project {
+        box-sizing: border-box;
+        width: 360px;
+        height: 530px;
         border: 2px solid #878787;
-        border-radius: 50%;
-        width: 100px;
-        height: 100px;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: 0.1s linear;
-      }
-
-      &:hover {
-        transition: 0.1s linear;
-        box-shadow: 0 0 15px gray;
-        cursor: pointer;
 
         .plus {
+          border: 2px solid #878787;
+          border-radius: 50%;
+          width: 100px;
+          height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           transition: 0.1s linear;
-          box-shadow: 0 0 7px gray;
+        }
+
+        &:hover {
+          transition: 0.1s linear;
+          box-shadow: 0 0 15px gray;
+          cursor: pointer;
+
+          .plus {
+            transition: 0.1s linear;
+            box-shadow: 0 0 7px gray;
+          }
         }
       }
     }
@@ -103,20 +128,20 @@
     height: 10px;
     padding: 10px;
   }
-}
 
-.btn {
-  padding: 10px 39px;
-  background-color: #2E62D9;
-  color: #EDF5E1;
-  border-radius: 5px;
-  font-size: 18px;
-  align-self: center;
-  transition: 0.1s linear;
-
-  &:hover {
-    cursor: pointer;
+  .btn {
+    padding: 10px 40px;
+    background-color: $primary-button-color;
+    color: $white;
+    border-radius: 5px;
+    font-size: 18px;
+    align-self: center;
     transition: 0.1s linear;
-    box-shadow: 0 0 10px gray;
+
+    &:hover {
+      cursor: pointer;
+      transition: 0.1s linear;
+      box-shadow: 0 0 10px gray;
+    }
   }
 }

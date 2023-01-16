@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {INode, ISkill, IUserInfo} from "../../interfaces";
 import {HttpClient} from "@angular/common/http";
 import {OidcSecurityService} from "angular-auth-oidc-client";
-import {concatMap, of} from "rxjs";
+import {concatMap, map, of} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -62,19 +62,28 @@ export class UserService {
     }
 
     setUserData() {
-        this.oidc.getUserData().subscribe(data => {
-            if (!data) {
-                console.log(data);
-                return;
-            }
-            this.userInfo = {
+        this.oidc.getUserData().pipe(
+            map(data => ({
                 lastName: data.family_name,
                 firstName: data.given_name,
                 patronymic: data.middle_name,
                 name: data.name,
                 id: data.sub,
-                isAdmin: !!data.role
-            }
+                isAdmin: !!data.role,
+            }) as IUserInfo),
+            concatMap(user => {
+                return this.oidc.getAccessToken().pipe(
+                    concatMap(token => {
+                        return of({
+                            user: user as IUserInfo,
+                            token: 'Bearer ' + token
+                        })
+                    })
+                )
+            })
+        ).subscribe(data => {
+            if (!data) return;
+            this.userInfo = {...data.user, token: data.token};
         })
     }
 

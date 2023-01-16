@@ -30,12 +30,13 @@ export class GraphComponent implements OnInit, OnDestroy {
         private nodesService: NodesService,
         private linksService: LinksService,
         private nodeInfoService: NodeInfoService,
-        public userService: UserService
+        private userService: UserService
     ) {
     }
 
     ngOnInit() {
-        if (this.userService.getUser()) {
+        this.user = this.userService.getUser();
+        if (this.user) {
             this.userService.loadUserSkills();
         }
         forkJoin([

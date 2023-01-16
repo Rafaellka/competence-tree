@@ -1,7 +1,13 @@
 <div [ngClass]="{container: true}">
-    <div [ngClass]="{avatar: true}"></div>
-    <div [ngClass]="{profile: true}" (click)="goToMyProfile()">Профиль</div>
-    <div>
+    <div *ngIf="user" [ngClass]="{profile: true}">
+        <div [ngClass]="{avatar: true}" (click)="goToMyProfile()"></div>
+        <div [ngClass]="{title: true}" (click)="goToMyProfile()">Профиль</div>
+    </div>
+    <button *ngIf="!user" [ngClass]="{btn: true}" [ngStyle]="{'align-self': 'stretch'}" (click)="goToMyProfile()">Войти
+        в аккаунт
+    </button>
+    <div [ngClass]="{filters: true}">
+        <div [ngClass]="{title: true}">Фильтры</div>
         <div [ngClass]="{checkbox: true}">
             <input type="checkbox" id="skills" [(ngModel)]="filters.skill" name="skill">
             <label for="skills">Скиллы</label>
@@ -10,22 +16,22 @@
             <input type="checkbox" id="positions" [(ngModel)]="filters.position" name="position">
             <label for="positions">Должности</label>
         </div>
-        <div [ngClass]="{checkbox: true}">
+        <div [ngClass]="{checkbox: true}" *ngIf="user">
             <input type="checkbox" id="myRoles" [(ngModel)]="filters.myRole" name="myRole">
             <label for="myRoles">Мои роли</label>
         </div>
-        <div [ngClass]="{checkbox: true}">
+        <div [ngClass]="{checkbox: true}" *ngIf="user">
             <input type="checkbox" id="myGrades" [(ngModel)]="filters.myGrade" name="myGrade">
             <label for="myGrades">Мои грейды</label>
         </div>
-        <div [ngClass]="{checkbox: true}">
+        <div [ngClass]="{checkbox: true}" *ngIf="user">
             <input type="checkbox" id="mySkills" [(ngModel)]="filters.mySkill" name="mySkill">
             <label for="mySkills">Мои скиллы</label>
         </div>
-        <div [ngClass]="{checkbox: true}">
+        <div [ngClass]="{checkbox: true}" *ngIf="user">
             <input type="checkbox" id="myPositions" [(ngModel)]="filters.myPosition" name="myPosition">
             <label for="myPositions">Мои должности</label>
         </div>
+        <button [ngClass]="{btn: true}" (click)="filterNodes()">Применить</button>
     </div>
-    <button [ngClass]="{btn: true}" (click)="filterNodes()">Применить</button>
 </div>
