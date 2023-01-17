@@ -178,7 +178,14 @@ export class GraphComponent implements OnInit, OnDestroy {
                                 this.linksService.bindEntityWithGrade(id, nodes[0].type);
                             }
                         })
+                        if (this.user) {
+                            const skills = this.nodesService.findSkillByGradeId(event.data.id);
+                            const marked = this.nodesService.findMarkedSkills(skills);
 
+                            if (marked.length === skills.length) {
+                                this.nodesService.changeGrade(event.data.id);
+                            }
+                        }
                         this.setNewOptions();
                     });
                     break;
