@@ -18,7 +18,9 @@ export class UserService {
     addSkill(skill: INode) {
         return this.oidc.getAccessToken().pipe(
             concatMap(token =>
-                this.http.put(this.URL + `employees/${this.userInfo.id}/skills/add/${skill.id.split(':')[1]}`, {}, {
+                this.http.post(this.URL + `employees/${this.userInfo.id}/skills`, {
+                    skillId: skill.id.split(':')[1]
+                }, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
@@ -51,7 +53,6 @@ export class UserService {
             console.log(skills)
         });
     }
-
 
     pushSkill(skill: INode) {
         this.userSkills.push(skill);

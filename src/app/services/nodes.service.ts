@@ -35,7 +35,7 @@ export class NodesService {
     private getNodesOfType(url: string, type: NodeTypes): Observable<IRenderNode[]> {
         return this.http.get<IResponse<IStandardItem>>(url)
             .pipe(
-                map((res) => res.items
+                map(res => res.items
                     .map(item => ({
                         name: item.title,
                         type: type,
@@ -101,6 +101,14 @@ export class NodesService {
                     )
                 )
             )
+    }
+
+    findSkillByGradeId(gradeId: string | null) {
+        return this.graphNodes.filter(node => node.parentId === gradeId && node.type === 'skill');
+    }
+
+    findMarkedSkills(skills: IRenderNode[]) {
+        return skills.filter(node => node.itemStyle.color === '#A1DE93')
     }
 
     addNewNodes(newNodes: IRenderNode[]): void {
@@ -171,9 +179,12 @@ export class NodesService {
 
     createGradePosition(positionId: number, parent: INode) {
         const parentId = parent.id.split(':')[1];
-        return this.http.put(this.URL + `grades/${parentId}/positions/add/${positionId}`, {
-            gradeId: parentId,
+        return this.http.post(this.URL + `grades/${parentId}/positions`, {
             positionId
+        }, {
+            headers: {
+                'Authorization': this.userService.getUser().token
+            }
         })
     }
 
@@ -194,28 +205,44 @@ export class NodesService {
         );
     }
 
+    createGradeSkill(skillId: number, parent: INode) {
+        const parentId = parent.id.split(':')[1];
+        return this.http.post(this.URL + `grades/${parentId}/skills`, {
+            skillId
+        }, {
+            headers: {
+                'Authorization': this.userService.getUser().token
+            }
+        })
+    }
+
     changeSkill(skillId: string) {
         const index = this.graphNodes.findIndex(node => node.id === skillId);
         this.graphNodes[index] = {...this.graphNodes[index], ...userNodeStyles};
     }
 
-    createGradeSkill(skillId: number, parent: INode) {
-        const parentId = parent.id.split(':')[1];
-        return this.http.put(this.URL + `grades/${parentId}/skills/add/${skillId}`, {
-            gradeId: parentId,
-            skillId
-        })
+    changeGrade(gradeId: string | null) {
+        const index = this.graphNodes.findIndex(node => node.id === gradeId);
+        this.graphNodes[index] = {...this.graphNodes[index], itemStyle: {...userNodeStyles.itemStyle}};
     }
 
     deleteNode(deletedNode: INode) {
         let parentNode = this.graphNodes.find(node => node.id === deletedNode.parentId) || this.graphNodes[0];
         if (deletedNode.type === 'role' || deletedNode.type === 'position') {
             const id = deletedNode.id.split(':')[1];
-            return this.http.delete(this.URL + `${deletedNode.type}s/${id}`);
+            return this.http.delete(this.URL + `${deletedNode.type}s/${id}`, {
+                headers: {
+                    'Authorization': this.userService.getUser().token
+                }
+            });
         } else {
             const parentId = parentNode.id.split(':')[1];
             const childId = deletedNode.id.split(':')[1];
-            return this.http.delete(this.URL + `${parentNode.type}s/${parentId}/${deletedNode.type}s/${childId}`);
+            return this.http.delete(this.URL + `${parentNode.type}s/${parentId}/${deletedNode.type}s/${childId}`, {
+                headers: {
+                    'Authorization': this.userService.getUser().token
+                }
+            });
         }
     }
 

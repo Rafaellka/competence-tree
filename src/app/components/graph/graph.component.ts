@@ -91,6 +91,12 @@ export class GraphComponent implements OnInit, OnDestroy {
         this.userService.addSkill(this.selectedNode).subscribe((skill) => {
             this.userService.pushSkill(skill);
             this.nodesService.changeSkill(skill.id);
+            const skills = this.nodesService.findSkillByGradeId(skill.parentId);
+            const marked = this.nodesService.findMarkedSkills(skills);
+
+            if (marked.length === skills.length) {
+                this.nodesService.changeGrade(skill.parentId);
+            }
             this.setNewOptions();
             this.modal = false;
         });
