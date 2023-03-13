@@ -203,7 +203,7 @@ export class AdminGraphComponent implements OnInit {
 
     deleteNode(node: INode) {
         this.nodesService.deleteNode(this.selectedNode).subscribe(() => {
-            this.nodesService.removeNode(node.id);
+            this.nodesService.removeNodeFromGraph(node.id);
             this.echartsInstance.setOption({
                 series: [{
                     data: this.nodesService.getGraphNodes(),

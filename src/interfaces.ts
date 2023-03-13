@@ -39,6 +39,7 @@ export const userNodeStyles = {
         color: '#A1DE93'
     }
 }
+
 export interface IResponse<T> {
     items: T[],
     pagination: {
@@ -80,8 +81,6 @@ export interface IRenderNode extends INode {
     itemStyle: {
         color: string;
     };
-    x?: number;
-    y?: number;
 }
 
 export interface IUser {

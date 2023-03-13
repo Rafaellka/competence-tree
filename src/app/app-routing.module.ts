@@ -31,8 +31,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'user-search',
-        component: SearchComponent,
-        canActivate: [AdminGuard]
+        component: SearchComponent
     },
     {
         path: '**',

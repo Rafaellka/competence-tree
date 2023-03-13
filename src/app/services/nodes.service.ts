@@ -5,9 +5,10 @@ import {
     IResponse,
     IStandardItem,
     nodeStyles,
-    NodeTypes, userNodeStyles
+    NodeTypes,
+    userNodeStyles
 } from "../../interfaces";
-import {concatMap, forkJoin, from, map, Observable, of} from "rxjs";
+import {concatMap, forkJoin, map, Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "./user.service";
 
@@ -24,29 +25,10 @@ export class NodesService {
         itemStyle: {
             color: '#2E62D9'
         },
-        parentId: null,
-        x: 0,
-        y: 0
+        parentId: null
     }];
 
     constructor(private http: HttpClient, private userService: UserService) {
-    }
-
-    private getNodesOfType(url: string, type: NodeTypes): Observable<IRenderNode[]> {
-        return this.http.get<IResponse<IStandardItem>>(url)
-            .pipe(
-                map(res => res.items
-                    .map(item => ({
-                        name: item.title,
-                        type: type,
-                        id: type + ':' + item.id
-                    }) as INode)
-                    .map((node) => ({
-                        ...node,
-                        ...nodeStyles[node.type]
-                    }) as IRenderNode)
-                )
-            )
     }
 
     private getEntityByGrade(gradeId: number, type: NodeTypes): Observable<IRenderNode[]> {
@@ -71,7 +53,17 @@ export class NodesService {
     }
 
     getAllRoles(): Observable<IRenderNode[]> {
-        return this.getNodesOfType(this.URL + 'roles', 'role');
+        return this.http.get<IResponse<IStandardItem>>(this.URL + 'roles')
+            .pipe(
+                map(res => res.items
+                    .map(item => ({
+                        name: item.title,
+                        type: 'role',
+                        id: 'role:' + item.id,
+                        ...nodeStyles['role']
+                    }) as IRenderNode)
+                )
+            )
     }
 
     getSkillsByGrade(gradeId: number): Observable<IRenderNode[]> {
@@ -90,13 +82,11 @@ export class NodesService {
         return this.http.get<IStandardItem[]>(this.URL + `roles/${roleId}/grades`)
             .pipe(
                 map(res => (res.map(grade => ({
-                            id: 'grade:' + grade.id,
-                            type: 'grade',
-                            name: grade.title,
-                            parentId: 'role:' + roleId
-                        }) as INode)
-                            .map((grade) => ({
-                                ...grade, ...nodeStyles[grade.type]
+                                id: 'grade:' + grade.id,
+                                type: 'grade',
+                                name: grade.title,
+                                parentId: 'role:' + roleId,
+                                ...nodeStyles['grade']
                             }) as IRenderNode)
                     )
                 )
@@ -126,7 +116,8 @@ export class NodesService {
 
     getRolesWithGrades() {
         return this.getAllRoles().pipe(
-            concatMap((roles) => forkJoin([
+            concatMap((roles) =>
+                forkJoin([
                     ...roles.map(role => this.getGradesByRole(role.id.split(':')[1]))
                 ]).pipe(
                     concatMap((grades) => {
@@ -246,7 +237,7 @@ export class NodesService {
         }
     }
 
-    removeNode(id: string) {
+    removeNodeFromGraph(id: string) {
         this.graphNodes = this.graphNodes.filter((node) => node.id !== id);
     }
 
@@ -263,15 +254,6 @@ export class NodesService {
     }
 
     resetNodes() {
-        this.graphNodes = [{
-            name: 'Artsofte',
-            id: 'MainNode',
-            type: 'main',
-            symbolSize: 26,
-            itemStyle: {
-                color: '#2E62D9'
-            },
-            parentId: null
-        }];
+        this.graphNodes = [this.graphNodes[0]];
     }
 }

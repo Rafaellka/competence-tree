@@ -39,50 +39,43 @@ export class GraphComponent implements OnInit, OnDestroy {
         if (this.user) {
             this.userService.loadUserSkills();
         }
-        forkJoin([
-            this.nodesService.getAllRoles()
-        ]).subscribe(result => {
-            result.forEach((value) => {
-                this.nodesService.addNewNodes(value);
-                this.linksService.bindRolesWithMainNode();
-            });
-
+        this.nodesService.getAllRoles().subscribe(roles => {
+            this.nodesService.addNewNodes(roles);
+            this.linksService.bindRolesWithMainNode();
             this.options = {
                 tooltip: {
                     formatter: '{b}'
                 },
                 darkMode: true,
-                series: [
-                    {
-                        animationEasingUpdate: 'quarticOut',
-                        type: 'graph',
-                        roam: true,
-                        layout: 'force',
-                        force: {
-                            gravity: 0.05,
-                            repulsion: 60,
-                            edgeLength: 20
-                        },
-                        zoom: 5,
-                        scaleLimit: {
-                            min: 3,
-                            max: 15
-                        },
-                        label: {
-                            show: true,
-                            fontSize: 14,
-                            fontWeight: "bold",
-                            formatter: (params) => {
-                                return params.name.split(' ').join('\n')
-                            }
-                        },
-                        lineStyle: {
-                            width: 2
-                        },
-                        data: this.nodesService.getGraphNodes(),
-                        links: this.linksService.getLinks()
-                    }
-                ]
+                series: [{
+                    animationEasingUpdate: 'quarticOut',
+                    type: 'graph',
+                    roam: true,
+                    layout: 'force',
+                    force: {
+                        gravity: 0.05,
+                        repulsion: 60,
+                        edgeLength: 20
+                    },
+                    zoom: 5,
+                    scaleLimit: {
+                        min: 3,
+                        max: 15
+                    },
+                    label: {
+                        show: true,
+                        fontSize: 14,
+                        fontWeight: "bold",
+                        formatter: (params) => {
+                            return params.name.split(' ').join('\n')
+                        }
+                    },
+                    lineStyle: {
+                        width: 2
+                    },
+                    data: this.nodesService.getGraphNodes(),
+                    links: this.linksService.getLinks()
+                }]
             };
         });
     }
@@ -182,7 +175,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                             const skills = this.nodesService.findSkillByGradeId(event.data.id);
                             const marked = this.nodesService.findMarkedSkills(skills);
 
-                            if (marked.length === skills.length) {
+                            if (marked.length === skills.length && marked.length !== 0) {
                                 this.nodesService.changeGrade(event.data.id);
                             }
                         }
