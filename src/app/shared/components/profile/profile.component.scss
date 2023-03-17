@@ -1,0 +1,147 @@
+@import "../../../../variables";
+
+.main {
+  background-color: $dark-background-color;
+
+  .containerUp {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 20vh;
+    padding: 20px;
+    border-bottom: 2px solid gray;
+
+    @if $isDarkMode {
+      background-color: $dark-background-color;
+      color: $white;
+    } @else {
+      background-color: $primary-background-color;
+    }
+
+    .avatarContainer {
+      display: flex;
+      gap: 20px;
+
+      .wrapperImg {
+        width: 140px;
+        height: 140px;
+
+        border: 2px solid gray;
+
+        .avatar {
+          width: auto;
+          height: 100%;
+        }
+      }
+
+      .name {
+        font-size: 24px;
+        text-decoration: underline;
+      }
+    }
+
+    .buttonsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .btn {
+        padding: 10px 40px;
+        background-color: $primary-button-color;
+        color: $white;
+        border-radius: 5px;
+        font-size: 18px;
+        align-self: center;
+        transition: 0.1s linear;
+
+        &:hover {
+          cursor: pointer;
+          transition: 0.1s linear;
+          box-shadow: 0 0 10px gray;
+        }
+      }
+    }
+  }
+
+  .containerDown {
+    margin: 0 auto;
+
+    .projects {
+      padding: 70px 80px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+
+      .project {
+        box-sizing: border-box;
+        width: 360px;
+        height: 530px;
+        border: 2px solid #878787;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.1s linear;
+
+        .plus {
+          border: 2px solid #878787;
+          border-radius: 50%;
+          width: 100px;
+          height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: 0.1s linear;
+        }
+
+        &:hover {
+          transition: 0.1s linear;
+          box-shadow: 0 0 15px gray;
+          cursor: pointer;
+
+          .plus {
+            transition: 0.1s linear;
+            box-shadow: 0 0 7px gray;
+          }
+        }
+      }
+    }
+  }
+}
+
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 20px;
+
+  input {
+    all: unset;
+  }
+
+  .input {
+    border: 2px solid #2CA2FD;
+    border-radius: 5px;
+    width: 400px;
+    height: 10px;
+    padding: 10px;
+  }
+
+  .btn {
+    padding: 10px 40px;
+    background-color: $primary-button-color;
+    color: $white;
+    border-radius: 5px;
+    font-size: 18px;
+    align-self: center;
+    transition: 0.1s linear;
+
+    &:hover {
+      cursor: pointer;
+      transition: 0.1s linear;
+      box-shadow: 0 0 10px gray;
+    }
+  }
+}

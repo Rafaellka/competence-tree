@@ -1,13 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {GraphComponent} from "./components/graph/graph.component";
-import {ProfileComponent} from './components/profile/profile.component';
-import {SigninComponent} from './components/signin/signin.component';
-import {AuthGuard} from "./guards/auth.guard";
-import {AdminGraphComponent} from "./components/admin-graph/admin-graph.component";
-import {AdminGuard} from "./guards/admin.guard";
-import {UserGuard} from "./guards/user.guard";
-import {SearchComponent} from "./components/search/search.component";
+import {GraphComponent} from "./graph/components/graph/graph.component";
+import {ProfileComponent} from './shared/components/profile/profile.component';
+import {SigninComponent} from './shared/components/signin/signin.component';
+import {AuthGuard} from "./auth/guards/auth.guard";
+import {AdminGraphComponent} from "./admin/components/admin-graph/admin-graph.component";
+import {AdminGuard} from "./admin/guards/admin.guard";
+import {UserGuard} from "./shared/user.guard";
+import {SearchComponent} from "./shared/components/search/search.component";
 
 const appRoutes: Routes = [
     {
