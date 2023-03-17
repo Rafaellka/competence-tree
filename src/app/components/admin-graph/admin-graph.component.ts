@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { EChartsOption, ECharts } from "echarts";
 import { NodesService } from "../../services/nodes.service";
 import { forkJoin } from "rxjs";
@@ -10,7 +10,7 @@ import { INewNodeModel, INode, nodeStyles } from "../../../interfaces";
     templateUrl: './admin-graph.component.html',
     styleUrls: ['./admin-graph.component.scss']
 })
-export class AdminGraphComponent implements OnInit {
+export class AdminGraphComponent implements OnInit, OnDestroy {
     echartsInstance: ECharts;
     options: EChartsOption;
     newNode: INode;
@@ -215,5 +215,9 @@ export class AdminGraphComponent implements OnInit {
 
     onChartInit($event: ECharts) {
         this.echartsInstance = $event;
+    }
+
+    ngOnDestroy() {
+        this.nodesService.resetNodes();
     }
 }

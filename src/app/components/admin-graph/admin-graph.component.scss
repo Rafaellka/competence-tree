@@ -2,7 +2,7 @@
 
 .main {
   overflow: hidden;
-  height: 100vh;
+  height: 100%;
   @if $isDarkMode {
     background-color: $dark-background-color;
   } @else {

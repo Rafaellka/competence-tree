@@ -11,7 +11,8 @@
   flex-direction: column;
   transform: translateX(100%);
   transition: 0.4s all;
-
+  border-left: 1px solid #F91A4E;
+  overflow-y: auto;
   @if $isDarkMode {
     background-color: $dark-background-color;
   } @else {
@@ -32,5 +33,4 @@
 .active {
   transition: 0.4s all;
   transform: translateX(0);
-  box-shadow: 0 0 20px gray;
 }

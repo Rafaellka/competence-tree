@@ -1,8 +1,9 @@
 @import "src/variables";
 
 .main {
+  height: 100%;
   overflow: hidden;
-  height: 100vh;
+
   @if $isDarkMode {
     background-color: $dark-background-color;
   } @else {
