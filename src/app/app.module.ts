@@ -17,6 +17,9 @@ import {UserSidebarComponent} from './graph/components/user-sidebar/user-sidebar
 import {AdminSidebarComponent} from './admin/components/admin-sidebar/admin-sidebar.component';
 import {AdminGraphComponent} from './admin/components/admin-graph/admin-graph.component';
 import { SearchComponent } from './shared/components/search/search.component';
+import { SalaryTableComponent } from './table/components/salary-table/salary-table.component';
+import { MonthComponent } from './table/components/month/month.component';
+import { NameListComponent } from './table/components/name-list/name-list.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +33,10 @@ import { SearchComponent } from './shared/components/search/search.component';
         UserSidebarComponent,
         AdminSidebarComponent,
         AdminGraphComponent,
-        SearchComponent
+        SearchComponent,
+        SalaryTableComponent,
+        MonthComponent,
+        NameListComponent
     ],
     imports: [
         BrowserModule,

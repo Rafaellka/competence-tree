@@ -8,6 +8,7 @@ import {AdminGraphComponent} from "./admin/components/admin-graph/admin-graph.co
 import {AdminGuard} from "./admin/guards/admin.guard";
 import {UserGuard} from "./shared/user.guard";
 import {SearchComponent} from "./shared/components/search/search.component";
+import {SalaryTableComponent} from "./table/components/salary-table/salary-table.component";
 
 const appRoutes: Routes = [
     {
@@ -28,6 +29,10 @@ const appRoutes: Routes = [
         path: 'admin',
         component: AdminGraphComponent,
         canActivate: [AdminGuard]
+    },
+    {
+        path: 'table',
+        component: SalaryTableComponent
     },
     {
         path: 'user-search',
