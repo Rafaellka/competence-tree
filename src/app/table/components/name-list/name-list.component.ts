@@ -1,16 +1,21 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {EmployeesService, IEmployee} from "../../services/employees.service";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
-  selector: 'app-name-list',
-  templateUrl: './name-list.component.html',
-  styleUrls: ['./name-list.component.scss']
+    selector: 'app-name-list',
+    templateUrl: './name-list.component.html',
+    styleUrls: ['./name-list.component.scss']
 })
 export class NameListComponent implements OnInit {
-  @Input() users: string[];
+    employees$: BehaviorSubject<IEmployee[]>;
 
-  constructor() { }
+    constructor(private employeesService: EmployeesService) {
+    }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+        this.employees$ = this.employeesService.employees$;
+        this.employeesService.loadEmployees();
+    }
 
 }

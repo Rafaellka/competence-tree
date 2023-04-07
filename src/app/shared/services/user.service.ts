@@ -58,31 +58,35 @@ export class UserService {
     }
 
     loadUserData() {
-        this.oidc.getUserData().pipe(
-            map(data => ({
-                lastName: data.family_name,
-                firstName: data.given_name,
-                patronymic: data.middle_name,
-                id: data.sub,
-                isAdmin: !!data.role,
-            }) as IUser),
-            concatMap(user => {
-                return this.oidc.getAccessToken().pipe(
-                    concatMap(token => {
-                        return of({
-                            user: user as IUser,
-                            token: 'Bearer ' + token
-                        })
-                    })
-                )
+        this.oidc.getUserData()
+            .pipe(
+                map(data =>
+                    ({
+                        lastName: data.family_name,
+                        firstName: data.given_name,
+                        patronymic: data.middle_name,
+                        id: data.sub,
+                        isAdmin: !!data.role,
+                        token: ''
+                    }) as IUser
+                ),
+                concatMap(user => {
+                    return this.oidc.getAccessToken().pipe(
+                        concatMap(token => of({
+                            ...user,
+                            token
+                        }))
+                    )
+                })
+            )
+            .subscribe(data => {
+                console.log(data)
+                if (!data) return;
+                this.user = data;
             })
-        ).subscribe(data => {
-            if (!data) return;
-            this.user = {...data.user, token: data.token};
-        })
     }
 
-    getUserId() {
+    getMyId() {
         return this.user.id;
     }
 

@@ -6,7 +6,7 @@
     <tr>
         <td>2023</td>
     </tr>
-    <tr *ngFor="let user of users">
+    <tr *ngFor="let emp of employees$ | async">
         <td>Фамилия Имя Отчество</td>
         <td>12</td>
     </tr>
