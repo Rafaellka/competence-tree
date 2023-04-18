@@ -2,10 +2,11 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ECharts, EChartsOption} from "echarts";
 import {LinksService} from 'src/app/shared/services/links.service';
 import {NodesService} from "../../../shared/services/nodes.service";
-import {IFilters, NodeTypes, INodeInfo, INode, IUser} from "../../../shared/interfaces";
+import {IFilters, NodeTypes, INodeInfo, INode} from "../../../shared/interfaces";
 import {forkJoin} from "rxjs";
 import {NodeInfoService} from "../../../shared/services/node-info.service";
 import {UserService} from "../../../shared/services/user.service";
+import {IUser} from "../../../shared/interfaces/IUser";
 
 @Component({
     selector: 'app-graph',

@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {EmployeesService, IEmployee} from "../../services/employees.service";
+import {EmployeeService} from "../../services/employee.service";
 import {BehaviorSubject} from "rxjs";
+import {UserService} from "../../../shared/services/user.service";
+import {IEmployee} from "../../interfaces/IEmployee";
 
 @Component({
     selector: 'app-name-list',
@@ -10,12 +12,19 @@ import {BehaviorSubject} from "rxjs";
 export class NameListComponent implements OnInit {
     employees$: BehaviorSubject<IEmployee[]>;
 
-    constructor(private employeesService: EmployeesService) {
+    constructor(private employeesService: EmployeeService, private user: UserService) {
     }
 
     ngOnInit(): void {
-        this.employees$ = this.employeesService.employees$;
-        this.employeesService.loadEmployees();
+        const myId = this.user.getMyId();
+
+        this.employees$ = this.employeesService.subordinates$;
+        this.employeesService.loadUserById(myId);
+        this.employeesService.loadSubordinates(myId);
+    }
+
+    showSubordinates(id: string) {
+        this.employeesService.loadSubordinates(id);
     }
 
 }

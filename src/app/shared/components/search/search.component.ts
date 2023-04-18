@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {IUser} from "../../interfaces";
 import {SearchUserService} from "../../services/search-user.service";
 import {Router} from "@angular/router";
+import {IUser} from "../../interfaces/IUser";
 
 @Component({
     selector: 'app-search',
@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit {
 
     ngOnInit() {
         this.searchUser();
+
     }
 
     goToUserProfile(userId: string) {
@@ -26,6 +27,7 @@ export class SearchComponent implements OnInit {
     searchUser() {
         this.searchUsersService.searchUsers(this.searchModel).subscribe(users => {
             this.users = [...users.items]
+            console.log(this.users)
         })
     }
 }

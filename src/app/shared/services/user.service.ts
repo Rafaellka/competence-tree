@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
-import {INode, ISkill, IUser} from "../interfaces";
+import {INode, ISkill} from "../interfaces";
 import {HttpClient} from "@angular/common/http";
 import {OidcSecurityService} from "angular-auth-oidc-client";
 import {concatMap, map, of} from "rxjs";
+import {IUser} from "../interfaces/IUser";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -10,15 +12,13 @@ import {concatMap, map, of} from "rxjs";
 export class UserService {
     private user: IUser;
     private userSkills: ISkill[];
-    private URL = `https://localhost:8000/api/`;
-
     constructor(private http: HttpClient, private oidc: OidcSecurityService) {
     }
 
     addSkillToUser(skill: INode) {
         return this.oidc.getAccessToken().pipe(
             concatMap(token =>
-                this.http.post(this.URL + `employees/${this.user.id}/skills`, {
+                this.http.post(environment.apiURL + `employees/${this.user.id}/skills`, {
                         skillId: skill.id.split(':')[1]
                     }, {
                         headers: {
@@ -41,7 +41,7 @@ export class UserService {
                         title: string;
                         type: string;
                     }
-                }[]>(this.URL + `employees/${userId}/skills`, {
+                }[]>(environment.apiURL + `employees/${userId}/skills`, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
@@ -74,13 +74,12 @@ export class UserService {
                     return this.oidc.getAccessToken().pipe(
                         concatMap(token => of({
                             ...user,
-                            token
+                            token: 'Bearer ' + token
                         }))
                     )
                 })
             )
             .subscribe(data => {
-                console.log(data)
                 if (!data) return;
                 this.user = data;
             })

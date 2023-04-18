@@ -1,22 +1,14 @@
 import {Injectable} from '@angular/core';
-import {
-    INode,
-    IRenderNode,
-    IResponse,
-    IStandardItem,
-    nodeStyles,
-    NodeTypes,
-    userNodeStyles
-} from "../interfaces";
+import {IHaveIdAndTitle, INode, IRenderNode, IResponse, nodeStyles, NodeTypes, userNodeStyles} from "../interfaces";
 import {concatMap, forkJoin, map, Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "./user.service";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 export class NodesService {
-    private URL = `https://localhost:8000/api/`;
     private graphNodes: IRenderNode[] = [{
         name: 'Artsofte',
         id: 'MainNode',
@@ -32,7 +24,7 @@ export class NodesService {
     }
 
     private getEntityByGrade(gradeId: number, type: NodeTypes): Observable<IRenderNode[]> {
-        return this.http.get<IStandardItem[]>(this.URL + `grades/${gradeId}/${type}s`)
+        return this.http.get<IHaveIdAndTitle[]>(environment.apiURL + `grades/${gradeId}/${type}s`)
             .pipe(
                 map(res => (res.map(entity => ({
                             id: type + ':' + entity.id,
@@ -53,7 +45,7 @@ export class NodesService {
     }
 
     getAllRoles(): Observable<IRenderNode[]> {
-        return this.http.get<IResponse<IStandardItem>>(this.URL + 'roles')
+        return this.http.get<IResponse<IHaveIdAndTitle>>(environment.apiURL + 'roles')
             .pipe(
                 map(res => res.items
                     .map(item => ({
@@ -79,7 +71,7 @@ export class NodesService {
     }
 
     getGradesByRole(roleId: string): Observable<IRenderNode[]> {
-        return this.http.get<IStandardItem[]>(this.URL + `roles/${roleId}/grades`)
+        return this.http.get<IHaveIdAndTitle[]>(environment.apiURL + `roles/${roleId}/grades`)
             .pipe(
                 map(res => (res.map(grade => ({
                                 id: 'grade:' + grade.id,
@@ -129,7 +121,7 @@ export class NodesService {
     }
 
     saveNewRole(name: string): Observable<number> {
-        return this.http.post<number>(this.URL + 'roles', {
+        return this.http.post<number>(environment.apiURL + 'roles', {
             title: name
         }, {
             headers: {
@@ -145,7 +137,7 @@ export class NodesService {
         if (prevGradeId) {
             body['prevGradeId'] = Number(prevGradeId.split(':')[1]);
         }
-        return this.http.post(this.URL + `roles/${roleId.split(':')[1]}/grades`, body, {
+        return this.http.post(environment.apiURL + `roles/${roleId.split(':')[1]}/grades`, body, {
             headers: {
                 'Authorization': this.userService.getUser().token
             }
@@ -153,7 +145,7 @@ export class NodesService {
     }
 
     saveNewPosition(name: string, parent: INode) {
-        return this.http.post(this.URL + 'positions', {
+        return this.http.post(environment.apiURL + 'positions', {
             title: name
         }, {
             headers: {
@@ -170,7 +162,7 @@ export class NodesService {
 
     createGradePosition(positionId: number, parent: INode) {
         const parentId = parent.id.split(':')[1];
-        return this.http.post(this.URL + `grades/${parentId}/positions`, {
+        return this.http.post(environment.apiURL + `grades/${parentId}/positions`, {
             positionId
         }, {
             headers: {
@@ -180,7 +172,7 @@ export class NodesService {
     }
 
     saveNewSkill(name: string, parent: INode) {
-        return this.http.post(this.URL + 'skills', {
+        return this.http.post(environment.apiURL + 'skills', {
             title: name,
             type: 'Theoretical'
         }, {
@@ -198,7 +190,7 @@ export class NodesService {
 
     createGradeSkill(skillId: number, parent: INode) {
         const parentId = parent.id.split(':')[1];
-        return this.http.post(this.URL + `grades/${parentId}/skills`, {
+        return this.http.post(environment.apiURL + `grades/${parentId}/skills`, {
             skillId
         }, {
             headers: {
@@ -221,7 +213,7 @@ export class NodesService {
         let parentNode = this.graphNodes.find(node => node.id === deletedNode.parentId) || this.graphNodes[0];
         if (deletedNode.type === 'role' || deletedNode.type === 'position') {
             const id = deletedNode.id.split(':')[1];
-            return this.http.delete(this.URL + `${deletedNode.type}s/${id}`, {
+            return this.http.delete(environment.apiURL + `${deletedNode.type}s/${id}`, {
                 headers: {
                     'Authorization': this.userService.getUser().token
                 }
@@ -229,7 +221,7 @@ export class NodesService {
         } else {
             const parentId = parentNode.id.split(':')[1];
             const childId = deletedNode.id.split(':')[1];
-            return this.http.delete(this.URL + `${parentNode.type}s/${parentId}/${deletedNode.type}s/${childId}`, {
+            return this.http.delete(environment.apiURL + `${parentNode.type}s/${parentId}/${deletedNode.type}s/${childId}`, {
                 headers: {
                     'Authorization': this.userService.getUser().token
                 }

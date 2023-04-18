@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
-import {IDuty, ISkill, IStandardItem} from "../interfaces";
+import {IDuty, ISkill, IHaveIdAndTitle} from "../interfaces";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +13,7 @@ export class NodeInfoService {
     }
 
     getPositionDuties(positionId: number): Observable<IDuty[]> {
-        return this.http.get<{ title: string; description: string; }[]>(`https://localhost:8000/api/positions/${positionId}/duties`)
+        return this.http.get<{ title: string; description: string; }[]>(environment.apiURL + `/positions/${positionId}/duties`)
             .pipe(
                 map(duties => duties.map(duty => ({
                             name: duty.title,
@@ -24,7 +25,7 @@ export class NodeInfoService {
     }
 
     getDetailedSkill(skillId: string): Observable<ISkill[]> {
-        return this.http.get<IStandardItem[]>(`https://localhost:8000/api/skills/${skillId}/sub-skills`)
+        return this.http.get<IHaveIdAndTitle[]>(environment.apiURL + `skills/${skillId}/sub-skills`)
             .pipe(
                 map(skills => skills
                     .map(skill => ({

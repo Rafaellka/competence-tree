@@ -49,7 +49,7 @@ export interface IResponse<T> {
     }
 }
 
-export interface IStandardItem {
+export interface IHaveIdAndTitle {
     id: number;
     title: string;
 }
@@ -81,15 +81,6 @@ export interface IRenderNode extends INode {
     itemStyle: {
         color: string;
     };
-}
-
-export interface IUser {
-    firstName: string;
-    lastName: string;
-    patronymic: string;
-    id: string;
-    isAdmin: boolean;
-    token: string;
 }
 
 export interface IProject {

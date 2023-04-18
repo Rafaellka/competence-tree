@@ -1,13 +1,10 @@
 <table>
     <tr>
-        <td [rowSpan]="2">ФИО</td>
-        <td>Старт зп</td>
-    </tr>
-    <tr>
-        <td>2023</td>
+        <td [ngStyle]="{height: '80px'}">ФИО</td>
+        <td>Руководитель</td>
     </tr>
     <tr *ngFor="let emp of employees$ | async">
-        <td>Фамилия Имя Отчество</td>
-        <td>12</td>
+        <td>{{emp.firstName}} {{emp.lastName}} <span *ngIf="emp.type === 'Manager'" (click)="showSubordinates(emp.id)" class="name">+</span></td>
+        <td>{{emp.manager?.firstName}} {{emp.manager?.lastName}}</td>
     </tr>
 </table>

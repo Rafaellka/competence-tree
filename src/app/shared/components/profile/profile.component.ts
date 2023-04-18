@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {IProject, IUser} from "../../interfaces";
+import {IProject} from "../../interfaces";
 import {ActivatedRoute} from "@angular/router";
 import {SearchUserService} from "../../services/search-user.service";
 import {OidcSecurityService} from "angular-auth-oidc-client";
+import {IUser} from "../../interfaces/IUser";
 
 @Component({
     selector: 'app-profile',
