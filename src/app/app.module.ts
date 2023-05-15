@@ -11,7 +11,7 @@ import {SigninComponent} from './shared/components/signin/signin.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {SidebarComponent} from './shared/components/sidebar/sidebar.component';
 import {MatIconModule} from '@angular/material/icon';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ModalComponent} from './shared/components/modal/modal.component';
 import {UserSidebarComponent} from './graph/components/user-sidebar/user-sidebar.component';
 import {AdminSidebarComponent} from './admin/components/admin-sidebar/admin-sidebar.component';
@@ -20,6 +20,7 @@ import { SearchComponent } from './shared/components/search/search.component';
 import { SalaryTableComponent } from './table/components/salary-table/salary-table.component';
 import { MonthComponent } from './table/components/month/month.component';
 import { NameListComponent } from './table/components/name-list/name-list.component';
+import { ProjectsComponent } from './shared/components/projects/projects.component';
 
 @NgModule({
     declarations: [
@@ -36,7 +37,8 @@ import { NameListComponent } from './table/components/name-list/name-list.compon
         SearchComponent,
         SalaryTableComponent,
         MonthComponent,
-        NameListComponent
+        NameListComponent,
+        ProjectsComponent
     ],
     imports: [
         BrowserModule,
@@ -47,7 +49,8 @@ import { NameListComponent } from './table/components/name-list/name-list.compon
         AuthConfigModule,
         BrowserAnimationsModule,
         MatIconModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [],
     bootstrap: [AppComponent]
