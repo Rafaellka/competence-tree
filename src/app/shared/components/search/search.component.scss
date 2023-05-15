@@ -34,8 +34,8 @@
 
     .button {
       padding: 10px 40px;
-      background-color: #2E62D9;
-      color: #F2F4F8;
+      background-color: $primary-button-color;
+      color: $white;
       border-radius: 5px;
       font-size: 18px;
       transition: 0.1s linear;
@@ -44,6 +44,10 @@
         cursor: pointer;
         transition: 0.1s linear;
         box-shadow: 0 0 5px rgb(255 255 255 / 100%);
+      }
+
+      &:last-child {
+        margin-left: auto;
       }
     }
   }
@@ -60,6 +64,46 @@
       &:hover {
         cursor: pointer;
       }
+    }
+  }
+}
+
+.modalContainer {
+  form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .input {
+    padding: 5px 20px;
+    border: 2px solid #2CA2FD;
+    border-radius: 5px;
+    height: 30px;
+    font-size: 18px;
+    // width: 20vw;
+    outline: 0;
+
+    &:hover{
+      border-color: #2E62D9;
+      transition: 0.1s linear;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .btn {
+    padding: 10px 40px;
+    background-color: $primary-button-color;
+    color: $white;
+    border-radius: 5px;
+    font-size: 18px;
+    align-self: center;
+    transition: 0.1s linear;
+
+    &:hover {
+      cursor: pointer;
+      transition: 0.1s linear;
+      box-shadow: 0 0 10px gray;
     }
   }
 }

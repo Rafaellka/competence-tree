@@ -85,9 +85,19 @@ export interface IRenderNode extends INode {
 
 export interface IProject {
     name: string;
-    position: string;
-    role: string;
-    grade: string;
+    position: string; //
+    role: string; //
+    grade?: string; //
+    id: number;
+}
+
+export interface IMyProject {
+    id: number;
+    project: {
+        id: number;
+        name: string;
+    };
+    role: IHaveIdAndTitle;
 }
 
 export interface INodeInfo {

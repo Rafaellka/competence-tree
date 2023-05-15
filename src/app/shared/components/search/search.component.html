@@ -1,13 +1,23 @@
 <div [ngClass]="{main: true}">
     <div [ngClass]="{searchContainer: true}">
-        <input [ngClass]="{input: true}" [(ngModel)]="searchModel" (keyup.enter)="searchUser()"/>
+        <input [ngClass]="{input: true}" [(ngModel)]="searchModel" (keyup.enter)="searchUser()" />
         <button [ngClass]="{button: true}" (click)="searchUser()">Поиск</button>
+        <button [ngClass]="{button: true}" (click)="showModal()">Создать</button>
     </div>
     <div [ngClass]="{users: true}">
-        <div [ngClass]="{user: true}"
-             *ngFor="let user of users"
-             (click)="goToUserProfile(user.id)">
+        <div [ngClass]="{user: true}" *ngFor="let user of users" (click)="goToUserProfile(user.id)">
             {{user.firstName}} {{user.lastName}} {{user.patronymic}}
         </div>
     </div>
 </div>
+<app-modal [(modal)]="modal">
+    <div [ngClass]="{modalContainer: true}">
+        <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
+            <input [ngClass]="{input: true}" type="text" formControlName="surName" placeholder="Фамилия">
+            <input [ngClass]="{input: true}" type="text" formControlName="name" placeholder="Имя">
+            <input [ngClass]="{input: true}" type="" formControlName="patronymic" placeholder="Отчество">
+            <input [ngClass]="{input: true}" type="" formControlName="email" placeholder="Адрес эл. почты">
+            <button [ngClass]="{btn: true}" type="submit">Добавить</button>
+        </form>
+    </div>
+</app-modal>

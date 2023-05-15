@@ -1,6 +1,11 @@
 <div [ngClass]="{project: true}">
-  <p [ngClass]="{title: true}">{{info.name}}</p>
-  <p>Роль: {{info.role}}</p>
-  <p>Должность: {{info.position}}</p>
-  <p>Грейд: {{info.grade}}</p>
+  <div [ngClass]="{delete: true}">
+    <p (click)="deleteProject()">X</p>
+  </div>
+  <div [ngClass]="{info: true}">
+    <p [ngClass]="{title: true}">{{info.project.name}}</p>
+    <p>Роль: {{info.role.title}}</p>
+    <!-- <p>Должность: {{info.position}}</p>
+  <p>Грейд: {{info.grade}}</p> -->
+  </div>
 </div>

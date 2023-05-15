@@ -1,5 +1,6 @@
+import { ProjectService } from './../../services/project.service';
 import {Component, Input, OnInit} from '@angular/core';
-import {IProject} from "../../interfaces";
+import {IMyProject, IProject} from "../../interfaces";
 
 @Component({
   selector: 'app-card',
@@ -7,10 +8,16 @@ import {IProject} from "../../interfaces";
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-  @Input() info: IProject;
-  constructor() { }
+  @Input() 
+    info: IMyProject;
+    id: number;
+
+  constructor(private projectService: ProjectService) { }
 
   ngOnInit(): void {
   }
 
+  deleteProject() {
+    this.projectService.deleteMyProject(this.info.id);
+  }
 }

@@ -1,0 +1,32 @@
+<div [ngClass]="{container: true}">
+  <div [ngClass]="{nav: true}">
+    <button [ngClass]="{btn: true}" (click)="showModal('Create')">Создать</button>
+    <button [ngClass]="{btn: true}" routerLink="">Назад</button>
+  </div>
+  <div [ngClass]="{projects: true}">
+    <div [ngClass]="{project: true}" *ngFor="let project of projects$ | async" (click)="showModal('Edit', project.id)">
+      {{project.name}}</div>
+  </div>
+</div>
+
+<app-modal [(modal)]="isOpen">
+  <ng-container [ngSwitch]="modalType">
+    <div [ngClass]="{modalContainer: true}" *ngSwitchCase="'Create'">
+      <div>
+        <div>Название проекта</div>
+        <input [ngClass]="{input: true}" [(ngModel)]="projectForm.name" />
+      </div>
+      <button [ngClass]="{btn: true}" (click)="createProject()">Добавить</button>
+    </div>
+
+    <div [ngClass]="{modalContainer: true}" *ngSwitchCase="'Edit'">
+      <div>
+        <div>Название проекта</div>
+        <input [ngClass]="{input: true}" [(ngModel)]="projectForm.name" />
+        <button [ngClass]="{btn: true}" (click)="updateProject()">Изменить</button>
+      </div>
+
+      <button [ngClass]="{btn: true}" (click)="deleteProject()">Удалить</button>
+    </div>
+  </ng-container>
+</app-modal>
