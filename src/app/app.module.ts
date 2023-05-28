@@ -11,15 +11,18 @@ import {SigninComponent} from './shared/components/signin/signin.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {SidebarComponent} from './shared/components/sidebar/sidebar.component';
 import {MatIconModule} from '@angular/material/icon';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ModalComponent} from './shared/components/modal/modal.component';
 import {UserSidebarComponent} from './graph/components/user-sidebar/user-sidebar.component';
-import {AdminSidebarComponent} from './admin/components/admin-sidebar/admin-sidebar.component';
+import {AdminSidebarContentComponent} from './admin/components/admin-sidebar-content/admin-sidebar-content.component';
 import {AdminGraphComponent} from './admin/components/admin-graph/admin-graph.component';
-import { SearchComponent } from './shared/components/search/search.component';
-import { SalaryTableComponent } from './table/components/salary-table/salary-table.component';
-import { MonthComponent } from './table/components/month/month.component';
-import { NameListComponent } from './table/components/name-list/name-list.component';
+import {SearchComponent} from './shared/components/search/search.component';
+import {SalaryTableComponent} from './table/components/salary-table/salary-table.component';
+import {CdkMenuModule} from "@angular/cdk/menu";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {AuthorizationHeaderInterceptor} from "./shared/authorization-header.interceptor";
+import {AdminModalContentComponent} from './admin/components/admin-modal-content/admin-modal-content.component';
 
 @NgModule({
     declarations: [
@@ -31,15 +34,15 @@ import { NameListComponent } from './table/components/name-list/name-list.compon
         SidebarComponent,
         ModalComponent,
         UserSidebarComponent,
-        AdminSidebarComponent,
+        AdminSidebarContentComponent,
         AdminGraphComponent,
         SearchComponent,
         SalaryTableComponent,
-        MonthComponent,
-        NameListComponent
+        AdminModalContentComponent
     ],
     imports: [
         BrowserModule,
+        HttpClientModule,
         AppRoutingModule,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
@@ -47,9 +50,16 @@ import { NameListComponent } from './table/components/name-list/name-list.compon
         AuthConfigModule,
         BrowserAnimationsModule,
         MatIconModule,
-        FormsModule
+        FormsModule,
+        CdkMenuModule,
+        ReactiveFormsModule,
+        MatCheckboxModule
     ],
-    providers: [],
+    providers: [{
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthorizationHeaderInterceptor,
+        multi: true
+    }],
     bootstrap: [AppComponent]
 })
 export class AppModule {

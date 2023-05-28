@@ -1,4 +1,106 @@
 .tablesContainer {
-  display: flex;
   overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 20px;
+
+  .form {
+    margin-left: 30px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    .select {
+      border: 1px solid black;
+      padding: 5px;
+      font-size: 16px;
+    }
+  }
+
+  table {
+    border: 1px solid white;
+    border-collapse: collapse;
+    color: white;
+    min-width: 600px;
+    text-align: center;
+
+    tr {
+      td {
+        border: 1px solid white;
+        padding: 10px;
+        white-space: nowrap;
+        box-sizing: border-box;
+        height: 40px;
+      }
+
+      .inChange {
+        background-color: #F2F4F8;
+        color: #222835;
+      }
+
+      .changeable {
+        user-select: none;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .manager {
+        display: flex;
+        align-items: center;
+
+        .icon {
+          &:hover {
+            cursor: pointer;
+          }
+        }
+
+      }
+
+      .name {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .sticky {
+        position: sticky;
+        left: 0;
+        background-color: #222835;
+        border-collapse: inherit;
+      }
+    }
+  }
+}
+
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .input {
+    border: 1px solid #222835;
+    padding: 10px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+
+    .button {
+      padding: 10px 20px;
+      background-color: #2E62D9;
+      color: #EDF5E1;
+      transition: 0.1s linear;
+
+      &:hover {
+        cursor: pointer;
+        transition: 0.1s linear;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
 }

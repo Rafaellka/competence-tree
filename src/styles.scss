@@ -1,3 +1,5 @@
+@import '@angular/cdk/overlay-prebuilt.css';
+
 html, body {
   height: 100%;
 }
@@ -38,4 +40,22 @@ ol {
 a {
   color: inherit;
   text-decoration: inherit;
+}
+
+input {
+  all: unset;
+}
+
+select {
+  font: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:focus {
+    outline: none;
+  }
 }

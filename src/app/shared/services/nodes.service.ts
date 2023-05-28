@@ -20,11 +20,11 @@ export class NodesService {
         parentId: null
     }];
 
-    constructor(private http: HttpClient, private userService: UserService) {
+    constructor(private _http: HttpClient, private _userService: UserService) {
     }
 
     private getEntityByGrade(gradeId: number, type: NodeTypes): Observable<IRenderNode[]> {
-        return this.http.get<IHaveIdAndTitle[]>(environment.apiURL + `grades/${gradeId}/${type}s`)
+        return this._http.get<IHaveIdAndTitle[]>(environment.apiURL + `grades/${gradeId}/${type}s`)
             .pipe(
                 map(res => (res.map(entity => ({
                             id: type + ':' + entity.id,
@@ -33,7 +33,7 @@ export class NodesService {
                             parentId: 'grade:' + gradeId
                         }) as INode)
                             .map(entity => {
-                                const userNodes = this.userService.getUserSkills();
+                                const userNodes = this._userService.getUserSkills();
                                 if (userNodes && userNodes.find(userNode => userNode.id === entity.id)) {
                                     return {...entity, ...userNodeStyles}
                                 }
@@ -45,7 +45,7 @@ export class NodesService {
     }
 
     getAllRoles(): Observable<IRenderNode[]> {
-        return this.http.get<IResponse<IHaveIdAndTitle>>(environment.apiURL + 'roles')
+        return this._http.get<IResponse<IHaveIdAndTitle>>(environment.apiURL + 'roles')
             .pipe(
                 map(res => res.items
                     .map(item => ({
@@ -71,15 +71,15 @@ export class NodesService {
     }
 
     getGradesByRole(roleId: string): Observable<IRenderNode[]> {
-        return this.http.get<IHaveIdAndTitle[]>(environment.apiURL + `roles/${roleId}/grades`)
+        return this._http.get<IHaveIdAndTitle[]>(environment.apiURL + `roles/${roleId}/grades`)
             .pipe(
                 map(res => (res.map(grade => ({
-                                id: 'grade:' + grade.id,
-                                type: 'grade',
-                                name: grade.title,
-                                parentId: 'role:' + roleId,
-                                ...nodeStyles['grade']
-                            }) as IRenderNode)
+                            id: 'grade:' + grade.id,
+                            type: 'grade',
+                            name: grade.title,
+                            parentId: 'role:' + roleId,
+                            ...nodeStyles['grade']
+                        }) as IRenderNode)
                     )
                 )
             )
@@ -121,12 +121,8 @@ export class NodesService {
     }
 
     saveNewRole(name: string): Observable<number> {
-        return this.http.post<number>(environment.apiURL + 'roles', {
+        return this._http.post<number>(environment.apiURL + 'roles', {
             title: name
-        }, {
-            headers: {
-                'Authorization': this.userService.getUser().token
-            }
         })
     }
 
@@ -137,47 +133,37 @@ export class NodesService {
         if (prevGradeId) {
             body['prevGradeId'] = Number(prevGradeId.split(':')[1]);
         }
-        return this.http.post(environment.apiURL + `roles/${roleId.split(':')[1]}/grades`, body, {
-            headers: {
-                'Authorization': this.userService.getUser().token
-            }
-        });
+        return this._http.post(environment.apiURL + `roles/${roleId.split(':')[1]}/grades`, body);
     }
 
     saveNewPosition(name: string, parent: INode) {
-        return this.http.post(environment.apiURL + 'positions', {
-            title: name
-        }, {
-            headers: {
-                'Authorization': this.userService.getUser().token
+        return this._http.post(environment.apiURL + 'positions', {
+                title: name
             }
-        }).pipe(
-            concatMap(id => this.createGradePosition(Number(id), parent)
-                .pipe(
-                    concatMap(() => of(id))
+        )
+            .pipe(
+                concatMap(id => this.createGradePosition(Number(id), parent)
+                    .pipe(
+                        concatMap(() => of(id))
+                    )
                 )
-            )
-        );
+            );
     }
 
     createGradePosition(positionId: number, parent: INode) {
         const parentId = parent.id.split(':')[1];
-        return this.http.post(environment.apiURL + `grades/${parentId}/positions`, {
+        return this._http.post(environment.apiURL + `grades/${parentId}/positions`, {
             positionId
-        }, {
-            headers: {
-                'Authorization': this.userService.getUser().token
-            }
         })
     }
 
     saveNewSkill(name: string, parent: INode) {
-        return this.http.post(environment.apiURL + 'skills', {
+        return this._http.post(environment.apiURL + 'skills', {
             title: name,
             type: 'Theoretical'
         }, {
             headers: {
-                'Authorization': this.userService.getUser().token
+                'Authorization': this._userService.getUser().token
             }
         }).pipe(
             concatMap(id => this.createGradeSkill(Number(id), parent)
@@ -190,13 +176,33 @@ export class NodesService {
 
     createGradeSkill(skillId: number, parent: INode) {
         const parentId = parent.id.split(':')[1];
-        return this.http.post(environment.apiURL + `grades/${parentId}/skills`, {
+        return this._http.post(environment.apiURL + `grades/${parentId}/skills`, {
             skillId
+        })
+    }
+
+    saveNewDuty(title: string, description: string, positionId: number) {
+        return this._http.post<number>(environment.apiURL + 'duties', {
+            title,
+            description
         }, {
             headers: {
-                'Authorization': this.userService.getUser().token
+                'Authorization': this._userService.getUser().token
             }
         })
+            .pipe(
+                concatMap((dutyId: number) => this.createPositionDuty(positionId, dutyId))
+            )
+    }
+
+    createPositionDuty(positionId: number, dutyId: number) {
+        return this._http.post(environment.apiURL + `positions/${positionId}/duties`, {
+            dutyId
+        }, {
+            headers: {
+                'Authorization': this._userService.getUser().token
+            }
+        });
     }
 
     changeSkillColor(skillId: string) {
@@ -213,17 +219,17 @@ export class NodesService {
         let parentNode = this.graphNodes.find(node => node.id === deletedNode.parentId) || this.graphNodes[0];
         if (deletedNode.type === 'role' || deletedNode.type === 'position') {
             const id = deletedNode.id.split(':')[1];
-            return this.http.delete(environment.apiURL + `${deletedNode.type}s/${id}`, {
+            return this._http.delete(environment.apiURL + `${deletedNode.type}s/${id}`, {
                 headers: {
-                    'Authorization': this.userService.getUser().token
+                    'Authorization': this._userService.getUser().token
                 }
             });
         } else {
             const parentId = parentNode.id.split(':')[1];
             const childId = deletedNode.id.split(':')[1];
-            return this.http.delete(environment.apiURL + `${parentNode.type}s/${parentId}/${deletedNode.type}s/${childId}`, {
+            return this._http.delete(environment.apiURL + `${parentNode.type}s/${parentId}/${deletedNode.type}s/${childId}`, {
                 headers: {
-                    'Authorization': this.userService.getUser().token
+                    'Authorization': this._userService.getUser().token
                 }
             });
         }

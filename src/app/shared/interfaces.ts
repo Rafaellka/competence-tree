@@ -1,4 +1,4 @@
-export type NodeTypes = 'main' | 'role' | 'grade' | 'skill' | 'position';
+export type NodeTypes = 'main' | 'role' | 'grade' | 'skill' | 'position' | 'duty' | 'subskill';
 
 export const nodeStyles = {
     'main': {
@@ -30,7 +30,19 @@ export const nodeStyles = {
         itemStyle: {
             color: '#70A1D7'
         }
-    }
+    },
+    'duty': {
+        symbolSize: 10,
+        itemStyle: {
+            color: '#70A1D7'
+        }
+    },
+    'subskill': {
+        symbolSize: 10,
+        itemStyle: {
+            color: '#70A1D7'
+        }
+    },
 };
 
 export const userNodeStyles = {

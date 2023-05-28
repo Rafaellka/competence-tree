@@ -9,28 +9,22 @@
     <div [ngClass]="{filters: true}">
         <div [ngClass]="{title: true}">Фильтры</div>
         <div [ngClass]="{checkbox: true}">
-            <input type="checkbox" id="skills" [(ngModel)]="filters.skill" name="skill">
-            <label for="skills">Скиллы</label>
+            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.skill">Скиллы</mat-checkbox>
         </div>
         <div [ngClass]="{checkbox: true}">
-            <input type="checkbox" id="positions" [(ngModel)]="filters.position" name="position">
-            <label for="positions">Должности</label>
+            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.position">Должности</mat-checkbox>
         </div>
         <div [ngClass]="{checkbox: true}" *ngIf="user">
-            <input type="checkbox" id="myRoles" [(ngModel)]="filters.myRole" name="myRole">
-            <label for="myRoles">Мои роли</label>
+            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.myRole">Мои роли</mat-checkbox>
         </div>
         <div [ngClass]="{checkbox: true}" *ngIf="user">
-            <input type="checkbox" id="myGrades" [(ngModel)]="filters.myGrade" name="myGrade">
-            <label for="myGrades">Мои грейды</label>
+            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.myGrade">Мои грейды</mat-checkbox>
         </div>
         <div [ngClass]="{checkbox: true}" *ngIf="user">
-            <input type="checkbox" id="mySkills" [(ngModel)]="filters.mySkill" name="mySkill">
-            <label for="mySkills">Мои скиллы</label>
+            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.mySkill">Мои скиллы</mat-checkbox>
         </div>
         <div [ngClass]="{checkbox: true}" *ngIf="user">
-            <input type="checkbox" id="myPositions" [(ngModel)]="filters.myPosition" name="myPosition">
-            <label for="myPositions">Мои должности</label>
+            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.myPosition">Мои должности</mat-checkbox>
         </div>
         <button [ngClass]="{btn: true}" (click)="filterNodes()">Применить</button>
     </div>

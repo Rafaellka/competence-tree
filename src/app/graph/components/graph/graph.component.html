@@ -37,8 +37,7 @@
             <div>
                 <div>{{'Список обязанностей'}}</div>
                 <ol>
-
-                    <li *ngFor="let detail of nodeInfo.details">{{detail.name}}</li>
+                    <li *ngFor="let detail of nodeInfo?.details">{{detail.name}}</li>
                 </ol>
             </div>
         </div>

@@ -2,23 +2,31 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {INewNodeModel, INode} from "../../../shared/interfaces";
 
 @Component({
-    selector: 'app-admin-sidebar',
-    templateUrl: './admin-sidebar.component.html',
-    styleUrls: ['./admin-sidebar.component.scss']
+    selector: 'app-admin-sidebar-content',
+    templateUrl: './admin-sidebar-content.component.html',
+    styleUrls: ['./admin-sidebar-content.component.scss']
 })
-export class AdminSidebarComponent {
-    @Input() selectedNode: INode;
-    @Output() getGradeNodes = new EventEmitter<INode>();
-    @Output() saveNewNode = new EventEmitter<INewNodeModel>();
-    @Output() deleteNode = new EventEmitter<INode>();
+export class AdminSidebarContentComponent {
+    @Input()
+    public selectedNode: INode;
 
-    isCreateNewNode = false;
+    @Output()
+    public getGradeNodes = new EventEmitter<INode>();
 
-    newNodeModel: INewNodeModel = {
+    @Output()
+    public saveNewNode = new EventEmitter<INewNodeModel>();
+
+    @Output()
+    public deleteNode = new EventEmitter<INode>();
+
+    public isCreateNewNode = false;
+
+    public newNodeModel: INewNodeModel = {
         type: 'main',
         name: ''
     };
-    types = [{
+
+    private _types = [{
         value: 'role',
         name: 'Роль'
     }, {
@@ -31,9 +39,6 @@ export class AdminSidebarComponent {
         value: 'position',
         name: 'Должность'
     }];
-
-    constructor() {
-    }
 
     getSkillsAndPositions() {
         this.getGradeNodes.emit(this.selectedNode);

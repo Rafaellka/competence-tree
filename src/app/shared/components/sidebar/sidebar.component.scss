@@ -11,7 +11,7 @@
   flex-direction: column;
   transform: translateX(100%);
   transition: 0.4s all;
-  border-left: 1px solid #F91A4E;
+  border-left: 1px solid $primary-background-color;
   overflow-y: auto;
   @if $isDarkMode {
     background-color: $dark-background-color;

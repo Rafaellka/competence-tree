@@ -4,12 +4,13 @@
     </div>
     <div *ngIf="!isCreateNewNode" [ngClass]="{content: true}">
         <button [ngClass]="{button: true}" *ngIf="selectedNode && selectedNode.type === 'grade'"
-            (click)="getSkillsAndPositions()">
+                (click)="getSkillsAndPositions()">
             Показать скиллы и должности
         </button>
         <button [ngClass]="{button: true}" (click)="isCreateNewNode = true">Создать новую ноду</button>
         <button [ngClass]="{button: true, delete: true}" *ngIf="selectedNode && selectedNode.type !== 'main'"
-            (click)="delete()">Удалить</button>
+                (click)="delete()">Удалить
+        </button>
     </div>
     <div *ngIf="isCreateNewNode" [ngClass]="{content: true}">
         <div [ngClass]="{title: true}">Выберите тип</div>
@@ -21,7 +22,7 @@
             <option [value]="'position'" *ngIf="selectedNode.type === 'grade'">Должность</option>
         </select>
         <div [ngClass]="{title: true}">Введите название</div>
-        <input [(ngModel)]="newNodeModel.name" [ngClass]="{form:true}" />
+        <input [(ngModel)]="newNodeModel.name" [ngClass]="{form:true}"/>
         <button [ngClass]="{button: true}" (click)="saveNode()">Добавить</button>
         <button [ngClass]="{button: true}" (click)="isCreateNewNode = false">Отмена</button>
     </div>

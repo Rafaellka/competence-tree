@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { EChartsOption, ECharts } from "echarts";
-import { NodesService } from "../../../shared/services/nodes.service";
-import { forkJoin } from "rxjs";
-import { LinksService } from "../../../shared/services/links.service";
-import { INewNodeModel, INode, nodeStyles } from "../../../shared/interfaces";
+import {ECharts, EChartsOption} from "echarts";
+import {NodesService} from "../../../shared/services/nodes.service";
+import {forkJoin} from "rxjs";
+import {LinksService} from "../../../shared/services/links.service";
+import {INewNodeModel, INode, nodeStyles} from "../../../shared/interfaces";
+
 
 @Component({
     selector: 'app-admin-graph',
@@ -14,7 +15,8 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
     echartsInstance: ECharts;
     options: EChartsOption;
     newNode: INode;
-    visible = false;
+    sidebarVisible: boolean = false;
+    modalVisible: boolean = false;
     selectedNode: INode = {
         type: 'main',
         id: '',
@@ -81,8 +83,13 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
 
     onChartEvent(event: any) {
         if (event.dataType === 'node') {
-            this.selectedNode = { ...event.data };
-            this.visible = true;
+            this.selectedNode = {...event.data};
+            if (['skill', 'position'].includes(event.data.type)) {
+                this.sidebarVisible = false;
+                this.modalVisible = true;
+                return;
+            }
+            this.sidebarVisible = true;
         }
     }
 
@@ -198,6 +205,10 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
                     });
                 });
                 break;
+            case 'duty':
+                this.nodesService.saveNewDuty(newNode.name, 'чтобы работало', +this.selectedNode.id.split(':')[1])
+                    .subscribe();
+                break;
         }
     }
 
@@ -211,6 +222,14 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
                 }]
             });
         });
+    }
+
+    saveDuty(duty: INewNodeModel) {
+
+    }
+
+    saveSubskill(subskill: INewNodeModel) {
+
     }
 
     onChartInit($event: ECharts) {

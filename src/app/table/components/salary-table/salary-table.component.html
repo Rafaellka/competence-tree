@@ -1,6 +1,77 @@
 <div [ngClass]="{tablesContainer: true}">
-    <app-name-list></app-name-list>
-    <app-month month="Январь"></app-month>
-    <app-month month="Февраль"></app-month>
-    <app-month month="Март"></app-month>
+    <form [formGroup]="formGroup" class="form">
+        <label [ngStyle]="{color: 'white'}">Год: </label>
+        <select class="select" formControlName="year">
+            <option *ngFor="let year of years" [value]="year">{{year}}</option>
+        </select>
+    </form>
+    <table>
+        <tr>
+            <td rowspan="2">ФИО</td>
+            <td rowspan="2">Руководитель</td>
+            <ng-container *ngFor="let month of months">
+                <td colspan="5">{{month.name}}</td>
+            </ng-container>
+        </tr>
+        <tr>
+            <ng-container *ngFor="let month of months">
+                <td>Премия</td>
+                <td>Оклад</td>
+                <td>Апдейт</td>
+                <td>Ставка</td>
+                <td>Итого</td>
+            </ng-container>
+        </tr>
+        <tr *ngFor="let emp of renderEmployeeViewModel.employees$ | async">
+            <td class="manager">
+                <div>{{emp.firstName}} {{emp.lastName}}</div>
+                <mat-icon
+                    *ngIf="emp.type === 'Manager' && emp.isExpandMore"
+                    (click)="hideSubordinates(emp.id); emp.isExpandMore = false;"
+                    class="icon"
+                >
+                    expand_more
+                </mat-icon>
+                <mat-icon
+                    *ngIf="emp.type === 'Manager' && !emp.isExpandMore"
+                    (click)="showSubordinates(emp.id); emp.isExpandMore = true;"
+                    class="icon"
+                >
+                    expand_less
+                </mat-icon>
+            </td>
+            <td>{{emp.manager?.firstName}} {{emp.manager?.lastName}}</td>
+            <ng-container *ngFor="let salary of emp.salaries">
+                <td class="changeable" [ngClass]="{inChange: salary.bonus.isChangeMode}">
+                    <div *ngIf="!salary.bonus.isChangeMode"
+                         (dblclick)="salary.bonus.isChangeMode = !salary.bonus.isChangeMode">{{salary.bonus.value}}</div>
+                    <input *ngIf="salary.bonus.isChangeMode"
+                           [(ngModel)]="salary.bonus.value"
+                           (keydown.enter)="saveFieldChanges(salary, emp.id);salary.bonus.isChangeMode = !salary.bonus.isChangeMode"
+                           (keydown.escape)="salary.bonus.isChangeMode = !salary.bonus.isChangeMode"
+                    />
+                </td>
+                <td class="changeable" [ngClass]="{inChange: salary.wage.isChangeMode}">
+                    <div *ngIf="!salary.wage.isChangeMode"
+                         (dblclick)="salary.wage.isChangeMode = !salary.wage.isChangeMode">{{salary.wage.value}}</div>
+                    <input *ngIf="salary.wage.isChangeMode"
+                           [(ngModel)]="salary.wage.value"
+                           (keydown.enter)="saveFieldChanges(salary, emp.id); salary.wage.isChangeMode = !salary.wage.isChangeMode"
+                           (keydown.escape)="salary.wage.isChangeMode = !salary.wage.isChangeMode"
+                    />
+                </td>
+                <td>0</td>
+                <td class="changeable" [ngClass]="{inChange: salary.rate.isChangeMode}">
+                    <div *ngIf="!salary.rate.isChangeMode"
+                         (dblclick)="salary.rate.isChangeMode = !salary.rate.isChangeMode">{{salary.rate.value}}</div>
+                    <input *ngIf="salary.rate.isChangeMode"
+                           [(ngModel)]="salary.rate.value"
+                           (keydown.enter)="saveFieldChanges(salary, emp.id); salary.rate.isChangeMode = !salary.rate.isChangeMode;"
+                           (keydown.escape)="salary.rate.isChangeMode = !salary.rate.isChangeMode; focus($event)"
+                    />
+                </td>
+                <td>{{+salary.wage.value * +salary.rate.value + +salary.bonus.value}}</td>
+            </ng-container>
+        </tr>
+    </table>
 </div>
