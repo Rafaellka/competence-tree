@@ -9,6 +9,7 @@ import {AdminGuard} from "./admin/guards/admin.guard";
 import {UserGuard} from "./shared/user.guard";
 import {SearchComponent} from "./shared/components/search/search.component";
 import {SalaryTableComponent} from "./table/components/salary-table/salary-table.component";
+import { ProjectsComponent } from './shared/components/projects/projects.component';
 
 const appRoutes: Routes = [
     {
@@ -36,7 +37,13 @@ const appRoutes: Routes = [
     },
     {
         path: 'user-search',
-        component: SearchComponent
+        component: SearchComponent,
+        canActivate: [AdminGuard]
+    },
+    {
+        path: 'projects',
+        component: ProjectsComponent,
+        canActivate: [AdminGuard]
     },
     {
         path: '**',

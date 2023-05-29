@@ -16,8 +16,10 @@ import {ModalComponent} from './shared/components/modal/modal.component';
 import {UserSidebarComponent} from './graph/components/user-sidebar/user-sidebar.component';
 import {AdminSidebarContentComponent} from './admin/components/admin-sidebar-content/admin-sidebar-content.component';
 import {AdminGraphComponent} from './admin/components/admin-graph/admin-graph.component';
-import {SearchComponent} from './shared/components/search/search.component';
-import {SalaryTableComponent} from './table/components/salary-table/salary-table.component';
+import { SearchComponent } from './shared/components/search/search.component';
+import { SalaryTableComponent } from './table/components/salary-table/salary-table.component';
+import { ProjectsComponent } from './shared/components/projects/projects.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import {CdkMenuModule} from "@angular/cdk/menu";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
@@ -38,7 +40,10 @@ import {AdminModalContentComponent} from './admin/components/admin-modal-content
         AdminGraphComponent,
         SearchComponent,
         SalaryTableComponent,
-        AdminModalContentComponent
+        AdminModalContentComponent,
+        ProjectsComponent,
+        NavbarComponent,
+
     ],
     imports: [
         BrowserModule,
@@ -53,7 +58,8 @@ import {AdminModalContentComponent} from './admin/components/admin-modal-content
         FormsModule,
         CdkMenuModule,
         ReactiveFormsModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        ReactiveFormsModule
     ],
     providers: [{
         provide: HTTP_INTERCEPTORS,
