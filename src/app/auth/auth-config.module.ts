@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { AuthModule, LogLevel } from 'angular-auth-oidc-client';
+import {NgModule} from '@angular/core';
+import {AuthModule, LogLevel} from 'angular-auth-oidc-client';
+import {environment} from "../../environments/environment";
 
 @NgModule({
     imports: [AuthModule.forRoot({
         config: {
-            authority: 'https://localhost:5001',
+            authority: environment.identity,
             redirectUrl: window.location.origin + '/signin-oidc',
             postLogoutRedirectUri: window.location.origin + '',
             clientId: 'skill-system-web',
@@ -17,4 +18,5 @@ import { AuthModule, LogLevel } from 'angular-auth-oidc-client';
     })],
     exports: [AuthModule],
 })
-export class AuthConfigModule { }
+export class AuthConfigModule {
+}
