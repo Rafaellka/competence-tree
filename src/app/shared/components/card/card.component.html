@@ -1,5 +1,5 @@
 <div [ngClass]="{project: true}">
-  <div [ngClass]="{delete: true}">
+  <div [ngClass]="{delete: true}" *ngIf="isAdmin">
     <p (click)="deleteProject()">X</p>
   </div>
   <div [ngClass]="{info: true}">

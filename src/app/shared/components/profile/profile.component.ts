@@ -1,3 +1,4 @@
+import { concatMap, of } from 'rxjs';
 import { ProjectService } from './../../services/project.service';
 import { UserService } from './../../services/user.service';
 import {Component, OnInit} from '@angular/core';
@@ -7,15 +8,10 @@ import {SearchUserService} from "../../services/search-user.service";
 import {OidcSecurityService} from "angular-auth-oidc-client";
 import {IUser} from "../../interfaces/IUser";
 import { Observable } from 'rxjs/internal/Observable';
+import { FormControl, FormGroup } from '@angular/forms';
 
+type ModalType = 'Project' | 'Manager';
 
-interface IProjectForm {
-    project: IProject | any;
-    position: string; //
-    role: string; //
-    grade?: string; //
-    id: number;
-}
 
 @Component({
     selector: 'app-profile',
@@ -25,10 +21,14 @@ interface IProjectForm {
 export class ProfileComponent implements OnInit {
     projects$: Observable<IProject[]> = new Observable<IProject[]>();
     myProjects$: Observable<IMyProject[]> = new Observable<IMyProject[]>();
+    manager$: Observable<IUser> = new Observable<IUser>();
     id: string;
-    modal: boolean;
+    isOpen: boolean;
     user: IUser;
+    allUsers: IUser[] = [];
+    manager: IUser | null;
     isAdmin: boolean;
+    modalType: ModalType;
     roles: IHaveIdAndTitle[] = [];
     projectForm: IProject = {
         name: '',
@@ -36,6 +36,10 @@ export class ProfileComponent implements OnInit {
         position: '',
         id: 0
     };
+    managerForm: any = {
+        id: 0
+    }
+
 
     constructor(private userService: UserService,
                 private activateRoute: ActivatedRoute,
@@ -50,10 +54,22 @@ export class ProfileComponent implements OnInit {
         this.myProjects$ = this.projectService.myProjects$;
         this.projectService.getProjects();
         this.projectService.getMyProjects(this.id);
+        this.manager$ = this.userService.manager$;
+        this.searchUser.getAllUsers().subscribe(value => {
+            this.allUsers = value.items;
+        })
 
-
-        this.searchUser.getUserById(this.id).subscribe(user => {
-            this.user = {...user};
+        this.searchUser.getUserById(this.id).pipe(concatMap((user) => {
+            if (!user.managerId){
+                return of({user, manager: null});
+            }
+            return this.searchUser.getUserById(user.managerId).pipe(concatMap((manager) => {
+                return of({user, manager});
+            }));
+        })).subscribe(obj => {
+            console.log(obj.manager)
+            this.user = obj.user;
+            this.manager = obj.manager;
         })
 
         this.isAdmin = this.userService.getUser().isAdmin;
@@ -62,21 +78,25 @@ export class ProfileComponent implements OnInit {
         }) 
     }
 
-    showModal() {
-        this.modal = true;
+    form = new FormGroup({
+        managers: new FormControl(this.allUsers[0])
+    })
+
+    showModal(type: ModalType) {
+        if (this.isAdmin){
+            this.isOpen = true;
+            this.modalType = type;
+        }
     }
 
     saveProject() {
-        // this.projects.push(this.projectForm);
-        // this.projectForm = {
-        //     name: '',
-        //     role: '',
-        //     position: ''
-        // };
-        console.log(this.projectForm);
-
         this.projectService.addProjectToUser(this.projectForm, this.id);
-        this.modal = false;        
+        this.isOpen = false;        
+    }
+
+    saveManager() {
+        this.userService.appointManager(this.id, this.managerForm.id); //this.managerForm.id
+        this.isOpen = false;
     }
 
     logout() {

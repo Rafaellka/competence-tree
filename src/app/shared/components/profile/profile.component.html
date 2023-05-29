@@ -5,7 +5,14 @@
                 <img [ngClass]="{avatar: true}"
                     src="https://polymus.ru/media/cache/dc/70/dc70224031a4ad5d8f0a5ced566cd87a.jpg" alt="">
             </div>
-            <p [ngClass]="{name: true}" *ngIf="user">{{user.firstName}} {{user.lastName}}</p>
+            <div>
+                <p [ngClass]="{name: true}" *ngIf="user">{{user.firstName}} {{user.lastName}}</p>
+                <p>Руководитель: <span (click)="showModal('Manager')" *ngIf="manager">{{manager.lastName}}
+                        {{manager.firstName}}</span>
+                    <span (click)="showModal('Manager')" *ngIf="!manager">выбрать...</span>
+                    <!-- {{manager$ | async}} -->
+                </p>
+            </div>
         </div>
         <div [ngClass]="{buttonsContainer: true}">
             <button [ngClass]="{btn: true}" routerLink="">Назад</button>
@@ -15,7 +22,7 @@
     <div [ngClass]="{containerDown: true}">
         <div [ngClass]="{projects: true}">
             <app-card *ngFor="let project of myProjects$ | async" [info]="project"></app-card>
-            <div [ngClass]="{project: true}" (click)="showModal()" *ngIf="isAdmin">
+            <div [ngClass]="{project: true}" (click)="showModal('Project')" *ngIf="isAdmin">
                 <div [ngClass]="{plus: true}">
                     <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <line x1="36" y1="4.37114e-08" x2="36" y2="70" stroke="#878787" stroke-width="2" />
@@ -26,28 +33,46 @@
         </div>
     </div>
 </div>
-<app-modal [(modal)]="modal">
-    <div [ngClass]="{modalContainer: true}">
-        <div>
-            <div>Название проекта</div>
-            <select [ngClass]="{input: true, select: true}" [(ngModel)]="projectForm.id">
-                <option *ngFor="let project of projects$ | async" [value]="project.id">
-                    {{project.name}}
+<app-modal [(modal)]="isOpen">
+    <ng-container [ngSwitch]="modalType">
+        <div [ngClass]="{modalContainer: true}" *ngSwitchCase="'Project'">
+            <div>
+                <div>Название проекта</div>
+                <select [ngClass]="{input: true, select: true}" [(ngModel)]="projectForm.id">
+                    <option *ngFor="let project of projects$ | async" [value]="project.id">
+                        {{project.name}}
+                    </option>
+                </select>
+            </div>
+            <div>
+                <div>Название роли</div>
+                <select [ngClass]="{input: true, select: true}" [(ngModel)]="projectForm.role">
+                    <option *ngFor="let role of roles" value="{{role.id}}">
+                        {{role.title}}
+                    </option>
+                </select>
+            </div>
+            <div>
+                <div>Название должности</div>
+                <input [ngClass]="{input: true}" [(ngModel)]="projectForm.position" />
+            </div>
+            <button [ngClass]="{btn: true}" (click)="saveProject()">Добавить</button>
+        </div>
+
+        <div [ngClass]="{modalContainer: true}" *ngSwitchCase="'Manager'">
+            <select [ngClass]="{input: true}" [(ngModel)]="managerForm.id">
+                <option *ngFor="let u of allUsers" value="{{u.id}}">
+                    {{u.lastName}} {{u.firstName}} {{u.patronymic}}
                 </option>
             </select>
+            <!-- <form [formGroup]="form">
+                <select [ngClass]="{input: true}" formControlName="managers">
+                    <option *ngFor="let u of allUsers" [value]="u">
+                        {{u?.firstName}}
+                    </option>
+                </select>
+            </form> -->
+            <button [ngClass]="{btn: true}" (click)="saveManager()">Сохранить</button>
         </div>
-        <div>
-            <div>Название роли</div>
-            <select [ngClass]="{input: true, select: true}" [(ngModel)]="projectForm.role">
-                <option *ngFor="let role of roles" value="{{role.id}}">
-                    {{role.title}}
-                </option>
-            </select>
-        </div>
-        <div>
-            <div>Название должности</div>
-            <input [ngClass]="{input: true}" [(ngModel)]="projectForm.position" />
-        </div>
-        <button [ngClass]="{btn: true}" (click)="saveProject()">Добавить</button>
-    </div>
+    </ng-container>
 </app-modal>

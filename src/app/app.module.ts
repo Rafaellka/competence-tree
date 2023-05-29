@@ -21,6 +21,8 @@ import { SalaryTableComponent } from './table/components/salary-table/salary-tab
 import { MonthComponent } from './table/components/month/month.component';
 import { NameListComponent } from './table/components/name-list/name-list.component';
 import { ProjectsComponent } from './shared/components/projects/projects.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
+
 
 @NgModule({
     declarations: [
@@ -38,7 +40,9 @@ import { ProjectsComponent } from './shared/components/projects/projects.compone
         SalaryTableComponent,
         MonthComponent,
         NameListComponent,
-        ProjectsComponent
+        ProjectsComponent,
+        NavbarComponent,
+        
     ],
     imports: [
         BrowserModule,

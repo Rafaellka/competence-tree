@@ -48,7 +48,6 @@
 .modalContainer {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   padding: 20px;
   gap: 20px;
@@ -63,22 +62,27 @@
     width: 400px;
     height: 10px;
     padding: 10px;
-    margin-right: 20px;
   }
 
-  .btn {
-    padding: 10px 40px;
-    background-color: $primary-button-color;
-    color: $white;
-    border-radius: 5px;
-    font-size: 18px;
-    align-self: center;
-    transition: 0.1s linear;
-
-    &:hover {
-      cursor: pointer;
-      transition: 0.1s linear;
-      box-shadow: 0 0 10px gray;
-    }
+  .btns {
+    display: flex;
+    justify-content: space-between;
   }
 }
+
+.btn {
+  padding: 10px 40px;
+  background-color: $primary-button-color;
+  color: $white;
+  border-radius: 5px;
+  font-size: 18px;
+  align-self: center;
+  transition: 0.1s linear;
+
+  &:hover {
+    cursor: pointer;
+    transition: 0.1s linear;
+    box-shadow: 0 0 10px gray;
+  }
+}
+

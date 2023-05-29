@@ -20,13 +20,12 @@
     </div>
 
     <div [ngClass]="{modalContainer: true}" *ngSwitchCase="'Edit'">
-      <div>
-        <div>Название проекта</div>
-        <input [ngClass]="{input: true}" [(ngModel)]="projectForm.name" />
+      <div>Название проекта</div>
+      <input [ngClass]="{input: true}" [(ngModel)]="projectForm.name" />
+      <div [ngClass]="{btns: true}">
         <button [ngClass]="{btn: true}" (click)="updateProject()">Изменить</button>
+        <button [ngClass]="{btn: true}" (click)="deleteProject()">Удалить</button>
       </div>
-
-      <button [ngClass]="{btn: true}" (click)="deleteProject()">Удалить</button>
     </div>
   </ng-container>
 </app-modal>

@@ -1,10 +1,5 @@
-<div echarts
-     [autoResize]="true"
-     [options]="options"
-     [ngClass]="{main: true}"
-     (chartClick)="onChartEvent($event)"
-     (chartInit)="onChartInit($event)"
-></div>
+<div echarts [autoResize]="true" [options]="options" [ngClass]="{main: true}" (chartClick)="onChartEvent($event)"
+    (chartInit)="onChartInit($event)"></div>
 <div [ngClass]="{sidebar: true}">
     <button [ngClass]="{button: true}" (click)="showSidebar()">
         <mat-icon [ngClass]="{icon: true}">menu</mat-icon>
@@ -23,10 +18,7 @@
                     <li *ngFor="let detail of nodeInfo.details">{{detail.name}}</li>
                 </ol>
             </div>
-            <button [ngClass]="{saveButton: true}"
-                    *ngIf="user"
-                    (click)="markSkill()"
-            >
+            <button [ngClass]="{saveButton: true}" *ngIf="user" (click)="markSkill()">
                 Отметить изученным
             </button>
         </div>
@@ -37,7 +29,6 @@
             <div>
                 <div>{{'Список обязанностей'}}</div>
                 <ol>
-
                     <li *ngFor="let detail of nodeInfo.details">{{detail.name}}</li>
                 </ol>
             </div>

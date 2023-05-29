@@ -18,4 +18,8 @@ export class SearchUserService {
     getUserById(id: string) {
         return this.http.get<IUser>(environment.apiURL + `employees/${id}`);
     }
+
+    getAllUsers() {
+        return this.http.get<IResponse<IUser>>(environment.apiURL + `employees/search`);
+    }
 }
