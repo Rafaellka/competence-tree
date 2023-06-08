@@ -1,7 +1,10 @@
-<div [ngClass]="{nav: true}">
-  <div (click)="goToMyProfile()" *ngIf="!isAdmin">Профиль</div>
-  <div routerLink="">Граф</div>
-  <div routerLink="table">Таблица</div>
-  <div routerLink="user-search" *ngIf="isAdmin">Сотрудники</div>
-  <div routerLink="projects" *ngIf="isAdmin">Проекты</div>
+<div class="nav">
+    <div class="container">
+        <div class="nav-item" (click)="goToMyProfile()" *ngIf="!isAdmin">Профиль</div>
+        <div class="nav-item" routerLink="">Граф</div>
+        <div class="nav-item" routerLink="table">Таблица</div>
+        <div class="nav-item" routerLink="user-search" *ngIf="isAdmin">Сотрудники</div>
+        <div class="nav-item" routerLink="projects" *ngIf="isAdmin">Проекты</div>
+    </div>
+    <div class="exit" *ngIf="isAdmin" (click)="logout()">Выйти</div>
 </div>

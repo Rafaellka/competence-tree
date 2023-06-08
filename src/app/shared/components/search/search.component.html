@@ -1,4 +1,5 @@
 <div [ngClass]="{main: true}">
+    <div class="title">Список сотрудников</div>
     <div [ngClass]="{searchContainer: true}">
         <input [ngClass]="{input: true}" [(ngModel)]="searchModel" (keyup.enter)="searchUser()"/>
         <button [ngClass]="{button: true}" (click)="searchUser()">Поиск</button>

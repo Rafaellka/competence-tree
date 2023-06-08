@@ -16,7 +16,7 @@
         </div>
         <div [ngClass]="{buttonsContainer: true}">
             <button [ngClass]="{btn: true}" routerLink="">Назад</button>
-            <button [ngClass]="{btn: true}" (click)="logout()">Выйти</button>
+            <button *ngIf="!isAdmin" [ngClass]="{btn: true}" (click)="logout()">Выйти</button>
         </div>
     </div>
     <div [ngClass]="{containerDown: true}">

@@ -14,18 +14,18 @@
         <div [ngClass]="{checkbox: true}">
             <mat-checkbox [color]="'primary'" [(ngModel)]="filters.position">Должности</mat-checkbox>
         </div>
-        <div [ngClass]="{checkbox: true}" *ngIf="user">
-            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.myRole">Мои роли</mat-checkbox>
-        </div>
-        <div [ngClass]="{checkbox: true}" *ngIf="user">
-            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.myGrade">Мои грейды</mat-checkbox>
-        </div>
-        <div [ngClass]="{checkbox: true}" *ngIf="user">
-            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.mySkill">Мои скиллы</mat-checkbox>
-        </div>
-        <div [ngClass]="{checkbox: true}" *ngIf="user">
-            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.myPosition">Мои должности</mat-checkbox>
-        </div>
+        <!--        <div [ngClass]="{checkbox: true}" *ngIf="user">-->
+        <!--            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.myRole">Мои роли</mat-checkbox>-->
+        <!--        </div>-->
+        <!--        <div [ngClass]="{checkbox: true}" *ngIf="user">-->
+        <!--            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.myGrade">Мои грейды</mat-checkbox>-->
+        <!--        </div>-->
+        <!--        <div [ngClass]="{checkbox: true}" *ngIf="user">-->
+        <!--            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.mySkill">Мои скиллы</mat-checkbox>-->
+        <!--        </div>-->
+        <!--        <div [ngClass]="{checkbox: true}" *ngIf="user">-->
+        <!--            <mat-checkbox [color]="'primary'" [(ngModel)]="filters.myPosition">Мои должности</mat-checkbox>-->
+        <!--        </div>-->
         <button [ngClass]="{btn: true}" (click)="filterNodes()">Применить</button>
     </div>
 </div>

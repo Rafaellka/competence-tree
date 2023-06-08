@@ -6,13 +6,15 @@ import {UserService} from "./shared/services/user.service";
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
-    title = 'competence-tree';
+export class AppComponent implements OnInit {
+    public title = 'competence-tree';
 
-    constructor(private userService: UserService) {
+    constructor(
+        private _userService: UserService
+    ) {
     }
 
-    ngOnInit() {
-        this.userService.loadUserData();
+    public ngOnInit(): void {
+        this._userService.loadUserData();
     }
 }

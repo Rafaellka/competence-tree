@@ -6,9 +6,15 @@
   margin: auto;
   flex-direction: column;
   gap: 20px;
-  height: 95vh;
+  height: 100%;
   color: #F2F4F8;
   padding: 20px;
+  overflow: auto;
+
+  .title {
+    font-size: 1.5em;
+    color: white;
+  }
 
   .searchContainer {
     display: flex;

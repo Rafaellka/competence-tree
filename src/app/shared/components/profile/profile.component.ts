@@ -39,11 +39,13 @@ export class ProfileComponent implements OnInit {
     managerForm: IUser;
 
 
-    constructor(private userService: UserService,
-                private activateRoute: ActivatedRoute,
-                private searchUser: SearchUserService,
-                private oidc: OidcSecurityService,
-                private projectService: ProjectService) {
+    constructor(
+        private userService: UserService,
+        private activateRoute: ActivatedRoute,
+        private searchUser: SearchUserService,
+        private oidc: OidcSecurityService,
+        private projectService: ProjectService
+    ) {
         this.id = activateRoute.snapshot.params['id'];
     }
 

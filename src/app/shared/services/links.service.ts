@@ -84,4 +84,8 @@ export class LinksService {
     getLinks() {
         return this.links;
     }
+
+    public deleteLink(source: string, target: string): void {
+        this.links = this.links.filter((link: ILink) => link.source !== source && link.target !== target);
+    }
 }

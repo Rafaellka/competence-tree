@@ -3,7 +3,7 @@ import {ECharts, EChartsOption} from "echarts";
 import {NodeService} from "../../../shared/services/node.service";
 import {forkJoin} from "rxjs";
 import {LinksService} from "../../../shared/services/links.service";
-import {INewNodeModel, INode, nodeStyles} from "../../../shared/interfaces";
+import {INewNodeModel, INode, IRenderNode, nodeStyles} from "../../../shared/interfaces";
 
 
 @Component({
@@ -24,20 +24,61 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
         parentId: null
     };
 
-    constructor(private nodesService: NodeService, private linksService: LinksService) {
+    constructor(
+        private _nodesService: NodeService,
+        private _linksService: LinksService
+    ) {
     }
 
     public ngOnInit(): void {
-        this.nodesService.getRolesWithGrades().subscribe(result => {
+        this.options = {
+            tooltip: {
+                formatter: '{b}'
+            },
+            darkMode: true,
+            series: [
+                {
+                    animationEasingUpdate: 'quarticOut',
+                    type: 'graph',
+                    roam: true,
+                    layout: 'force',
+                    force: {
+                        gravity: 0.05,
+                        repulsion: 60,
+                        edgeLength: 20
+                    },
+                    zoom: 5,
+                    scaleLimit: {
+                        min: 3,
+                        max: 15
+                    },
+                    label: {
+                        show: true,
+                        fontSize: 16,
+                        fontWeight: "bold",
+                        formatter: (params) => {
+                            return params.name.split(' ').join('\n')
+                        }
+                    },
+                    lineStyle: {
+                        width: 2
+                    },
+                    data: this._nodesService.getGraphNodes(),
+                    links: this._linksService.getLinks()
+                }
+            ]
+        };
+
+        this._nodesService.getRolesWithGrades().subscribe(result => {
             result.forEach(nodes => {
-                this.nodesService.addNewNodes(nodes);
+                this._nodesService.addNewNodes(nodes);
                 nodes.forEach((node, index) => {
                     if (index === 0) {
-                        this.linksService.bindNewNodeWithParent(node.parentId, node);
+                        this._linksService.bindNewNodeWithParent(node.parentId, node);
                         return;
                     }
                     const parentId = node.type === 'grade' ? nodes[index - 1].id : null;
-                    this.linksService.bindNewNodeWithParent(parentId, node);
+                    this._linksService.bindNewNodeWithParent(parentId, node);
                 })
             });
 
@@ -73,8 +114,8 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
                         lineStyle: {
                             width: 2
                         },
-                        data: this.nodesService.getGraphNodes(),
-                        links: this.linksService.getLinks()
+                        data: this._nodesService.getGraphNodes(),
+                        links: this._linksService.getLinks()
                     }
                 ]
             };
@@ -91,27 +132,27 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
     }
 
     public getSkillsAndPositions(grade: INode) {
-        if (this.nodesService.checkIsParent(grade.id)) return;
+        if (this._nodesService.checkIsParent(grade.id)) return;
 
         const parts = grade.id.split(':');
         const gradeId = Number(parts[parts.length - 1]);
 
         forkJoin([
-            this.nodesService.getPositionsByGrade(gradeId),
-            this.nodesService.getSkillsByGrade(gradeId)
+            this._nodesService.getPositionsByGrade(gradeId),
+            this._nodesService.getSkillsByGrade(gradeId)
         ]).subscribe(result => {
-            this.nodesService.setIsParentNode(grade.id);
+            this._nodesService.setIsParentNode(grade.id);
             result.forEach(nodes => {
                 if (nodes.length > 0) {
-                    this.nodesService.addNewNodes(nodes);
-                    this.linksService.bindEntityWithGrade(gradeId, nodes[0].type);
+                    this._nodesService.addNewNodes(nodes);
+                    this._linksService.bindEntityWithGrade(gradeId, nodes[0].type);
                 }
             })
 
             this.echartsInstance.setOption({
                 series: [{
-                    data: this.nodesService.getGraphNodes(),
-                    links: this.linksService.getLinks()
+                    data: this._nodesService.getGraphNodes(),
+                    links: this._linksService.getLinks()
                 }]
             });
         });
@@ -120,7 +161,7 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
     public saveNewNode(newNode: INewNodeModel) {
         switch (newNode.type) {
             case 'role':
-                this.nodesService.saveNewRole(newNode.name).subscribe(roleId => {
+                this._nodesService.saveNewRole(newNode.name).subscribe(roleId => {
                     const newRenderNode = {
                         name: newNode.name,
                         type: newNode.type,
@@ -129,12 +170,12 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
                         parentId: this.selectedNode.id
                     };
 
-                    this.nodesService.addNewNodes([newRenderNode]);
-                    this.linksService.bindNewNodeWithParent(this.selectedNode.id, newRenderNode);
+                    this._nodesService.addNewNodes([newRenderNode]);
+                    this._linksService.bindNewNodeWithParent(this.selectedNode.id, newRenderNode);
                     this.echartsInstance.setOption({
                         series: [{
-                            data: this.nodesService.getGraphNodes(),
-                            links: this.linksService.getLinks()
+                            data: this._nodesService.getGraphNodes(),
+                            links: this._linksService.getLinks()
                         }]
                     });
                 });
@@ -143,7 +184,11 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
                 const roleId = this.selectedNode.type === 'grade' ? this.selectedNode.parentId : this.selectedNode.id;
                 const prevGradeId = this.selectedNode.type === 'grade' ? this.selectedNode.id : undefined;
 
-                this.nodesService.saveNewGrade(newNode.name, roleId ? roleId : '', prevGradeId).subscribe(gradeId => {
+                this._nodesService.saveNewGrade(newNode.name, roleId ? roleId : '', prevGradeId).subscribe(gradeId => {
+                    const prevGradeIndex: number = this._nodesService.getGraphNodes().findIndex((node: INode) => node.id === prevGradeId);
+                    const nextNode: IRenderNode | undefined = this._nodesService.getGraphNodes()
+                        .slice(prevGradeIndex + 1)
+                        .find((node: INode) => node.parentId === roleId);
                     const newRenderNode = {
                         name: newNode.name,
                         type: newNode.type,
@@ -151,19 +196,22 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
                         ...nodeStyles[newNode.type],
                         parentId: roleId
                     };
-
-                    this.nodesService.addNewNodes([newRenderNode]);
-                    this.linksService.bindNewNodeWithParent(this.selectedNode.id, newRenderNode);
+                    this._nodesService.addNewNodes([newRenderNode]);
+                    this._linksService.bindNewNodeWithParent(this.selectedNode.id, newRenderNode);
+                    if (nextNode && prevGradeId) {
+                        this._linksService.bindNewNodeWithParent(newRenderNode.id, nextNode);
+                        this._linksService.deleteLink(prevGradeId, nextNode.id);
+                    }
                     this.echartsInstance.setOption({
                         series: [{
-                            data: this.nodesService.getGraphNodes(),
-                            links: this.linksService.getLinks()
+                            data: this._nodesService.getGraphNodes(),
+                            links: this._linksService.getLinks()
                         }]
                     });
                 });
                 break;
             case 'position':
-                this.nodesService.saveNewPosition(newNode.name, this.selectedNode).subscribe(positionId => {
+                this._nodesService.saveNewPosition(newNode.name, this.selectedNode).subscribe(positionId => {
                     const newRenderNode = {
                         name: newNode.name,
                         type: newNode.type,
@@ -172,18 +220,18 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
                         parentId: this.selectedNode.id
                     };
 
-                    this.nodesService.addNewNodes([newRenderNode]);
-                    this.linksService.bindNewNodeWithParent(this.selectedNode.id, newRenderNode);
+                    this._nodesService.addNewNodes([newRenderNode]);
+                    this._linksService.bindNewNodeWithParent(this.selectedNode.id, newRenderNode);
                     this.echartsInstance.setOption({
                         series: [{
-                            data: this.nodesService.getGraphNodes(),
-                            links: this.linksService.getLinks()
+                            data: this._nodesService.getGraphNodes(),
+                            links: this._linksService.getLinks()
                         }]
                     });
                 });
                 break;
             case 'skill':
-                this.nodesService.saveNewSkill(newNode.name, this.selectedNode).subscribe(skillId => {
+                this._nodesService.saveNewSkill(newNode.name, this.selectedNode).subscribe(skillId => {
                     const newRenderNode = {
                         name: newNode.name,
                         type: newNode.type,
@@ -192,30 +240,30 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
                         parentId: this.selectedNode.id
                     };
 
-                    this.nodesService.addNewNodes([newRenderNode]);
-                    this.linksService.bindNewNodeWithParent(this.selectedNode.id, newRenderNode);
+                    this._nodesService.addNewNodes([newRenderNode]);
+                    this._linksService.bindNewNodeWithParent(this.selectedNode.id, newRenderNode);
                     this.echartsInstance.setOption({
                         series: [{
-                            data: this.nodesService.getGraphNodes(),
-                            links: this.linksService.getLinks()
+                            data: this._nodesService.getGraphNodes(),
+                            links: this._linksService.getLinks()
                         }]
                     });
                 });
                 break;
             case 'duty':
-                this.nodesService.saveNewDuty(newNode.name, 'чтобы работало', +this.selectedNode.id.split(':')[1])
+                this._nodesService.saveNewDuty(newNode.name, 'чтобы работало', +this.selectedNode.id.split(':')[1])
                     .subscribe();
                 break;
         }
     }
 
     public deleteNode(node: INode) {
-        this.nodesService.deleteNode(this.selectedNode).subscribe(() => {
-            this.nodesService.removeNodeFromGraph(node.id);
+        this._nodesService.deleteNode(this.selectedNode).subscribe(() => {
+            this._nodesService.removeNodeFromGraph(node.id);
             this.echartsInstance.setOption({
                 series: [{
-                    data: this.nodesService.getGraphNodes(),
-                    links: this.linksService.getLinks()
+                    data: this._nodesService.getGraphNodes(),
+                    links: this._linksService.getLinks()
                 }]
             });
         });
@@ -231,6 +279,6 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-        this.nodesService.resetNodes();
+        this._nodesService.resetNodes();
     }
 }
