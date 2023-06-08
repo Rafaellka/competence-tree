@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {INode, ISkill} from "../interfaces";
 import {HttpClient} from "@angular/common/http";
 import {OidcSecurityService} from "angular-auth-oidc-client";
-import {BehaviorSubject, Observable, concatMap, map, of} from "rxjs";
+import {BehaviorSubject, concatMap, map, Observable, of} from "rxjs";
 import {IUser} from "../interfaces/IUser";
 import {environment} from "../../../environments/environment";
 
@@ -24,6 +24,7 @@ export class UserService {
 
     private user: IUser;
     private userSkills: ISkill[];
+
     constructor(private http: HttpClient, private oidc: OidcSecurityService) {
         this.manager$ = this._manager$.asObservable();
     }
@@ -118,10 +119,6 @@ export class UserService {
         return this.http.post<IUser>(environment.apiURL + `employees/${employeeId}/manager`, {
             employeeId: employeeId,
             managerId: managerId
-        }).subscribe(value => {
-            console.log(value);
-            this.manager = value;
-            this._manager$.next(this.manager);
         });
     }
 }

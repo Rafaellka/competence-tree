@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ILink, INode, IRenderNode, NodeTypes} from 'src/app/shared/interfaces';
 import {HttpClient} from "@angular/common/http";
-import {NodesService} from "./nodes.service";
+import {NodeService} from "./node.service";
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +9,7 @@ import {NodesService} from "./nodes.service";
 export class LinksService {
     private links: ILink[] = [];
 
-    constructor(private http: HttpClient, private nodeService: NodesService) {
+    constructor(private http: HttpClient, private nodeService: NodeService) {
     }
 
     bindRolesWithMainNode() {

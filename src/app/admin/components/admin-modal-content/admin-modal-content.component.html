@@ -1,7 +1,12 @@
-<div *ngIf="selectedNode.type === 'duty'">
-    duty
+<div class="container">
+    <div class="name center">{{selectedNode.name}}</div>
+    <div *ngIf="selectedNode.type === 'position'">
+        Список обязанностей:
+    </div>
+    <div *ngIf="selectedNode.type === 'skill'">
+        Список подскиллов:
+    </div>
+    <div class="list">
+        <div *ngFor="let item of model?.items">{{item.title}} ✖</div>
+    </div>
 </div>
-<div *ngIf="selectedNode.type === 'duty'">
-    skill
-</div>
-

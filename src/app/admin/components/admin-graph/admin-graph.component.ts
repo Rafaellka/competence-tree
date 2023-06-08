@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ECharts, EChartsOption} from "echarts";
-import {NodesService} from "../../../shared/services/nodes.service";
+import {NodeService} from "../../../shared/services/node.service";
 import {forkJoin} from "rxjs";
 import {LinksService} from "../../../shared/services/links.service";
 import {INewNodeModel, INode, nodeStyles} from "../../../shared/interfaces";
@@ -12,22 +12,22 @@ import {INewNodeModel, INode, nodeStyles} from "../../../shared/interfaces";
     styleUrls: ['./admin-graph.component.scss']
 })
 export class AdminGraphComponent implements OnInit, OnDestroy {
-    echartsInstance: ECharts;
-    options: EChartsOption;
-    newNode: INode;
-    sidebarVisible: boolean = false;
-    modalVisible: boolean = false;
-    selectedNode: INode = {
+    public echartsInstance: ECharts;
+    public options: EChartsOption;
+    public newNode: INode;
+    public sidebarVisible: boolean = false;
+    public modalVisible: boolean = false;
+    public selectedNode: INode = {
         type: 'main',
         id: '',
         name: '',
         parentId: null
     };
 
-    constructor(private nodesService: NodesService, private linksService: LinksService) {
+    constructor(private nodesService: NodeService, private linksService: LinksService) {
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.nodesService.getRolesWithGrades().subscribe(result => {
             result.forEach(nodes => {
                 this.nodesService.addNewNodes(nodes);
@@ -81,19 +81,16 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
         });
     }
 
-    onChartEvent(event: any) {
+    public onChartEvent(event: any) {
         if (event.dataType === 'node') {
             this.selectedNode = {...event.data};
             if (['skill', 'position'].includes(event.data.type)) {
-                this.sidebarVisible = false;
-                this.modalVisible = true;
-                return;
             }
             this.sidebarVisible = true;
         }
     }
 
-    getSkillsAndPositions(grade: INode) {
+    public getSkillsAndPositions(grade: INode) {
         if (this.nodesService.checkIsParent(grade.id)) return;
 
         const parts = grade.id.split(':');
@@ -120,7 +117,7 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
         });
     }
 
-    saveNewNode(newNode: INewNodeModel) {
+    public saveNewNode(newNode: INewNodeModel) {
         switch (newNode.type) {
             case 'role':
                 this.nodesService.saveNewRole(newNode.name).subscribe(roleId => {
@@ -212,7 +209,7 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
         }
     }
 
-    deleteNode(node: INode) {
+    public deleteNode(node: INode) {
         this.nodesService.deleteNode(this.selectedNode).subscribe(() => {
             this.nodesService.removeNodeFromGraph(node.id);
             this.echartsInstance.setOption({
@@ -224,19 +221,16 @@ export class AdminGraphComponent implements OnInit, OnDestroy {
         });
     }
 
-    saveDuty(duty: INewNodeModel) {
-
+    public showModalWithNotNodes(): void {
+        this.sidebarVisible = false;
+        this.modalVisible = true;
     }
 
-    saveSubskill(subskill: INewNodeModel) {
-
-    }
-
-    onChartInit($event: ECharts) {
+    public onChartInit($event: ECharts) {
         this.echartsInstance = $event;
     }
 
-    ngOnDestroy() {
+    public ngOnDestroy() {
         this.nodesService.resetNodes();
     }
 }

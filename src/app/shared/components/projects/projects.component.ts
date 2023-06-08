@@ -1,55 +1,64 @@
-import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '../../services/project.service';
-import { IProject } from '../../interfaces';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {ProjectService} from '../../services/project.service';
+import {IProject} from '../../interfaces';
+import {Observable} from 'rxjs';
 
 type ModalType = 'Create' | 'Edit';
 
 @Component({
-  selector: 'app-projects',
-  templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss']
+    selector: 'app-projects',
+    templateUrl: './projects.component.html',
+    styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
-  projects$: Observable<IProject[]> = new Observable<IProject[]>();
+    public projects$: Observable<IProject[]> = new Observable<IProject[]>();
+    public currentProject: IProject | undefined;
+    public projectNameInputValue: string = ''
+    public modalType: ModalType;
+    public isOpen: boolean = false;
+    public projects: IProject[];
 
-  currentId: number | undefined;
-  projectForm: {name: string} = {name: ''};
-  modalType: ModalType;
-  isOpen: boolean = false;
-
-  constructor(private projectService: ProjectService) { }
-
-  ngOnInit(): void {
-    this.projects$ = this.projectService.projects$;
-    this.projectService.getProjects();
-  }
-
-  showModal(type: ModalType, id?: number){
-    this.modalType = type;
-    this.isOpen = true;
-    if (id) {
-      this.currentId = id;
+    constructor(private projectService: ProjectService) {
     }
-  }
 
-  createProject() {
-    this.projectService.createProject(this.projectForm);
-    // this.projects$
-    this.isOpen = false;
-  }
-
-  updateProject() {
-    if (this.currentId){
-      this.projectService.updateProject({id: this.currentId, name: this.projectForm.name});
+    public ngOnInit(): void {
+        this.projectService.projects$
+            .subscribe((projects) => {
+                this.projects = projects;
+            });
+        this.projectService.getProjects();
     }
-    this.isOpen = false;
-  }
 
-  deleteProject() {
-    if (this.currentId){
-      this.projectService.deleteProject(this.currentId);
+    public showModal(type: ModalType, project?: IProject): void {
+        this.modalType = type;
+        this.isOpen = true;
+        if (project) {
+            this.currentProject = project;
+        }
     }
-    this.isOpen = false;
-  }
+
+    public createProject(): void {
+        this.projectService.createProject(this.projectNameInputValue);
+        this.projectNameInputValue = '';
+        this.isOpen = false;
+    }
+
+    public updateProject(): void {
+        if (this.currentProject) {
+            this.projectService.updateProject({
+                id: this.currentProject.id,
+                name: this.projectNameInputValue
+            });
+        }
+        this.projectNameInputValue = '';
+        this.isOpen = false;
+    }
+
+    public deleteProject(): void {
+        if (this.currentProject) {
+            this.projectService.deleteProject(this.currentProject.id);
+        }
+        this.projectNameInputValue = '';
+        this.isOpen = false;
+    }
 }

@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ECharts, EChartsOption} from "echarts";
 import {LinksService} from 'src/app/shared/services/links.service';
-import {NodesService} from "../../../shared/services/nodes.service";
-import {IFilters, NodeTypes, INodeInfo, INode} from "../../../shared/interfaces";
+import {NodeService} from "../../../shared/services/node.service";
+import {IFilters, INode, INodeInfo, NodeTypes} from "../../../shared/interfaces";
 import {forkJoin} from "rxjs";
 import {NodeInfoService} from "../../../shared/services/node-info.service";
 import {UserService} from "../../../shared/services/user.service";
@@ -28,7 +28,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     };
 
     constructor(
-        private nodesService: NodesService,
+        private nodesService: NodeService,
         private linksService: LinksService,
         private nodeInfoService: NodeInfoService,
         private userService: UserService

@@ -1,15 +1,33 @@
-<div [ngClass]="{container: true}">
+<div *ngIf="selectedNode" [ngClass]="{container: true}">
     <div [ngClass]="{name: true}">
-        {{selectedNode ? selectedNode.name : ''}}
+        {{selectedNode.name}}
     </div>
     <div *ngIf="!isCreateNewNode" [ngClass]="{content: true}">
-        <button [ngClass]="{button: true}" *ngIf="selectedNode && selectedNode.type === 'grade'"
-                (click)="getSkillsAndPositions()">
+        <button
+            [ngClass]="{button: true}"
+            *ngIf="selectedNode.type === 'grade'"
+            (click)="getSkillsAndPositions()"
+        >
             Показать скиллы и должности
         </button>
-        <button [ngClass]="{button: true}" (click)="isCreateNewNode = true">Создать новую ноду</button>
-        <button [ngClass]="{button: true, delete: true}" *ngIf="selectedNode && selectedNode.type !== 'main'"
-                (click)="delete()">Удалить
+        <button
+            [ngClass]="{button: true}"
+            (click)="isCreateNewNode = true"
+        >
+            Создать дочерний элемент
+        </button>
+        <button
+            *ngIf="isFiniteTypeNode"
+            [ngClass]="{button: true}"
+            (click)="showNotNodes()"
+        >
+            Посмотреть список дочерних элементов
+        </button>
+        <button [ngClass]="{button: true, delete: true}"
+                *ngIf="selectedNode.type !== 'main'"
+                (click)="delete()"
+        >
+            Удалить
         </button>
     </div>
     <div *ngIf="isCreateNewNode" [ngClass]="{content: true}">
@@ -20,6 +38,7 @@
             </option>
             <option [value]="'skill'" *ngIf="selectedNode.type === 'grade'">Скилл</option>
             <option [value]="'position'" *ngIf="selectedNode.type === 'grade'">Должность</option>
+            <option [value]="'duty'" *ngIf="selectedNode.type === 'position'">Обязанность</option>
         </select>
         <div [ngClass]="{title: true}">Введите название</div>
         <input [(ngModel)]="newNodeModel.name" [ngClass]="{form:true}"/>

@@ -1,15 +1,19 @@
 @import "../../../../variables";
 
-.container{
+.container {
   display: flex;
   flex-direction: column;
   padding: 20px;
   gap: 20px;
 
-  .nav{
+  .nav {
     display: flex;
-    justify-content: flex-end;
-    gap: 30px;
+    justify-content: space-between;
+
+    .title {
+      font-size: 1.5em;
+      color: white;
+    }
   }
 
   .btn {
@@ -28,7 +32,7 @@
     }
   }
 
-  .projects{
+  .projects {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -37,7 +41,7 @@
     .project {
       border: 1px solid #F2F4F8;
       padding: 10px 20px;
-  
+
       &:hover {
         cursor: pointer;
       }

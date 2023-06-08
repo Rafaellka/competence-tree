@@ -1,14 +1,14 @@
-import { concatMap, of } from 'rxjs';
-import { ProjectService } from './../../services/project.service';
-import { UserService } from './../../services/user.service';
+import {concatMap, of} from 'rxjs';
+import {ProjectService} from './../../services/project.service';
+import {UserService} from './../../services/user.service';
 import {Component, OnInit} from '@angular/core';
 import {IHaveIdAndTitle, IMyProject, IProject} from "../../interfaces";
 import {ActivatedRoute} from "@angular/router";
 import {SearchUserService} from "../../services/search-user.service";
 import {OidcSecurityService} from "angular-auth-oidc-client";
 import {IUser} from "../../interfaces/IUser";
-import { Observable } from 'rxjs/internal/Observable';
-import { FormControl, FormGroup } from '@angular/forms';
+import {Observable} from 'rxjs/internal/Observable';
+import {FormControl, FormGroup} from '@angular/forms';
 
 type ModalType = 'Project' | 'Manager';
 
@@ -36,9 +36,7 @@ export class ProfileComponent implements OnInit {
         position: '',
         id: 0
     };
-    managerForm: any = {
-        id: 0
-    }
+    managerForm: IUser;
 
 
     constructor(private userService: UserService,
@@ -60,7 +58,7 @@ export class ProfileComponent implements OnInit {
         })
 
         this.searchUser.getUserById(this.id).pipe(concatMap((user) => {
-            if (!user.managerId){
+            if (!user.managerId) {
                 return of({user, manager: null});
             }
             return this.searchUser.getUserById(user.managerId).pipe(concatMap((manager) => {
@@ -75,7 +73,7 @@ export class ProfileComponent implements OnInit {
         this.isAdmin = this.userService.getUser().isAdmin;
         this.projectService.getRoles().subscribe(value => {
             this.roles = value.items;
-        }) 
+        })
     }
 
     form = new FormGroup({
@@ -83,7 +81,7 @@ export class ProfileComponent implements OnInit {
     })
 
     showModal(type: ModalType) {
-        if (this.isAdmin){
+        if (this.isAdmin) {
             this.isOpen = true;
             this.modalType = type;
         }
@@ -91,11 +89,14 @@ export class ProfileComponent implements OnInit {
 
     saveProject() {
         this.projectService.addProjectToUser(this.projectForm, this.id);
-        this.isOpen = false;        
+        this.isOpen = false;
     }
 
     saveManager() {
-        this.userService.appointManager(this.id, this.managerForm.id); //this.managerForm.id
+        this.userService.appointManager(this.id, this.managerForm.id)
+            .subscribe(() => {
+                this.manager = this.managerForm;
+            }); //this.managerForm.id
         this.isOpen = false;
     }
 

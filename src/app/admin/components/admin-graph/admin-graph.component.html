@@ -8,7 +8,9 @@
 <div [ngClass]="{sidebar: true}">
     <app-sidebar [(visible)]="sidebarVisible">
         <app-admin-sidebar-content
+            [isSidebarOpen]="sidebarVisible"
             [selectedNode]="selectedNode"
+            (goToModal)="showModalWithNotNodes()"
             (getGradeNodes)="getSkillsAndPositions($event)"
             (saveNewNode)="saveNewNode($event)"
             (deleteNode)="deleteNode($event)"
@@ -18,6 +20,5 @@
 <app-modal [(modal)]="modalVisible">
     <app-admin-modal-content
         [selectedNode]="selectedNode"
-        (saveDutyOrSubskill)="selectedNode.type === 'duty' ? saveDuty($event) : saveSubskill($event)"
     ></app-admin-modal-content>
 </app-modal>

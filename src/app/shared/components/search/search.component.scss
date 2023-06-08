@@ -6,9 +6,8 @@
   margin: auto;
   flex-direction: column;
   gap: 20px;
-  height: 100vh;
+  height: 95vh;
   color: #F2F4F8;
-  box-sizing: border-box;
   padding: 20px;
 
   .searchContainer {
@@ -60,7 +59,7 @@
     .user {
       border: 1px solid #F2F4F8;
       padding: 10px 20px;
-      
+
       &:hover {
         cursor: pointer;
       }
@@ -69,7 +68,7 @@
 }
 
 .modalContainer {
-  form{
+  form {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -84,7 +83,7 @@
     // width: 20vw;
     outline: 0;
 
-    &:hover{
+    &:hover {
       border-color: #2E62D9;
       transition: 0.1s linear;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);

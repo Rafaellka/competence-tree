@@ -1,4 +1,14 @@
-export type NodeTypes = 'main' | 'role' | 'grade' | 'skill' | 'position' | 'duty' | 'subskill';
+export type NodeTypes = 'main' | 'role' | 'grade' | 'skill' | 'position' | 'duty';
+export const FiniteTypes = ['skill', 'position'];
+
+// export enum NodeTypes {
+//     Main = 'main',
+//     Role = 'role',
+//     Grade = 'grade',
+//     Skill = 'skill',
+//     Position = 'position',
+//     Duty = 'duty'
+// }
 
 export const nodeStyles = {
     'main': {
