@@ -6,13 +6,13 @@ import {environment} from "../../environments/environment";
     imports: [AuthModule.forRoot({
         config: {
             authority: environment.identity,
-            redirectUrl: window.location.origin + '/signin-oidc',
-            postLogoutRedirectUri: window.location.origin + '',
+            redirectUrl: window.location.origin + '/#/signin-oidc',
+            postLogoutRedirectUri: window.location.origin + '/#/',
             clientId: 'skill-system-web',
             scope: 'openid profile roles SkillSystem.WebApi',
             responseType: 'code',
             silentRenew: true,
-            silentRenewUrl: window.location.origin + '/refresh-token',
+            silentRenewUrl: window.location.origin + '/#/refresh-token',
             logLevel: LogLevel.Debug,
         }
     })],
