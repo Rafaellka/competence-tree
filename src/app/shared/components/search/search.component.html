@@ -7,7 +7,7 @@
     </div>
     <div [ngClass]="{users: true}">
         <div [ngClass]="{user: true}" *ngFor="let user of users" (click)="goToUserProfile(user.id)">
-            {{user.firstName}} {{user.lastName}} {{user.patronymic}}
+            {{user.lastName}} {{user.firstName}} {{user.patronymic}}
         </div>
     </div>
 </div>
