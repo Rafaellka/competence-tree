@@ -6,7 +6,7 @@ import {environment} from "../../environments/environment";
     imports: [AuthModule.forRoot({
         config: {
             authority: environment.identity,
-            redirectUrl: location.origin + '/#/signin-oidc',
+            redirectUrl: window.location.origin + '/signin-oidc',
             postLogoutRedirectUri: window.location.origin + '',
             clientId: 'skill-system-web',
             scope: 'openid profile roles SkillSystem.WebApi',

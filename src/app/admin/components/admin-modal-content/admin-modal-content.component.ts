@@ -10,9 +10,11 @@ import {concatMap, of} from "rxjs";
     styleUrls: ['./admin-modal-content.component.scss']
 })
 export class AdminModalContentComponent implements OnChanges {
+    isInput: boolean = false;
+    public nameSubSkill: string = '';
     @Input()
     public selectedNode: INode;
-
+    
     public model: AdminModalContentViewModel = new AdminModalContentViewModel();
 
     constructor(
@@ -57,6 +59,26 @@ export class AdminModalContentComponent implements OnChanges {
         this._nodeService.deleteDutyFromPosition(this.selectedNode.id.split(':')[1], dutyId)
             .subscribe(() => {
                 this.model.items = this.model.items.filter(item => item.id === +dutyId);
+            });
+    }
+
+    showInput() {
+        this.isInput = true;
+    }
+
+    public addSkill() {
+        this.isInput = false;
+        this._nodeService.createSubSkill(this.selectedNode.id.split(':')[1], this.nameSubSkill).subscribe((v) => {
+            this.model.items.push({
+                title: this.nameSubSkill,
+                id: v              
+            })
+        });
+    }
+
+    public deleteSubSkill(skillId: string){
+        this._nodeService.deleteSubSkill(skillId).subscribe(() => {
+                this.model.items = this.model.items.filter(item => item.id !== +skillId);
             });
     }
 }

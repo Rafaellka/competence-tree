@@ -7,6 +7,10 @@
         Список подскиллов:
     </div>
     <div class="list">
-        <div *ngFor="let item of model?.items">{{item.title}} ✖</div>
+        <div *ngFor="let item of model?.items">{{item.title}} <span
+                (click)="deleteSubSkill(item.id.toString())">✖</span></div>
     </div>
+    <button class="button" *ngIf="!isInput" (click)="showInput()">Добавить</button>
+    <input type="text" *ngIf="isInput" (keyup.enter)="addSkill()" [(ngModel)]="nameSubSkill">
+
 </div>
