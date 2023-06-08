@@ -1,5 +1,5 @@
 <div echarts [autoResize]="true" [options]="options" [ngClass]="{main: true}" (chartClick)="onChartEvent($event)"
-    (chartInit)="onChartInit($event)"></div>
+     (chartInit)="onChartInit($event)"></div>
 <div [ngClass]="{sidebar: true}">
     <button [ngClass]="{button: true}" (click)="showSidebar()">
         <mat-icon [ngClass]="{icon: true}">menu</mat-icon>
@@ -29,7 +29,6 @@
             <div>
                 <div>{{'Список обязанностей'}}</div>
                 <ol>
-                    
                     <li *ngFor="let detail of nodeInfo?.details">{{detail.name}}</li>
                 </ol>
             </div>

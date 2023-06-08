@@ -6,11 +6,20 @@
     <div *ngIf="selectedNode.type === 'skill'">
         Список подскиллов:
     </div>
-    <div class="list">
-        <div *ngFor="let item of model?.items">{{item.title}} <span
+    <ng-container *ngIf="selectedNode.type === 'position'">
+        <div class="list">
+            <div *ngFor="let item of model?.items">{{item.title}} <span
+                (click)="deleteDutyFromPosition(item.id.toString())">✖</span></div>
+        </div>
+        <button class="button" *ngIf="!isInput" (click)="showInput()">Добавить</button>
+        <input type="text" *ngIf="isInput" (keyup.enter)="createDuty()" [(ngModel)]="newItemTitle">
+    </ng-container>
+    <ng-container *ngIf="selectedNode.type === 'skill'">
+        <div class="list">
+            <div *ngFor="let item of model?.items">{{item.title}} <span
                 (click)="deleteSubSkill(item.id.toString())">✖</span></div>
-    </div>
-    <button class="button" *ngIf="!isInput" (click)="showInput()">Добавить</button>
-    <input type="text" *ngIf="isInput" (keyup.enter)="addSkill()" [(ngModel)]="nameSubSkill">
-
+        </div>
+        <button class="button" *ngIf="!isInput" (click)="showInput()">Добавить</button>
+        <input type="text" *ngIf="isInput" (keyup.enter)="addSkill()" [(ngModel)]="newItemTitle">
+    </ng-container>
 </div>

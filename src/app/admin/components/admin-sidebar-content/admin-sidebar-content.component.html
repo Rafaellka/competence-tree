@@ -11,6 +11,7 @@
             Показать скиллы и должности
         </button>
         <button
+            *ngIf="!isFiniteTypeNode"
             [ngClass]="{button: true}"
             (click)="isCreateNewNode = true"
         >
@@ -38,7 +39,6 @@
             </option>
             <option [value]="'skill'" *ngIf="selectedNode.type === 'grade'">Скилл</option>
             <option [value]="'position'" *ngIf="selectedNode.type === 'grade'">Должность</option>
-            <option [value]="'duty'" *ngIf="selectedNode.type === 'position'">Обязанность</option>
         </select>
         <div [ngClass]="{title: true}">Введите название</div>
         <input [(ngModel)]="newNodeModel.name" [ngClass]="{form:true}"/>

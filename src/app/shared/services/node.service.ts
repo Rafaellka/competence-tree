@@ -178,7 +178,7 @@ export class NodeService {
     }
 
     public createDuty(title: string) {
-        return this._http.post<number>(environment.apiURL + 'duties', {title, description: ''})
+        return this._http.post<number>(environment.apiURL + 'duties', {title, description: 'чтобы работало'})
     }
 
     public createPositionDuty(positionId: number, dutyId: number) {
@@ -199,7 +199,7 @@ export class NodeService {
         })
     }
 
-    public deleteSubSkill(skillId: string){
+    public deleteSubSkill(skillId: string) {
         return this._http.delete(environment.apiURL + `skills/${skillId}`);
     }
 
