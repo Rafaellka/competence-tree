@@ -191,8 +191,16 @@ export class NodeService {
         return this._http.delete(environment.apiURL + `positions/${positionId}/duties/${dutyId}`);
     }
 
-    public createSubSkill(skillId: string) {
+    public createSubSkill(skillId: string, nameSubSkill: string) {
+        return this._http.post<number>(environment.apiURL + `skills`, {
+            title: nameSubSkill,
+            type: "Theoretical",
+            groupId: skillId
+        })
+    }
 
+    public deleteSubSkill(skillId: string){
+        return this._http.delete(environment.apiURL + `skills/${skillId}`);
     }
 
     public changeSkillColor(skillId: string) {
