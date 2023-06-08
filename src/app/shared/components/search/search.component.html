@@ -1,8 +1,8 @@
 <div [ngClass]="{main: true}">
     <div [ngClass]="{searchContainer: true}">
-        <input [ngClass]="{input: true}" [(ngModel)]="searchModel" (keyup.enter)="searchUser()" />
+        <input [ngClass]="{input: true}" [(ngModel)]="searchModel" (keyup.enter)="searchUser()"/>
         <button [ngClass]="{button: true}" (click)="searchUser()">Поиск</button>
-        <button [ngClass]="{button: true}" (click)="showModal()">Создать</button>
+        <!--        <button [ngClass]="{button: true}" (click)="showModal()">Создать</button>-->
     </div>
     <div [ngClass]="{users: true}">
         <div [ngClass]="{user: true}" *ngFor="let user of users" (click)="goToUserProfile(user.id)">
