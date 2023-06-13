@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ECharts, EChartsOption} from "echarts";
 import {LinksService} from 'src/app/shared/services/links.service';
 import {NodeService} from "../../../shared/services/node.service";
-import {IFilters, INode, INodeInfo, NodeTypes} from "../../../shared/interfaces";
+import {IDuty, IFilters, INode, INodeInfo, NodeTypes} from "../../../shared/interfaces";
 import {forkJoin} from "rxjs";
 import {NodeInfoService} from "../../../shared/services/node-info.service";
 import {UserService} from "../../../shared/services/user.service";
@@ -182,6 +182,18 @@ export class GraphComponent implements OnInit, OnDestroy {
                         }
                         this.setNewOptions();
                     });
+                    break;
+                case 'duty':
+                    this.nodeInfoService.getPositionDuties(this.selectedNode.id.split(':')[1])
+                        .subscribe((duties: IDuty[]) => {
+                            this.nodeInfo = {
+                                parentId: event.data.id,
+                                parentName: event.data.name,
+                                type: 'position',
+                                details: duties ? duties : []
+                            }
+                        });
+                    this.modal = true;
                     break;
             }
         }

@@ -1,33 +1,33 @@
 .project {
   width: 360px;
   height: 530px;
-  background: #2E62D9;
+  border: 2px solid #878787;
   display: flex;
   flex-direction: column;
   padding: 30px 30px 0;
-  
 
-  .delete{
+
+  .delete {
     color: #FFFFFF;
     align-self: flex-end;
 
-    p{
+    p {
       cursor: pointer;
     }
   }
 
-  .info{
+  .info {
     display: flex;
     flex-direction: column;
     gap: 60px;
     flex-wrap: wrap;
   }
 
-  .title{
+  .title {
     align-self: center;
   }
 
-  p{
+  p {
     margin: 0;
     color: #F2F4F8;
     font-size: 20px;

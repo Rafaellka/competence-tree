@@ -22,9 +22,9 @@
 
         <div [ngClass]="{modalContainer: true}" *ngSwitchCase="'Edit'">
             <div>Текущее название: {{currentProject?.name}}</div>
-            <input [ngClass]="{input: true}" [(ngModel)]="projectNameInputValue"/>
+            <input [ngClass]="{input: true}" [(ngModel)]="projectNameInputValue" placeholder="Введите новое название"/>
             <div [ngClass]="{btns: true}">
-                <button [ngClass]="{btn: true}" (click)="updateProject()">Изменить</button>
+                <button [ngClass]="{btn: true}" (click)="updateProject()">Сохранить</button>
                 <button [ngClass]="{btn: true}" (click)="deleteProject()">Удалить</button>
             </div>
         </div>

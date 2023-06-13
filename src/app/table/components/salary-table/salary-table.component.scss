@@ -47,16 +47,19 @@
         }
       }
 
-      .manager {
-        display: flex;
-        align-items: center;
+      .name-cell {
 
-        .icon {
-          &:hover {
-            cursor: pointer;
+        .manager {
+          display: flex;
+          align-items: center;
+
+          .icon {
+            &:hover {
+              cursor: pointer;
+            }
           }
-        }
 
+        }
       }
 
       .name {

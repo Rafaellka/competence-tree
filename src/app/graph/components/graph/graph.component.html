@@ -12,11 +12,14 @@
             <div [ngClass]="{title: true}">
                 {{nodeInfo.parentName}}
             </div>
-            <div>
-                <div>{{'Список подскиллов'}}</div>
+            <div *ngIf="nodeInfo?.details?.length !== 0">
+                <div>Список подскиллов</div>
                 <ol>
                     <li *ngFor="let detail of nodeInfo.details">{{detail.name}}</li>
                 </ol>
+            </div>
+            <div *ngIf="nodeInfo?.details?.length === 0">
+                <div>Список подскиллов пуст</div>
             </div>
             <button [ngClass]="{saveButton: true}" *ngIf="user" (click)="markSkill()">
                 Отметить изученным
@@ -26,11 +29,14 @@
             <div [ngClass]="{title: true}">
                 {{nodeInfo.parentName}}
             </div>
-            <div>
-                <div>{{'Список обязанностей'}}</div>
+            <div *ngIf="nodeInfo?.details?.length !== 0">
+                <div>Список обязанностей</div>
                 <ol>
                     <li *ngFor="let detail of nodeInfo?.details">{{detail.name}}</li>
                 </ol>
+            </div>
+            <div *ngIf="nodeInfo?.details?.length === 0">
+                <div>Список обязанностей пуст</div>
             </div>
         </div>
 

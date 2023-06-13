@@ -2,7 +2,7 @@ import {concatMap, of} from 'rxjs';
 import {ProjectService} from './../../services/project.service';
 import {UserService} from './../../services/user.service';
 import {Component, OnInit} from '@angular/core';
-import {IHaveIdAndTitle, IMyProject, IProject} from "../../interfaces";
+import {IAddProjectToUserRequest, IHaveIdAndTitle, IMyProject, IProject} from "../../interfaces";
 import {ActivatedRoute} from "@angular/router";
 import {SearchUserService} from "../../services/search-user.service";
 import {OidcSecurityService} from "angular-auth-oidc-client";
@@ -12,6 +12,11 @@ import {FormControl, FormGroup} from '@angular/forms';
 
 type ModalType = 'Project' | 'Manager';
 
+interface ProjectForm {
+    projectId: number;
+    roleId: number;
+    positionName?: string;
+}
 
 @Component({
     selector: 'app-profile',
@@ -19,24 +24,19 @@ type ModalType = 'Project' | 'Manager';
     styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-    projects$: Observable<IProject[]> = new Observable<IProject[]>();
-    myProjects$: Observable<IMyProject[]> = new Observable<IMyProject[]>();
-    manager$: Observable<IUser> = new Observable<IUser>();
-    id: string;
-    isOpen: boolean;
-    user: IUser;
-    allUsers: IUser[] = [];
-    manager: IUser | null;
-    isAdmin: boolean;
-    modalType: ModalType;
-    roles: IHaveIdAndTitle[] = [];
-    projectForm: IProject = {
-        name: '',
-        role: '',
-        position: '',
-        id: 0
-    };
-    managerForm: IUser;
+    public projects$: Observable<IProject[]> = new Observable<IProject[]>();
+    public myProjects$: Observable<IMyProject[]> = new Observable<IMyProject[]>();
+    public manager$: Observable<IUser> = new Observable<IUser>();
+    public profileId: string;
+    public isOpen: boolean;
+    public user: IUser;
+    public allUsers: IUser[] = [];
+    public manager: IUser | null;
+    public isAdmin: boolean;
+    public modalType: ModalType;
+    public roles: IHaveIdAndTitle[] = [];
+    public projectForm: ProjectForm = {} as ProjectForm;
+    public managerForm: IUser;
 
 
     constructor(
@@ -46,20 +46,20 @@ export class ProfileComponent implements OnInit {
         private oidc: OidcSecurityService,
         private projectService: ProjectService
     ) {
-        this.id = activateRoute.snapshot.params['id'];
+        this.profileId = activateRoute.snapshot.params['id'];
     }
 
     ngOnInit(): void {
         this.projects$ = this.projectService.projects$;
         this.myProjects$ = this.projectService.myProjects$;
         this.projectService.getProjects();
-        this.projectService.getMyProjects(this.id);
+        this.projectService.getMyProjects(this.profileId);
         this.manager$ = this.userService.manager$;
         this.searchUser.getAllUsers().subscribe(value => {
             this.allUsers = value.items;
         })
 
-        this.searchUser.getUserById(this.id).pipe(concatMap((user) => {
+        this.searchUser.getUserById(this.profileId).pipe(concatMap((user) => {
             if (!user.managerId) {
                 return of({user, manager: null});
             }
@@ -67,7 +67,6 @@ export class ProfileComponent implements OnInit {
                 return of({user, manager});
             }));
         })).subscribe(obj => {
-            console.log(obj.manager)
             this.user = obj.user;
             this.manager = obj.manager;
         })
@@ -90,12 +89,19 @@ export class ProfileComponent implements OnInit {
     }
 
     saveProject() {
-        this.projectService.addProjectToUser(this.projectForm, this.id);
+        const roleName: string | undefined = this.roles.find((role) => role.id === +this.projectForm.roleId)?.title;
+
+        const body: IAddProjectToUserRequest = {
+            employeeId: this.profileId,
+            roleId: +this.projectForm.roleId,
+            projectId: +this.projectForm.projectId
+        };
+        this.projectService.addProjectToUser(body, roleName ? roleName : '');
         this.isOpen = false;
     }
 
     saveManager() {
-        this.userService.appointManager(this.id, this.managerForm.id)
+        this.userService.appointManager(this.profileId, this.managerForm.id)
             .subscribe(() => {
                 this.manager = this.managerForm;
             }); //this.managerForm.id

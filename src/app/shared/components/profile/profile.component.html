@@ -22,7 +22,7 @@
     <div [ngClass]="{containerDown: true}">
         <div [ngClass]="{projects: true}">
             <app-card *ngFor="let project of myProjects$ | async" [info]="project"></app-card>
-            <div [ngClass]="{project: true}" (click)="showModal('Project')" *ngIf="isAdmin">
+            <div class="project" (click)="showModal('Project')" *ngIf="isAdmin">
                 <div [ngClass]="{plus: true}">
                     <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <line x1="36" y1="4.37114e-08" x2="36" y2="70" stroke="#878787" stroke-width="2"/>
@@ -38,7 +38,7 @@
         <div [ngClass]="{modalContainer: true}" *ngSwitchCase="'Project'">
             <div>
                 <div>Название проекта</div>
-                <select [ngClass]="{input: true, select: true}" [(ngModel)]="projectForm.id">
+                <select [ngClass]="{input: true, select: true}" [(ngModel)]="projectForm.projectId">
                     <option *ngFor="let project of projects$ | async" [value]="project.id">
                         {{project.name}}
                     </option>
@@ -46,15 +46,15 @@
             </div>
             <div>
                 <div>Название роли</div>
-                <select [ngClass]="{input: true, select: true}" [(ngModel)]="projectForm.role">
-                    <option *ngFor="let role of roles" value="{{role.id}}">
+                <select [ngClass]="{input: true, select: true}" [(ngModel)]="projectForm.roleId">
+                    <option *ngFor="let role of roles" [value]="role.id">
                         {{role.title}}
                     </option>
                 </select>
             </div>
             <div>
                 <div>Название должности</div>
-                <input [ngClass]="{input: true}" [(ngModel)]="projectForm.position"/>
+                <input [ngClass]="{input: true}" [(ngModel)]="projectForm.positionName"/>
             </div>
             <button [ngClass]="{btn: true}" (click)="saveProject()">Добавить</button>
         </div>

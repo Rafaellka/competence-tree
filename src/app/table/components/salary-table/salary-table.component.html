@@ -1,3 +1,18 @@
+<div>
+    <mat-form-field appearance="fill">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Start date">
+            <input matEndDate formControlName="end" placeholder="End date">
+        </mat-date-range-input>
+        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+
+        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+    </mat-form-field>
+</div>
 <div [ngClass]="{tablesContainer: true}">
     <form [formGroup]="formGroup" class="form">
         <label [ngStyle]="{color: 'white'}">Год: </label>
@@ -23,51 +38,62 @@
             </ng-container>
         </tr>
         <tr *ngFor="let emp of renderEmployeeViewModel.employees$ | async">
-            <td class="manager">
-                <div>{{emp.firstName}} {{emp.lastName}}</div>
-                <mat-icon
-                    *ngIf="emp.type === 'Manager' && emp.isExpandMore"
-                    (click)="hideSubordinates(emp.id); emp.isExpandMore = false;"
-                    class="icon"
-                >
-                    expand_more
-                </mat-icon>
-                <mat-icon
-                    *ngIf="emp.type === 'Manager' && !emp.isExpandMore"
-                    (click)="showSubordinates(emp.id); emp.isExpandMore = true;"
-                    class="icon"
-                >
-                    chevron_right
-                </mat-icon>
+            <td class="name-cell">
+                <div class="manager">
+                    <div>{{emp.firstName}} {{emp.lastName}}</div>
+                    <mat-icon
+                        *ngIf="emp.type === 'Manager' && emp.isExpandMore"
+                        (click)="hideSubordinates(emp.id); emp.isExpandMore = false;"
+                        class="icon"
+                    >
+                        expand_more
+                    </mat-icon>
+                    <mat-icon
+                        *ngIf="emp.type === 'Manager' && !emp.isExpandMore"
+                        (click)="showSubordinates(emp.id); emp.isExpandMore = true;"
+                        class="icon"
+                    >
+                        chevron_right
+                    </mat-icon>
+                </div>
             </td>
             <td>{{emp.manager?.firstName}} {{emp.manager?.lastName}}</td>
             <ng-container *ngFor="let salary of emp.salaries">
                 <td class="changeable" [ngClass]="{inChange: salary.bonus.isChangeMode}">
                     <div *ngIf="!salary.bonus.isChangeMode"
-                         (dblclick)="salary.bonus.isChangeMode = !salary.bonus.isChangeMode">{{salary.bonus.value}}</div>
+                         (dblclick)="changeMode(salary, 'bonus')"
+                    >
+                        {{salary.bonus.value}}
+                    </div>
                     <input *ngIf="salary.bonus.isChangeMode"
                            [(ngModel)]="salary.bonus.value"
-                           (keydown.enter)="saveFieldChanges(salary, emp.id);salary.bonus.isChangeMode = !salary.bonus.isChangeMode"
-                           (keydown.escape)="salary.bonus.isChangeMode = !salary.bonus.isChangeMode"
+                           (keydown.enter)="saveFieldChanges(salary, emp.id); salary.bonus.isChangeMode = !salary.bonus.isChangeMode"
+                           (keydown.escape)="handleEscape(salary, 'bonus')"
                     />
                 </td>
                 <td class="changeable" [ngClass]="{inChange: salary.wage.isChangeMode}">
                     <div *ngIf="!salary.wage.isChangeMode"
-                         (dblclick)="salary.wage.isChangeMode = !salary.wage.isChangeMode">{{salary.wage.value}}</div>
+                         (dblclick)="changeMode(salary, 'wage')"
+                    >
+                        {{salary.wage.value}}
+                    </div>
                     <input *ngIf="salary.wage.isChangeMode"
                            [(ngModel)]="salary.wage.value"
                            (keydown.enter)="saveFieldChanges(salary, emp.id); salary.wage.isChangeMode = !salary.wage.isChangeMode"
-                           (keydown.escape)="salary.wage.isChangeMode = !salary.wage.isChangeMode"
+                           (keydown.escape)="handleEscape(salary, 'wage')"
                     />
                 </td>
                 <td>0</td>
                 <td class="changeable" [ngClass]="{inChange: salary.rate.isChangeMode}">
                     <div *ngIf="!salary.rate.isChangeMode"
-                         (dblclick)="salary.rate.isChangeMode = !salary.rate.isChangeMode">{{salary.rate.value}}</div>
+                         (dblclick)="changeMode(salary, 'rate')"
+                    >
+                        {{salary.rate.value}}
+                    </div>
                     <input *ngIf="salary.rate.isChangeMode"
                            [(ngModel)]="salary.rate.value"
                            (keydown.enter)="saveFieldChanges(salary, emp.id); salary.rate.isChangeMode = !salary.rate.isChangeMode;"
-                           (keydown.escape)="salary.rate.isChangeMode = !salary.rate.isChangeMode; focus($event)"
+                           (keydown.escape)="handleEscape(salary, 'rate')"
                     />
                 </td>
                 <td>{{+salary.wage.value * +salary.rate.value + +salary.bonus.value}}</td>

@@ -107,10 +107,11 @@ export interface IRenderNode extends INode {
 
 export interface IProject {
     name: string;
-    position: string; //
-    role: string; //
-    grade?: string; //
+    position?: string;
+    roleName: string;
+    grade?: string;
     id: number;
+
 }
 
 export interface IMyProject {
@@ -142,4 +143,10 @@ export interface ISkill {
 export interface INewNodeModel {
     type: NodeTypes;
     name: string;
+}
+
+export interface IAddProjectToUserRequest {
+    projectId: number;
+    roleId: number;
+    employeeId: string;
 }

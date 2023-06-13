@@ -25,6 +25,9 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthorizationHeaderInterceptor} from "./shared/authorization-header.interceptor";
 import {AdminModalContentComponent} from './admin/components/admin-modal-content/admin-modal-content.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
     declarations: [
@@ -60,6 +63,9 @@ import {AdminModalContentComponent} from './admin/components/admin-modal-content
         ReactiveFormsModule,
         MatCheckboxModule,
         ReactiveFormsModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule
     ],
     providers: [{
         provide: HTTP_INTERCEPTORS,
