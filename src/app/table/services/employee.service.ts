@@ -33,7 +33,7 @@ export class EmployeeService {
     ) {
     }
 
-    public loadEmployeeById(id: string, year: string) {
+    public loadEmployeeById(id: string, from: Date, to: Date) {
         return this._http.get<IGetEmployee>(environment.apiURL + `employees/${id}`)
             .pipe(
                 map((user) => {
@@ -48,12 +48,11 @@ export class EmployeeService {
                     }
                     return emp;
                 }),
-                concatMap((emp: RenderEmployee) =>
-                    this._http.get<IBaseSalary[]>(environment.apiURL + 'salaries', {
+                concatMap((emp: RenderEmployee) => this._http.get<IBaseSalary[]>(environment.apiURL + 'salaries', {
                         params: {
                             employeeId: id,
-                            from: `${year}-01-01T00:00:00Z`,
-                            to: `${year}-12-31T23:59:59Z`
+                            from: from.toISOString(),
+                            to: to.toISOString()
                         }
                     })
                         .pipe(
@@ -75,31 +74,35 @@ export class EmployeeService {
                             }))),
                             map((salaries: TableSalary[]) => {
                                 const changedSalaries: TableSalary[] = [];
-                                for (let i = 0; i < 12; i++) {
-                                    let salary = salaries.find(item => +item.startDate.getMonth() === i);
-                                    if (!salary) {
-                                        salary = new TableSalary(i !== 0 ? structuredClone(changedSalaries[changedSalaries.length - 1]) : {
-                                            id: 0,
-                                            employeeId: '',
-                                            startDate: new Date(),
-                                            bonus: {
-                                                isChangeMode: false,
-                                                value: 0
-                                            },
-                                            rate: {
-                                                isChangeMode: false,
-                                                value: 0
-                                            },
-                                            wage: {
-                                                isChangeMode: false,
-                                                value: 0
-                                            },
-                                        } as ISalary);
+                                for (let year = from.getFullYear(); year <= to.getFullYear(); year++) {
+                                    const fromMonth: number = year === from.getFullYear() ? from.getMonth() : 0;
+                                    const toMonth: number = year === to.getFullYear() ? to.getMonth() : 11;
+                                    for (let month = fromMonth; month <= toMonth; month++) {
+                                        let salary = salaries.find(item => +item.startDate.getMonth() === month);
+                                        if (!salary) {
+                                            salary = new TableSalary(month !== from.getMonth() ? structuredClone(changedSalaries[changedSalaries.length - 1]) : {
+                                                id: 0,
+                                                employeeId: '',
+                                                startDate: new Date(),
+                                                bonus: {
+                                                    isChangeMode: false,
+                                                    value: 0
+                                                },
+                                                rate: {
+                                                    isChangeMode: false,
+                                                    value: 0
+                                                },
+                                                wage: {
+                                                    isChangeMode: false,
+                                                    value: 0
+                                                },
+                                            } as ISalary);
+                                        }
+                                        salary.startDate = months[month].date;
+                                        changedSalaries.push(salary);
                                     }
-                                    salary.startDate = months[i].startDate;
-                                    changedSalaries.push(salary);
+                                    emp.salaries = changedSalaries;
                                 }
-                                emp.salaries = changedSalaries;
                                 return emp;
                             })
                         )
@@ -107,10 +110,10 @@ export class EmployeeService {
                 tap((employee) => {
                     this._allLoadedEmployees.push(employee);
                 })
-            );
+            )
     }
 
-    public loadSubordinates(managerId: string, year: string) {
+    public loadSubordinates(managerId: string, from: Date, to: Date) {
         return this._http.get<IGetSubordinatesResponse>(environment.apiURL + `employees/${managerId}/subordinates`)
             .pipe(
                 map(response => {
@@ -123,8 +126,8 @@ export class EmployeeService {
                         const requests = subordinates.map((sub: IEmployee) => this._http.get<IBaseSalary[]>(environment.apiURL + `salaries`, {
                                 params: {
                                     employeeId: sub.id,
-                                    from: `${year}-01-01T00:00:00Z`,
-                                    to: `${year}-12-31T23:59:59Z`
+                                    from: from.toISOString(),
+                                    to: to.toISOString()
                                 }
                             })
                                 .pipe(
@@ -152,32 +155,35 @@ export class EmployeeService {
                                         (salaries, index) => {
                                             const changedSalaries: TableSalary[] = [];
 
-                                            for (let i = 0; i < 12; i++) {
-                                                let salary = salaries.find(item => item.startDate.getMonth() === i);
-                                                if (!salary) {
-                                                    salary = new TableSalary(i !== 0 ? structuredClone(changedSalaries[changedSalaries.length - 1]) : {
-                                                        id: 0,
-                                                        employeeId: '',
-                                                        startDate: new Date(),
-                                                        bonus: {
-                                                            isChangeMode: false,
-                                                            value: 0
-                                                        },
-                                                        rate: {
-                                                            isChangeMode: false,
-                                                            value: 0
-                                                        },
-                                                        wage: {
-                                                            isChangeMode: false,
-                                                            value: 0
-                                                        },
-                                                    });
+                                            for (let year = from.getFullYear(); year <= to.getFullYear(); year++) {
+                                                const fromMonth: number = year === from.getFullYear() ? from.getMonth() : 0;
+                                                const toMonth: number = year === to.getFullYear() ? to.getMonth() : 11;
+                                                for (let month = fromMonth; month <= toMonth; month++) {
+                                                    let salary = salaries.find(item => item.startDate.getMonth() === month);
+                                                    if (!salary) {
+                                                        salary = new TableSalary(month !== from.getMonth() ? structuredClone(changedSalaries[changedSalaries.length - 1]) : {
+                                                            id: 0,
+                                                            employeeId: '',
+                                                            startDate: new Date(),
+                                                            bonus: {
+                                                                isChangeMode: false,
+                                                                value: 0
+                                                            },
+                                                            rate: {
+                                                                isChangeMode: false,
+                                                                value: 0
+                                                            },
+                                                            wage: {
+                                                                isChangeMode: false,
+                                                                value: 0
+                                                            },
+                                                        });
+                                                    }
+                                                    salary.startDate = months[month].date;
+                                                    changedSalaries.push(salary);
+                                                    subordinates[index].salaries = changedSalaries;
                                                 }
-                                                salary.startDate = months[i].startDate;
-                                                changedSalaries.push(salary);
-                                                subordinates[index].salaries = changedSalaries;
                                             }
-
                                             return subordinates[index];
                                         }
                                     )

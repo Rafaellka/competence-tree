@@ -9,7 +9,7 @@ import {AdminGuard} from "./admin/guards/admin.guard";
 import {UserGuard} from "./shared/user.guard";
 import {SearchComponent} from "./shared/components/search/search.component";
 import {SalaryTableComponent} from "./table/components/salary-table/salary-table.component";
-import { ProjectsComponent } from './shared/components/projects/projects.component';
+import {ProjectsComponent} from './shared/components/projects/projects.component';
 
 const appRoutes: Routes = [
     {
@@ -33,7 +33,8 @@ const appRoutes: Routes = [
     },
     {
         path: 'table',
-        component: SalaryTableComponent
+        component: SalaryTableComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'user-search',
@@ -53,7 +54,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(appRoutes, { useHash: true })],
+    imports: [RouterModule.forRoot(appRoutes, {useHash: true})],
     exports: [RouterModule]
 })
 export class AppRoutingModule {

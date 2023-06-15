@@ -14,13 +14,13 @@ export class RenderEmployeeViewModel {
         this.employees$ = this._employees$.asObservable();
     }
 
-    public initializeList(userId: string, year: string) {
-        this._employeeService.loadEmployeeById(userId, year)
+    public initializeList(userId: string, from: Date, to: Date) {
+        this._employeeService.loadEmployeeById(userId, from, to)
             .pipe(
                 tap((employee) => {
                     this._employeeRenderList.push(employee);
                 }),
-                concatMap((employee) => this._employeeService.loadSubordinates(userId, year))
+                concatMap((employee) => this._employeeService.loadSubordinates(userId, from, to))
             )
             .subscribe((emp: RenderEmployee[]) => {
                 this._employeeRenderList.push(...emp);
@@ -28,11 +28,11 @@ export class RenderEmployeeViewModel {
             });
     }
 
-    public loadSubordinates(employeeId: string, year: string) {
+    public loadSubordinates(employeeId: string, from: Date, to: Date) {
         if (this._employeeRenderList.find(emp => emp.manager?.id === employeeId)) {
             return;
         }
-        this._employeeService.loadSubordinates(employeeId, year)
+        this._employeeService.loadSubordinates(employeeId, from, to)
             .subscribe(employees => {
                 const index = this._employeeRenderList.findIndex(employee => employee.id === employeeId);
                 this._employeeRenderList.splice(index + 1, 0, ...employees);
@@ -64,13 +64,18 @@ export class RenderEmployeeViewModel {
             return;
         }
         const removeSubIndex = this._employeeRenderList.findIndex(employee => employee.id === employeeId);
-        const managerId = this._employeeRenderList[removeSubIndex].manager?.manager?.id || this._employeeRenderList[0].id;
+        const managerId = this._employeeRenderList[removeSubIndex].manager?.id || this._employeeRenderList[0].id;
         const subs = (this._employeeRenderList.filter(employee => employee.manager?.id === managerId) || [])
             .map(sub => sub.id);
-        const nextSameLevelSubIndex = this._employeeRenderList
+        let nextSameManagerEmployeeIndex = this._employeeRenderList
             .slice(removeSubIndex + 1)
-            .findIndex(employee => subs.includes(employee.id)) + removeSubIndex + 1;
-        this._employeeRenderList.splice(removeSubIndex + 1, nextSameLevelSubIndex - removeSubIndex - 1);
+            .findIndex(employee => subs.includes(employee.id));
+        if (nextSameManagerEmployeeIndex !== -1) {
+            nextSameManagerEmployeeIndex += removeSubIndex + 1;
+        } else {
+            nextSameManagerEmployeeIndex = this._employeeRenderList.length;
+        }
+        this._employeeRenderList.splice(removeSubIndex + 1, nextSameManagerEmployeeIndex - removeSubIndex - 1);
         this._employees$.next(this._employeeRenderList);
     }
 

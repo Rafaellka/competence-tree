@@ -1,35 +1,29 @@
-<div>
+<div class="date-picker-container">
     <mat-form-field appearance="fill">
-        <mat-label>Enter a date range</mat-label>
-        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-            <input matStartDate formControlName="start" placeholder="Start date">
-            <input matEndDate formControlName="end" placeholder="End date">
+        <mat-label class="white">Введите даты начала и конца</mat-label>
+        <mat-date-range-input class="white" [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Дата начала">
+            <input matEndDate formControlName="end" placeholder="Дата конца">
         </mat-date-range-input>
-        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-hint class="white">ММ/ДД/ГГГГ – ММ/ДД/ГГГГ</mat-hint>
+        <mat-datepicker-toggle class="white" matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker class="white" #picker></mat-date-range-picker>
 
         <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
         <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
     </mat-form-field>
 </div>
 <div [ngClass]="{tablesContainer: true}">
-    <form [formGroup]="formGroup" class="form">
-        <label [ngStyle]="{color: 'white'}">Год: </label>
-        <select class="select" formControlName="year">
-            <option *ngFor="let year of years" [value]="year">{{year}}</option>
-        </select>
-    </form>
     <table>
         <tr>
             <td rowspan="2">ФИО</td>
             <td rowspan="2">Руководитель</td>
-            <ng-container *ngFor="let month of months">
-                <td colspan="5">{{month.name}}</td>
+            <ng-container *ngFor="let month of monthsWithYear">
+                <td colspan="5">{{month.month.name}} {{month.year}}</td>
             </ng-container>
         </tr>
         <tr>
-            <ng-container *ngFor="let month of months">
+            <ng-container *ngFor="let month of monthsWithYear">
                 <td>Премия</td>
                 <td>Оклад</td>
                 <td>Апдейт</td>
@@ -67,7 +61,7 @@
                     </div>
                     <input *ngIf="salary.bonus.isChangeMode"
                            [(ngModel)]="salary.bonus.value"
-                           (keydown.enter)="saveFieldChanges(salary, emp.id); salary.bonus.isChangeMode = !salary.bonus.isChangeMode"
+                           (keydown.enter)="salary.bonus.isChangeMode = false; isCellChangeMode = false; saveFieldChanges(salary, emp.id)"
                            (keydown.escape)="handleEscape(salary, 'bonus')"
                     />
                 </td>
@@ -79,7 +73,7 @@
                     </div>
                     <input *ngIf="salary.wage.isChangeMode"
                            [(ngModel)]="salary.wage.value"
-                           (keydown.enter)="saveFieldChanges(salary, emp.id); salary.wage.isChangeMode = !salary.wage.isChangeMode"
+                           (keydown.enter)="salary.wage.isChangeMode = false; isCellChangeMode = false; saveFieldChanges(salary, emp.id)"
                            (keydown.escape)="handleEscape(salary, 'wage')"
                     />
                 </td>
@@ -92,7 +86,7 @@
                     </div>
                     <input *ngIf="salary.rate.isChangeMode"
                            [(ngModel)]="salary.rate.value"
-                           (keydown.enter)="saveFieldChanges(salary, emp.id); salary.rate.isChangeMode = !salary.rate.isChangeMode;"
+                           (keydown.enter)="salary.rate.isChangeMode = false; isCellChangeMode = false; saveFieldChanges(salary, emp.id)"
                            (keydown.escape)="handleEscape(salary, 'rate')"
                     />
                 </td>
